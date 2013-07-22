@@ -1,0 +1,391 @@
+/* Copyright 2013 Tim Stratton
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+package ni3po42.android.amvvm.implementations;
+
+import java.util.Hashtable;
+import java.util.Map;
+
+import ni3po42.android.amvvm.R;
+import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IViewBinding;
+import ni3po42.android.amvvm.implementations.ui.UIHandler;
+import ni3po42.android.amvvm.util.Log;
+
+import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.LayoutInflater.Factory2;
+import android.view.View;
+
+/**
+ * Custom factory for creating Views during inflation. This determines which IViewBiding object will be associated with
+ * each view and add it along with a binding inventory to the view
+ * @author Tim Stratton
+ *
+ */
+public class ViewFactory 
+implements Factory2
+{	
+	private static final String androidRESNamespace = "http://schemas.android.com/apk/res/android";
+	
+	//stores current inflater
+	private LayoutInflater inflater;
+	
+	//lookup table to map view types to view-binding types
+	private Map<Class<?>, String> bindingConfig = new Hashtable<Class<?>, String>();
+	
+	//cache of keys for the bindingConfig map
+	private Class<?>[] bindingKeys;
+	
+	/**
+	 * AMVVM uses the ViewHolder pattern. This is the data that is associated to each view that has bounded data.
+	 * @author Tim Stratton
+	 *
+	 */
+	public static class ViewHolder
+	{
+		/**
+		 * Bridge between UI and data
+		 */
+		public IViewBinding viewBinding;
+		
+		/**
+		 * true if view is considered a root, means it will own an instance of BindingInventory and 
+		 * not just use it's parent's instance.
+		 */
+		public boolean isRoot;
+		
+		/**
+		 * A flag to left the parser know that no child of this ViewGroup will have bound data. For performace. 
+		 */
+		public boolean ignoreChildren;
+		
+		/**
+		 * keeps inventory of all paths, UIElements that the view binding use to pass data back and forth
+		 */
+		public BindingInventory inventory;
+	}
+	
+	/**
+	 * Constructor to create custom ViewFactory
+	 * @param inflater : this is the existing inflater, it will be used to inflate views before we read
+	 * 					any custom attribute added
+	 */
+	public ViewFactory(LayoutInflater inflater)
+	{
+		this.inflater = inflater;
+		try
+		{
+			//should move this out and allow user the option to register new ones if they so please...
+			String packageName = "ni3po42.android.amvvm.implementations.ui.viewbinding";
+			bindingConfig.put(Class.forName("android.view.View"), packageName+".GenericViewBinding");
+			bindingConfig.put(Class.forName("android.widget.AbsListView"), packageName+".ListViewBinding");
+			bindingConfig.put(Class.forName("android.widget.Spinner"), packageName+".SpinnerViewBinding");
+			bindingConfig.put(Class.forName("android.widget.TextView"), packageName+".TextViewBinding");
+			bindingConfig.put(Class.forName("android.widget.NumberPicker"), packageName+".NumberPickerBinding");
+			bindingConfig.put(Class.forName("android.widget.TimePicker"), packageName+".TimePickerBinding");
+			bindingConfig.put(Class.forName("android.widget.ProgressBar"), packageName+".ProgressBarBinding");
+			bindingConfig.put(Class.forName("android.widget.SeekBar"), packageName+".SeekBarBinding");
+			bindingConfig.put(Class.forName("android.widget.ImageView"), packageName+".ImageViewBinding");
+			bindingConfig.put(Class.forName("android.widget.ImageButton"), packageName+".ImageButtonBinding");
+			bindingConfig.put(Class.forName("android.widget.CompoundButton"), packageName+".CompoundButtonBinding");
+			bindingConfig.put(Class.forName("android.widget.Button"), packageName+".ButtonBinding");
+			bindingConfig.put(Class.forName("android.widget.CalendarView"), packageName+".CalendarViewBinding");
+			bindingConfig.put(Class.forName("android.widget.DatePicker"), packageName+".DatePickerBinding");
+			
+			bindingKeys = bindingConfig.keySet().toArray(new Class<?>[bindingConfig.size()]);
+		}
+		catch(Exception ex)
+		{
+			Log.e("error creating view binding config", ex);
+		}
+	}
+		
+	/**
+	 * Perform lookup to find which IViewBinding is needed for this view
+	 * @param view : view to check against
+	 * @param viewBindingTypeAsString : optional custom View type override as string. May be null.
+	 * @return : an instantiated IViewBinding object
+	 */
+	private IViewBinding getViewBinding(View view, String viewBindingTypeAsString)
+	{	
+		//if no override is given...
+		if (viewBindingTypeAsString == null)
+		{
+			Class<?> currentClass = null;
+			//iterate through all keys...
+			for(int i=0;i<bindingKeys.length;i++)
+			{
+				//..if the view is not an instance of the key, just skip it...
+				if (!bindingKeys[i].isInstance(view))
+					continue;
+				
+				//.. if it is, either set it or determine if it is a more derived then the currently
+				//selected class
+				if (currentClass == null || currentClass.isAssignableFrom(bindingKeys[i]))
+					currentClass = bindingKeys[i];
+			}	
+			//get the class name if one was found.
+			if (currentClass != null)
+				viewBindingTypeAsString = bindingConfig.get(currentClass);
+		}
+		
+		Class<?> theClass = null;
+		try
+		{
+			//try and get the class
+			if (viewBindingTypeAsString != null)
+			{
+				//theClass = IViewBinding.class.getClassLoader().loadClass(viewBindingTypeAsString);
+				theClass = Class.forName(viewBindingTypeAsString);
+			}
+		}
+		catch (ClassNotFoundException e)
+		{
+			return null;
+		}
+		
+		IViewBinding viewBinding = null;
+		try
+		{
+			//try and get instance...
+			viewBinding = (IViewBinding)theClass.newInstance();
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e.getMessage(),e);
+		}
+		return viewBinding;		
+	}
+
+	/**
+	 * Not used anymore, but will hold onto because much of this logic will be used to handle Dynamic fragments better
+	 */
+	@Deprecated
+	@SuppressLint("DefaultLocale")
+	private boolean tryHandleFragmentX(View parent, String name, Context context, AttributeSet attrs) 
+	{
+		boolean isFragment = false;
+		
+		if (name.toLowerCase().equals("fragment"))
+		{
+			isFragment = true;
+		}
+		else
+		{
+			Class<?> c = null;
+			try
+			{
+				c = Class.forName(name);
+			}
+			catch (ClassNotFoundException e)
+			{
+			}
+			if (c != null && Fragment.class.isAssignableFrom(c))
+				isFragment = true;
+		}
+		if (!isFragment)
+			return false;
+				
+		ViewHolder parentViewHolder = getViewHolder(parent);
+		
+        if (parentViewHolder == null || parentViewHolder.inventory == null)
+        	return true;
+        
+    	String fragmentId = attrs.getAttributeValue(androidRESNamespace, "id");	  
+    	fragmentId = fragmentId.replace("@","");
+    	int id = Integer.parseInt(fragmentId);
+    	if (id == 0)
+    		return true;
+         
+		String path = attrs.getAttributeValue(android.R.attr.tag);		
+		if (path != null)
+		{
+			//parentViewHolder.inventory.trackFragment(id, path);
+		}	 
+        return true;
+	}
+	
+	@SuppressLint("DefaultLocale")
+	@Override
+	public View onCreateView(View parent, String name, Context context,	AttributeSet attrs) 
+	{
+		//no name, no view
+		if (name == null)
+			return null;
+		
+		View view = null;
+		try
+	     {
+						
+			//figure out full name of view to inflate
+            String viewFullName = "android.widget." + name;
+            if (name.equals("View") || name.equals("ViewGroup"))
+           	 viewFullName = "android.view." + name;            
+            else 
+            {
+            	//not used anymore, but will hold on to to handle Dynamic Fragments later...
+            	//if (tryHandleFragment(parent, viewFullName, context, attrs))
+            	//	return null;
+            	//else 
+            	if (name.toLowerCase().equals("fragmentstub"))
+            	{
+            		viewFullName = android.widget.FrameLayout.class.getName();
+            	}
+            	else if (name.contains("."))
+                  	 viewFullName = name; 
+            }
+            
+            //inflate
+            view = inflater.createView(viewFullName, null, attrs);
+	     } 
+	     catch (Exception e)
+	     {
+	    	 //ok to return silently; the factory this is merged with will handle situations 
+	    	 //where this can't (it does fail for weird reasons)
+	     }
+		//no view, um, well, no view.
+         if (view==null) return null;
+                  
+         ViewHolder viewHolder = new ViewHolder();
+         UIHandler handler = new UIHandler();
+         
+       //pull base attributes
+ 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.View); 		
+ 		viewHolder.ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);	
+ 		viewHolder.isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
+ 
+ 		//grab custom binding type, if available
+         String bindingType = ta.getString(R.styleable.View_BindingType);
+         boolean isBindable = ta.getBoolean(R.styleable.View_IsBindable, false);
+         
+ 		ta.recycle();
+         
+         view.setTag(R.id.amvvm_viewholder, viewHolder);
+         
+         BindingInventory parentInv = null;
+         ViewHolder parentViewHolder = null;
+    	 if (parent != null)
+    	 {
+    		 parentViewHolder = getViewHolder(parent);
+    		 if (parentViewHolder != null)
+    			 parentInv = parentViewHolder.inventory;
+    	 }
+         
+         //assuming this means root...
+         if (viewHolder.isRoot)
+        	 viewHolder.inventory = new BindingInventory(parentInv);
+         else
+        	 viewHolder.inventory = parentInv;
+         
+         if (!isBindable)
+        	 return view;
+         
+         //if view implements IViewBinding and no custom type is given...
+         if (view instanceof IViewBinding && bindingType == null)
+        	 //use the view itself...
+        	 viewHolder.viewBinding = (IViewBinding)view;
+         else
+        	 //...otherwise lookup the binding needed.
+        	 viewHolder.viewBinding = getViewBinding(view,bindingType);   
+         
+         //if at this point we actually have a view binding...
+         if (viewHolder.viewBinding != null)
+         {
+        	 viewHolder.viewBinding.initialise(view, attrs, context, handler, viewHolder.inventory);
+         }
+         
+         return view;
+	}
+
+	/**
+	 * Not used, part of the ViewFactory interface, I need to use ViewFactory2
+	 */
+	@Override
+	public View onCreateView(String arg0, Context arg1, AttributeSet arg2) 
+	{		
+		return null;
+	}
+
+	/**
+	 * Gets ViewHolder from this view
+	 */
+	public static ViewHolder getViewHolder(final View view)
+	{
+		if (view == null)
+			return null;
+		return (ViewHolder)view.getTag(R.id.amvvm_viewholder);
+	}
+	
+	/**
+	 * Registers (binds) View to an object. The framework support late binding, when this
+	 * observable is updated, it will bubble the event to all listening objects.
+	 * So, it is not necessary to have all object populated, 
+	 * they will be caught with the objects update.
+	 * @param view : view to Register (bind) to
+	 * @param context : root object to bind against
+	 */
+	public static void RegisterContext(final View view,final IObservableObject context)
+	{
+		if (context == null || view == null)
+			return;
+		
+		ViewHolder vh = getViewHolder(view);
+		if (vh == null)
+			return;
+		
+		BindingInventory inventory = vh.inventory;			
+		if (inventory != null)
+		{
+			inventory.setContextObject(context);
+			context.notifyListener();
+		}		
+	}
+				
+	/**
+	 * Detach (unbind) view from current root context; this in turn releases all binding links
+	 * @param view : view to detach from
+	 * @param context : context to detach view from. if context is null, it will use the 
+	 */
+	public static void DetachContext(final View view)
+	{
+		if (view == null)
+			return;
+		
+		ViewHolder vh = getViewHolder(view);
+		
+		if (vh == null)
+			return;
+		
+		if (vh.inventory != null)
+		{
+			vh.inventory.setContextObject(null);
+			vh.inventory = null;
+		}
+		
+		//if found, then detachBindings...
+		if (vh.viewBinding != null)
+		{
+			vh.viewBinding.detachBindings();
+			vh.viewBinding = null;
+		}
+		view.setTag(R.id.amvvm_viewholder, null);
+	}
+	
+}
