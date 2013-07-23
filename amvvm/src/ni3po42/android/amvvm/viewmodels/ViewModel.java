@@ -83,12 +83,8 @@ implements IViewModel, IObservableObject
 	
 	@Override
 	public void setMenuLayout(int id)
-	{
-		if (id > 0)
-			setHasOptionsMenu(true);
-		else
-			setHasOptionsMenu(false);
-		
+	{		
+		setHasOptionsMenu(id > 0);
 		helper.setMenuLayoutId(id);
 	}
 		
