@@ -19,6 +19,7 @@ import ni3po42.android.amvvm.implementations.BindingInventory;
 import ni3po42.android.amvvm.implementations.observables.PropertyStore;
 import ni3po42.android.amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import ni3po42.android.amvvm.interfaces.IViewModel;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,7 +38,7 @@ import android.view.MenuInflater;
 @SuppressLint("Registered")
 public abstract class ActivityViewModel
 extends Activity
-implements IViewModel
+implements IViewModel, IObservableObject
 {	
 	/**
 	 * Helper object: houses almost all the logic the activity will need 
@@ -51,7 +52,13 @@ implements IViewModel
 			return ActivityViewModel.this;
 		}			
 	};
-		
+	
+	@Override
+	public IObservableObject getProxyObservableObject() 
+	{
+		return helper;
+	};
+	
 	@Override
 	public void linkFragments(BindingInventory inventory) 
 	{
@@ -90,18 +97,6 @@ implements IViewModel
 	}
 	
 	@Override
-	public void addReaction(String localProperty, String reactsTo)
-	{
-		helper.addReaction(localProperty, reactsTo);
-	}
-	
-	@Override
-	public void clearReactions()
-	{
-		helper.clearReactions();
-	}
-	
-	@Override
 	public Object getSystemService(String name)
 	{	
 		return helper.getSystemService(name);
@@ -119,17 +114,14 @@ implements IViewModel
 		return helper.onCreateOptionsMenu(menu);
 	}
 
+	/*
+	 * All code from this point down are not neccessary, however it's being provided here as a convenience
+	 */
+	
 	@Override
-	public Property<Object, Object> getProperty(String name)
+	public void onEvent(Object source, EventArg arg)
 	{
-		return helper.getProperty(name);
-	}
-
-	@Override
-	public IObservableObject getSource()
-	{
-		//hijacking of 'this'
-		return this;
+		helper.onEvent(source, arg);
 	}
 
 	@Override
@@ -139,15 +131,15 @@ implements IViewModel
 	}
 
 	@Override
-	public void notifyListener(String propertyName, IObservableObject oldPropertyValue, IObservableObject newPropertyValue)
+	public Property<Object, Object> getProperty(String name)
 	{
-		helper.notifyListener(propertyName, oldPropertyValue, newPropertyValue);
+		return helper.getProperty(name);
 	}
-	
+
 	@Override
-	public void notifyListener(String propertyName)
+	public <T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj)
 	{
-		helper.notifyListener(propertyName);
+		return helper.registerAs(propertyName, parentObj);
 	}
 
 	@Override
@@ -157,7 +149,31 @@ implements IViewModel
 	}
 
 	@Override
-	public <T extends IObservableObject> T registerListener(String sourceName, IObjectListener listener)
+	public void notifyListener(String propertyName)
+	{
+		helper.notifyListener(propertyName);
+	}
+
+	@Override
+	public void notifyListener(String propertyName, IProxyObservableObject oldPropertyValue, IProxyObservableObject newPropertyValue)
+	{
+		helper.notifyListener(propertyName, oldPropertyValue, newPropertyValue);
+	}
+
+	@Override
+	public void addReaction(String localProperty, String reactsTo)
+	{
+		helper.addReaction(localProperty, reactsTo);
+	}
+
+	@Override
+	public void clearReactions()
+	{
+		helper.clearReactions();
+	}
+
+	@Override
+	public <T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener)
 	{
 		return helper.registerListener(sourceName, listener);
 	}
@@ -166,17 +182,12 @@ implements IViewModel
 	public void unregisterListener(String sourceName, IObjectListener listener)
 	{
 		helper.unregisterListener(sourceName, listener);
-	}	
-	
-	@Override
-	public void onEvent(Object source, EventArg arg)
-	{
-		helper.onEvent(source, arg);
 	}
 	
 	@Override
-	public <T extends IObservableObject> T registerAs(String propertyName, IObservableObject parentObj)
+	public Object getSource()
 	{
-		return helper.registerAs(propertyName, parentObj);
+		return this;
 	}
+	
 }

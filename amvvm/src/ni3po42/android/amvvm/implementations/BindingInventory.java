@@ -32,7 +32,7 @@ import ni3po42.android.amvvm.interfaces.ICommand;
 import ni3po42.android.amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvm.interfaces.IObjectListener.EventArg;
 import ni3po42.android.amvvm.interfaces.IObservableList;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import ni3po42.android.amvvm.interfaces.IUIElement;
 
 /**
@@ -55,7 +55,7 @@ public class BindingInventory
 	private final static String pathTerminator = "{";
 	
 	//current context object, may be the view model or model
-	private IObservableObject context; 
+	private IProxyObservableObject context; 
 	
 	//there may be many levels of inventories, this points to the parent inventory. will be nul if it is the root
 	private BindingInventory parentInventory;
@@ -158,9 +158,11 @@ public class BindingInventory
 			}
 		}
 			
-		if (getContextObject() != null && getContextObject() instanceof IAccessibleFragmentManager)
+		if (getContextObject() != null && 
+				getContextObject().getProxyObservableObject() != null && 
+				getContextObject().getSource() instanceof IAccessibleFragmentManager)
 		{
-			((IAccessibleFragmentManager)getContextObject()).linkFragments(this);
+			((IAccessibleFragmentManager)getContextObject().getSource()).linkFragments(this);
 		}
 	}
 	
@@ -219,16 +221,16 @@ public class BindingInventory
 		return parentInventory;
 	}
 	
-	public void setContextObject(IObservableObject object)
+	public void setContextObject(IProxyObservableObject object)
 	{
-		if (context != null)
-			context.unregisterListener("", contextListener);
+		if (context != null && context.getProxyObservableObject() != null)
+			context.getProxyObservableObject().unregisterListener("", contextListener);
 		context = object;
-		if (context != null)
-			context.registerListener("", contextListener);
+		if (context != null && context.getProxyObservableObject() != null)
+			context.getProxyObservableObject().registerListener("", contextListener);
 	}
 	
-	public IObservableObject getContextObject()
+	public IProxyObservableObject getContextObject()
 	{
 		return context;
 	}
@@ -267,7 +269,7 @@ public class BindingInventory
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
 				
-		Object currentContext = currentInventory.getContextObject();					
+		Object currentContext = currentInventory.getContextObject().getSource();				
 		String[] chains = split.split(matches.group(2));
 		
 		Property<Object,Object> prop = null;
@@ -287,7 +289,7 @@ public class BindingInventory
 			prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
 			if (i + 1 < chains.length)
 			{
-				currentContext = getIndex(indexStr, prop.get(currentContext));
+				currentContext = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
 				indexStr = null;
 			}
 		 }
@@ -297,7 +299,7 @@ public class BindingInventory
 		 if (prop == null)
 			 throw new InvalidParameterException("invalid path supplied: "+path);
 		 
-		 Object propertyCurrentValue = getIndex(indexStr, prop.get(currentContext));
+		 Object propertyCurrentValue = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
 				 
 		 if ((propertyCurrentValue != null && !propertyCurrentValue.equals(value))				 
 				 || (propertyCurrentValue == null && value != null))
@@ -358,7 +360,7 @@ public class BindingInventory
 	@SuppressWarnings("unchecked")
 	public Object DereferenceValue(String path)
 	{		
-		if (path == null || context == null)
+		if (path == null || context == null || context.getSource() == null)
 			return null;
 		
 		if (path.equals("."))
@@ -371,7 +373,7 @@ public class BindingInventory
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
 			
-		Object currentContext = currentInventory.getContextObject();
+		Object currentContext = currentInventory.getContextObject().getSource();
 			
 		String[] chains = split.split(matches.group(2));
 			
@@ -385,15 +387,15 @@ public class BindingInventory
 			 
 			 String member = m.group(1);				
 			 Property<Object,Object> prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
-			 currentContext = prop.get(currentContext);	
-			
+			 currentContext = extractByProxy(prop.get(currentContext));	
+						 
 			 String indexStr = m.group(3);
 			if (currentContext != null && currentContext instanceof IObservableList && indexStr != null)
 			{	
 				try
 				{
 					int index = Integer.parseInt(indexStr);
-					currentContext = ((IObservableList<?>)currentContext).get(index);
+					currentContext = extractByProxy(((IObservableList<?>)currentContext).get(index));					
 				}
 				catch (Exception e)
 				{
@@ -404,56 +406,55 @@ public class BindingInventory
 		 return currentContext;
 	}	
 	
+	private Object extractByProxy(Object obj)
+	{
+		if (obj instanceof IProxyObservableObject)
+			 return((IProxyObservableObject)obj).getSource();
+		return obj;
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public Class<?> DereferencePropertyType(String path)
 	{		
-		if (path == null || context == null)
-			return null;
-				
-		if (path.equals("."))
-			return context.getClass();
+		if (path != null && path.equals("."))
+			return context.getSource() == null ? null : context.getSource().getClass();
 		
 		Matcher matches = pathPattern.matcher(path);
-		
 		if (!matches.find())
 			return null;
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
+				
+		Object currentContext = currentInventory.getContextObject().getSource();				
+		String[] chains = split.split(matches.group(2));
 		
+		Property<Object,Object> prop = null;
+		String indexStr = null;
 		
-		String basePath = matches.group(2);	
-		Class<?> currentContextClass = currentInventory.getContextObject().getClass();
-			
-		String[] chains = split.split(basePath);
-			
 		 for(int i=0;i<chains.length;i++)
 		 { 		
-			 if (currentContextClass == null)
+			 if (currentContext == null)
 				 return null;
 			 Matcher m = splitIndex.matcher(chains[i]);
 			 if (!m.find())
 				 throw new RuntimeException("Not a valid membeer: " + chains[i]);
 			 
-			 String member = m.group(1);				
-			Property<Object,Object> prop = (Property<Object, Object>) PropertyStore.find(currentContextClass, member);
-			currentContextClass = prop.getType();	
+			 String member = m.group(1);
+			indexStr = m.group(3);
 			
-			if (IObservableList.class.isAssignableFrom(currentContextClass))
-			{	
-				String typeName = m.group(4);
-				try
-				{
-					currentContextClass = Class.forName(typeName);
-				}
-				catch (Exception e)
-				{
-					throw new RuntimeException(e);
-				}			
+			prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
+			if (i + 1 < chains.length)
+			{
+				currentContext = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
+				indexStr = null;
 			}
-				
 		 }
-		 return currentContextClass;
+			
+		 if (prop == null)
+			 throw new InvalidParameterException("invalid path supplied: "+path);
+		 
+		 return prop.getType();
 	}	
 	
 }

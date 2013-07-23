@@ -19,7 +19,8 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import ni3po42.android.amvvm.R;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
+import ni3po42.android.amvvm.interfaces.IUIElement;
 import ni3po42.android.amvvm.interfaces.IViewBinding;
 import ni3po42.android.amvvm.implementations.ui.UIHandler;
 import ni3po42.android.amvvm.util.Log;
@@ -233,7 +234,7 @@ implements Factory2
 		View view = null;
 		try
 	     {
-						
+					
 			//figure out full name of view to inflate
             String viewFullName = "android.widget." + name;
             if (name.equals("View") || name.equals("ViewGroup"))
@@ -253,7 +254,7 @@ implements Factory2
             }
             
             //inflate
-            view = inflater.createView(viewFullName, null, attrs);
+            view = inflater.createView(viewFullName, null, attrs);            
 	     } 
 	     catch (Exception e)
 	     {
@@ -297,6 +298,7 @@ implements Factory2
          if (!isBindable)
         	 return view;
          
+                  
          //if view implements IViewBinding and no custom type is given...
          if (view instanceof IViewBinding && bindingType == null)
         	 //use the view itself...
@@ -314,6 +316,63 @@ implements Factory2
          return view;
 	}
 
+	//not used at this time..
+	class metaProperty
+	implements IUIElement<Object>
+	{
+		private final Object value;
+		private String path;
+		private BindingInventory inventory;
+				
+		public metaProperty(BindingInventory inventory, String path, Object value)
+		{	
+			this.path = path;
+			this.value = value;
+			this.inventory = inventory;
+		}
+		@Override
+		public String getPath()
+		{
+			return this.path;
+		}
+		@Override
+		public void setUIUpdateListener(IUIUpdateListener<Object> listener)
+		{
+			//not used
+		}
+		@Override
+		public void recieveUpdate(Object notUsed)
+		{
+			getBindingInventory().sendUpdateFromUIElement(this, value);
+		}
+		@Override
+		public void sendUpdate(Object value)
+		{
+			//not used
+		}
+		@Override
+		public void initialize(TypedArray x, BindingInventory y, UIHandler z)
+		{
+			//not used
+		}
+		@Override
+		public void disableRecieveUpdates()
+		{
+			//not used
+		}
+		@Override
+		public void enableRecieveUpdates()
+		{
+			//not used
+		}
+		@Override
+		public BindingInventory getBindingInventory()
+		{
+			return inventory;
+		}
+		
+	}
+	
 	/**
 	 * Not used, part of the ViewFactory interface, I need to use ViewFactory2
 	 */
@@ -341,9 +400,9 @@ implements Factory2
 	 * @param view : view to Register (bind) to
 	 * @param context : root object to bind against
 	 */
-	public static void RegisterContext(final View view,final IObservableObject context)
+	public static void RegisterContext(final View view,final IProxyObservableObject context)
 	{
-		if (context == null || view == null)
+		if (context == null || view == null || context.getProxyObservableObject() == null)
 			return;
 		
 		ViewHolder vh = getViewHolder(view);
@@ -353,8 +412,8 @@ implements Factory2
 		BindingInventory inventory = vh.inventory;			
 		if (inventory != null)
 		{
-			inventory.setContextObject(context);
-			context.notifyListener();
+			inventory.setContextObject(context);			
+			context.getProxyObservableObject().notifyListener();
 		}		
 	}
 				

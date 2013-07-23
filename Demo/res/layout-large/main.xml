@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
         
+    
+    
     <fragment 
         android:name="ni3po42.android.amvvm.demo.viewmodel.MainViewModel"
         android:id="@+id/layout.main.listfragment"            

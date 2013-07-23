@@ -16,12 +16,12 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int BindingType=0x7f01000b;
+        public static int BindingType=0x7f010010;
         /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
          */
-        public static int Format=0x7f01000f;
+        public static int Format=0x7f010014;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -29,7 +29,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int GenericBindings=0x7f01000c;
+        public static int GenericBindings=0x7f010011;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -37,7 +37,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IgnoreChildren=0x7f01000d;
+        public static int IgnoreChildren=0x7f010012;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -45,7 +45,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int Image=0x7f010015;
+        public static int Image=0x7f01001a;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -69,7 +69,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IsIndeterminate=0x7f010016;
+        public static int IsIndeterminate=0x7f01001b;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -77,7 +77,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IsRoot=0x7f01000a;
+        public static int IsRoot=0x7f01000f;
         /** 
     Defines all the custom attributes to be used in layout and menu files 
      
@@ -92,7 +92,7 @@ containing a value of this type.
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
-        public static int ItemTemplate=0x7f010013;
+        public static int ItemTemplate=0x7f010018;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -100,7 +100,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int Items=0x7f010012;
+        public static int Items=0x7f010017;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -148,7 +148,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int OnDragEnd=0x7f010018;
+        public static int OnDragEnd=0x7f01001d;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -156,7 +156,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int OnDragStart=0x7f010017;
+        public static int OnDragStart=0x7f01001c;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -164,7 +164,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int OnLongClick=0x7f010010;
+        public static int OnLongClick=0x7f010015;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -172,7 +172,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int Selected=0x7f010014;
+        public static int Selected=0x7f010019;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -188,7 +188,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int SelectedItem=0x7f010011;
+        public static int SelectedItem=0x7f010016;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -196,7 +196,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int SelectedTime=0x7f010019;
+        public static int SelectedTime=0x7f01001e;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -204,7 +204,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int Text=0x7f01000e;
+        public static int Text=0x7f010013;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -213,6 +213,46 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static int Value=0x7f010006;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int boolValue=0x7f01000d;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int intValue=0x7f01000e;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int name=0x7f01000a;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int path=0x7f01000b;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int stringValue=0x7f01000c;
     }
     public static final class id {
         /**   id for accessing the ViewHolder in the views 
@@ -235,7 +275,7 @@ containing a value of this type.
            @see #AdapterView_SelectedItem
          */
         public static final int[] AdapterView = {
-            0x7f010011, 0x7f010012, 0x7f010013
+            0x7f010016, 0x7f010017, 0x7f010018
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#ItemTemplate}
@@ -288,7 +328,7 @@ containing a value of this type.
            @see #Button_OnLongClick
          */
         public static final int[] Button = {
-            0x7f010001, 0x7f010010
+            0x7f010001, 0x7f010015
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#OnClick}
@@ -447,7 +487,7 @@ containing a value of this type.
            @see #ImageView_Image
          */
         public static final int[] ImageView = {
-            0x7f010015
+            0x7f01001a
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#Image}
@@ -474,7 +514,7 @@ containing a value of this type.
            @see #ListView_Selected
          */
         public static final int[] ListView = {
-            0x7f010014
+            0x7f010019
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#Selected}
@@ -629,7 +669,7 @@ containing a value of this type.
            @see #ProgressView_Value
          */
         public static final int[] ProgressView = {
-            0x7f010005, 0x7f010006, 0x7f010016
+            0x7f010005, 0x7f010006, 0x7f01001b
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#IsIndeterminate}
@@ -686,7 +726,7 @@ containing a value of this type.
            @see #SeekBar_OnDragStart
          */
         public static final int[] SeekBar = {
-            0x7f010017, 0x7f010018
+            0x7f01001c, 0x7f01001d
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#OnDragEnd}
@@ -729,7 +769,7 @@ containing a value of this type.
            @see #TextView_Text
          */
         public static final int[] TextView = {
-            0x7f01000e, 0x7f01000f
+            0x7f010013, 0x7f010014
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#Format}
@@ -767,7 +807,7 @@ containing a value of this type.
            @see #TimePicker_SelectedTime
          */
         public static final int[] TimePicker = {
-            0x7f010019
+            0x7f01001e
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#SelectedTime}
@@ -892,8 +932,8 @@ containing a value of this type.
            @see #View_IsVisible
          */
         public static final int[] View = {
-            0x7f010000, 0x7f010002, 0x7f01000a, 0x7f01000b,
-            0x7f01000c, 0x7f01000d
+            0x7f010000, 0x7f010002, 0x7f01000f, 0x7f010010,
+            0x7f010011, 0x7f010012
         };
         /**
           <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#BindingType}
@@ -983,5 +1023,97 @@ containing a value of this type.
           @attr name android:IsVisible
         */
         public static final int View_IsVisible = 0;
+        /** Attributes that can be used with a meta.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #meta_boolValue ni3po42.android.amvvm:boolValue}</code></td><td></td></tr>
+           <tr><td><code>{@link #meta_intValue ni3po42.android.amvvm:intValue}</code></td><td></td></tr>
+           <tr><td><code>{@link #meta_name ni3po42.android.amvvm:name}</code></td><td></td></tr>
+           <tr><td><code>{@link #meta_path ni3po42.android.amvvm:path}</code></td><td></td></tr>
+           <tr><td><code>{@link #meta_stringValue ni3po42.android.amvvm:stringValue}</code></td><td></td></tr>
+           </table>
+           @see #meta_boolValue
+           @see #meta_intValue
+           @see #meta_name
+           @see #meta_path
+           @see #meta_stringValue
+         */
+        public static final int[] meta = {
+            0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d,
+            0x7f01000e
+        };
+        /**
+          <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#boolValue}
+          attribute's value can be found in the {@link #meta} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:boolValue
+        */
+        public static final int meta_boolValue = 3;
+        /**
+          <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#intValue}
+          attribute's value can be found in the {@link #meta} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:intValue
+        */
+        public static final int meta_intValue = 4;
+        /**
+          <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#name}
+          attribute's value can be found in the {@link #meta} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:name
+        */
+        public static final int meta_name = 0;
+        /**
+          <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#path}
+          attribute's value can be found in the {@link #meta} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:path
+        */
+        public static final int meta_path = 1;
+        /**
+          <p>This symbol is the offset where the {@link ni3po42.android.amvvm.R.attr#stringValue}
+          attribute's value can be found in the {@link #meta} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:stringValue
+        */
+        public static final int meta_stringValue = 2;
     };
 }

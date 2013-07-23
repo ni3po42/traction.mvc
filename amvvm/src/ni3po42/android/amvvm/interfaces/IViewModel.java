@@ -23,7 +23,7 @@ import ni3po42.android.amvvm.viewmodels.ViewModel;
  *
  */
 public interface IViewModel
-extends IObservableObject, IAccessibleFragmentManager, IDefaultActivityService
+extends IAccessibleFragmentManager, IDefaultActivityService, IProxyObservableObject
 {
 	/**
 	 * lets view model set which view to use

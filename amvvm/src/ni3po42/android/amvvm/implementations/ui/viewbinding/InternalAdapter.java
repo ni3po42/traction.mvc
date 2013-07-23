@@ -17,7 +17,7 @@ package ni3po42.android.amvvm.implementations.ui.viewbinding;
 
 import ni3po42.android.amvvm.implementations.ViewFactory;
 import ni3po42.android.amvvm.interfaces.IObservableList;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ import android.widget.BaseAdapter;
  * @param <T> : item type of list
  * @param <S> : type of list 
  */
-public abstract class InternalAdapter<T extends IObservableObject, S extends IObservableList<T>> 
+public abstract class InternalAdapter<T extends IProxyObservableObject, S extends IObservableList<T>> 
 extends BaseAdapter
 {	
 	/**

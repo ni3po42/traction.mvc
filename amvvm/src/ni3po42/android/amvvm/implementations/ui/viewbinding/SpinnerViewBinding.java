@@ -15,7 +15,7 @@
 
 package ni3po42.android.amvvm.implementations.ui.viewbinding;
 
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -28,7 +28,7 @@ import android.widget.SpinnerAdapter;
  *
  * @param <T> : type of item in the spinner
  */
-public class SpinnerViewBinding<T extends IObservableObject>
+public class SpinnerViewBinding<T extends IProxyObservableObject>
 extends AdapterViewBinding<T, Spinner, SpinnerAdapter>
 implements OnItemSelectedListener
 {	

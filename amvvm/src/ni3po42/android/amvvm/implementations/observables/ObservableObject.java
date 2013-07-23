@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import ni3po42.android.amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import ni3po42.android.amvvm.util.ObjectPool;
 
 import android.util.Property;
@@ -80,23 +81,30 @@ implements IObservableObject
 	}
 	
 	@Override
-	public IObservableObject getSource()
+	public Object getSource()
 	{
 		return this;
 	}
 	
 	@Override
-	public void notifyListener(String propertyName, IObservableObject oldPropertyValue, IObservableObject newPropertyValue)	
+	public IObservableObject getProxyObservableObject()
 	{
-		if (getSource() == null)
+		return this;
+	}
+	
+	@Override
+	public void notifyListener(String propertyName, IProxyObservableObject oldPropertyValue, IProxyObservableObject newPropertyValue)	
+	{
+		if (getProxyObservableObject() == null)
+			return;
 		
 			//unregister old object
-		if (oldPropertyValue != null)
-			oldPropertyValue.unregisterListener(propertyName, getSource());
+		if (oldPropertyValue != null && oldPropertyValue.getProxyObservableObject() != null)
+			oldPropertyValue.getProxyObservableObject().unregisterListener(propertyName, getProxyObservableObject());
 		
 			//register new object
-		if (newPropertyValue != null)
-			newPropertyValue.registerListener(propertyName, getSource());
+		if (newPropertyValue != null && newPropertyValue.getProxyObservableObject() != null)
+			newPropertyValue.getProxyObservableObject().registerListener(propertyName, getProxyObservableObject());
 		
 		//notify change
 		notifyListener(propertyName);
@@ -190,15 +198,15 @@ implements IObservableObject
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IObservableObject> T registerAs(String propertyName, IObservableObject parentObj)
+	public <T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj)
 	{
-		if (getSource() == null)
+		if (getProxyObservableObject() == null || parentObj == null || parentObj.getProxyObservableObject() == null)
 			return null;
 		
 		//let the parent object listen to 'this' (this being the getSource() which can be overriden to be anything)
-		getSource().unregisterListener(propertyName, parentObj);
-		getSource().registerListener(propertyName, parentObj);
-		return (T)getSource();
+		getProxyObservableObject().getProxyObservableObject().unregisterListener(propertyName, parentObj.getProxyObservableObject());
+		getProxyObservableObject().getProxyObservableObject().registerListener(propertyName, parentObj.getProxyObservableObject());
+		return (T)this;
 			
 	}
 	
@@ -226,7 +234,7 @@ implements IObservableObject
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IObservableObject> T registerListener(String sourceName, IObjectListener listener)
+	public <T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener)
 	{	
 		synchronized(tracableListeners)
 		{
@@ -237,7 +245,7 @@ implements IObservableObject
 				
 				tracableListeners.get(listener).add(sourceName);
 			}
-			return (T)getSource();
+			return (T)this;
 		}		
 	}
 	

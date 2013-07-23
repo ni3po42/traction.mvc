@@ -20,7 +20,7 @@ import ni3po42.android.amvvm.implementations.BindingInventory;
 import ni3po42.android.amvvm.implementations.ViewFactory;
 import ni3po42.android.amvvm.implementations.ViewFactory.ViewHolder;
 import ni3po42.android.amvvm.implementations.ui.UIHandler;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -41,7 +41,7 @@ import android.widget.ListAdapter;
  * Exposes the following properties:
  * Selected - Path to the child items's boolean property to hold it's selection state
  */
-public class ListViewBinding<T extends IObservableObject>
+public class ListViewBinding<T extends IProxyObservableObject>
 extends AdapterViewBinding<T, AbsListView, ListAdapter>
 implements OnItemClickListener
 {	

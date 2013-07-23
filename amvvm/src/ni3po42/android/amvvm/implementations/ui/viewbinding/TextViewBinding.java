@@ -142,6 +142,7 @@ implements IViewBinding, TextWatcher
 		return null;
 	}
 	
+	/*needs rework!*/
 	@Override
 	public void afterTextChanged(Editable text)
 	{
@@ -150,9 +151,15 @@ implements IViewBinding, TextWatcher
 		//but updates will need to be sent back if it's a editview
 		if (text == null)
 			return;
-		
+
 		//get the type of property
 		Class<?> fieldType = Text.getBindingInventory().DereferencePropertyType(Text.getPath());
+		
+		//field type can be null if:
+		//1) there is a null object down the path that's not the last chain, which would be impossible to set a value anyways, so we can exit
+		//2) invalid path, also can't update anyways
+		if (fieldType == null)
+			return;
 		Object returnObj = null;
 		Class<?> t = fieldType;
 		

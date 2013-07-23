@@ -28,6 +28,7 @@ import ni3po42.android.amvvm.implementations.ViewFactory;
 import ni3po42.android.amvvm.implementations.observables.PropertyStore;
 import ni3po42.android.amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import ni3po42.android.amvvm.interfaces.IViewModel;
 
 /**
@@ -40,7 +41,7 @@ import ni3po42.android.amvvm.interfaces.IViewModel;
  */
 public abstract class ViewModel
 extends Fragment
-implements IViewModel
+implements IViewModel, IObservableObject
 {	
 	private int contentViewId = 0;
 	
@@ -60,12 +61,18 @@ implements IViewModel
 		}
 		
 		@Override
-		public IObservableObject getSource() 
+		public Object getSource() 
 		{
 			//hijack 'this', makes ViewModelHelper think 'this' is actually the fragment instead
 			return ViewModel.this;
 		}
 	};
+	
+	@Override
+	public IObservableObject getProxyObservableObject()
+	{
+		return helper;
+	}
 	
 	@Override
 	public void linkFragments(BindingInventory inventory) 
@@ -98,33 +105,9 @@ implements IViewModel
 	}
 	
 	@Override
-	public IObservableObject getSource()
-	{
-		return helper.getSource();
-	}
-
-	@Override
-	public PropertyStore getPropertyStore()
-	{
-		return helper.getPropertyStore();
-	}
-	
-	@Override
 	public void setContentView(int layoutResID)
 	{
 		contentViewId = layoutResID;
-	}
-			
-	@Override
-	public void addReaction(String localProperty, String reactsTo)
-	{
-		helper.addReaction(localProperty, reactsTo);
-	}
-	
-	@Override
-	public void clearReactions()
-	{
-		helper.clearReactions();
 	}
 	
 	@Override
@@ -147,13 +130,34 @@ implements IViewModel
 	{	
 		helper.onCreateOptionsMenu(menu);
 	}
-	
-	
+		
 	@Override
 	public void onDestroyView() 
 	{		
 		super.onDestroyView();	
 		ViewFactory.DetachContext(getView());
+	}
+
+	@Override
+	public Object getDefaultActivityService(String name)
+	{
+		return helper.getActivity().getDefaultActivityService(name);
+	}
+	
+	/*
+	 * All code from this point down are not neccessary, however it's being provided here as a convenience
+	 */
+	
+	@Override
+	public void onEvent(Object source, EventArg arg)
+	{
+		helper.onEvent(source, arg);
+	}
+
+	@Override
+	public PropertyStore getPropertyStore()
+	{
+		return helper.getPropertyStore();
 	}
 
 	@Override
@@ -163,15 +167,9 @@ implements IViewModel
 	}
 
 	@Override
-	public void notifyListener(String propertyName, IObservableObject oldPropertyValue, IObservableObject newPropertyValue)
+	public <T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj)
 	{
-		helper.notifyListener(propertyName, oldPropertyValue, newPropertyValue);
-	}
-
-	@Override
-	public void notifyListener(String propertyName)
-	{
-		helper.notifyListener(propertyName);
+		return helper.registerAs(propertyName, parentObj);
 	}
 
 	@Override
@@ -181,7 +179,31 @@ implements IViewModel
 	}
 
 	@Override
-	public <T extends IObservableObject> T registerListener(String sourceName, IObjectListener listener)
+	public void notifyListener(String propertyName)
+	{
+		helper.notifyListener(propertyName);
+	}
+
+	@Override
+	public void notifyListener(String propertyName, IProxyObservableObject oldPropertyValue, IProxyObservableObject newPropertyValue)
+	{
+		helper.notifyListener(propertyName, oldPropertyValue, newPropertyValue);
+	}
+
+	@Override
+	public void addReaction(String localProperty, String reactsTo)
+	{
+		helper.addReaction(localProperty, reactsTo);
+	}
+
+	@Override
+	public void clearReactions()
+	{
+		helper.clearReactions();
+	}
+
+	@Override
+	public <T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener)
 	{
 		return helper.registerListener(sourceName, listener);
 	}
@@ -193,20 +215,8 @@ implements IViewModel
 	}
 	
 	@Override
-	public void onEvent(Object source, EventArg arg)
+	public Object getSource()
 	{
-		helper.onEvent(source, arg);
-	}
-	
-	@Override
-	public <T extends IObservableObject> T registerAs(String propertyName, IObservableObject parentObj)
-	{
-		return helper.registerAs(propertyName, parentObj);
-	}
-	
-	@Override
-	public Object getDefaultActivityService(String name)
-	{
-		return helper.getActivity().getDefaultActivityService(name);
+		return this;
 	}
 }

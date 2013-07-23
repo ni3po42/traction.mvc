@@ -25,7 +25,7 @@ import android.util.Property;
  *
  */
 public interface IObservableObject
-extends IObjectListener
+extends IObjectListener, IProxyObservableObject
 {	
 	/**
 	 * Allows IObservableObject a cache of properties.
@@ -39,13 +39,6 @@ extends IObjectListener
 	 * @return if property exists, return property object, or null if not found
 	 */
 	Property<Object,Object> getProperty(String name);
-	
-	/**
-	 * Allows implementors to hijack 'this'. Implementations should not use 'this' and should instead use 'getSource()',
-	 * so non-IObservableObject objects can implement IObservableObject and wrap an existing IObservableObject to reuse the code. 
-	 * @return
-	 */
-	IObservableObject getSource();
 		
 	/**
 	 * Hard wire a property's listener to it's host object. Primarily used when not using a get/set method and instead using a final field.
@@ -53,7 +46,7 @@ extends IObjectListener
 	 * @param parentObj
 	 * @return
 	 */
-	<T extends IObservableObject> T registerAs(String propertyName, IObservableObject parentObj);
+	<T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj);
 	
 	/**
 	 * notifies any object listening that the whole object is claiming an update, not just a particular property
@@ -74,7 +67,7 @@ extends IObjectListener
 	 * @param oldPropertyValue
 	 * @param newPropertyValue
 	 */
-	void notifyListener(String propertyName, IObservableObject oldPropertyValue, IObservableObject newPropertyValue);
+	void notifyListener(String propertyName, IProxyObservableObject oldPropertyValue, IProxyObservableObject newPropertyValue);
 		
 	
 	/**
@@ -98,7 +91,7 @@ extends IObjectListener
 	 * @param obj : obj to track
 	 * @return : 'this' typed as <T>
 	 */
-	<T extends IObservableObject> T registerListener(String sourceName, IObjectListener listener);
+	<T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener);
 	
 	/**
 	 * Remove registration from IObservable. Once called, OnObservableUpdated should no longer signal the listener

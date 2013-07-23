@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  -->
-<resources  xmlns="http://schemas.android.com/apk/res/ni3po42.android.amvvm">    
+<resources>    
     <!--
     Defines all the custom attributes to be used in layout and menu files 
      -->       
@@ -28,6 +28,14 @@
    <attr name="SelectedDate" format="string" />
    <attr name="MinDate" format="string" />
    <attr name="MaxDate" format="string" />
+   
+   <declare-styleable name="meta">
+       <attr name="name" format="string" />
+       <attr name="path" format="string" />
+       <attr name="stringValue" format="string" />       
+       <attr name="boolValue" format="boolean" />
+       <attr name="intValue" format="integer" />
+   </declare-styleable>
    
     <declare-styleable name="Menu">
         <attr name="IsVisible"  />  

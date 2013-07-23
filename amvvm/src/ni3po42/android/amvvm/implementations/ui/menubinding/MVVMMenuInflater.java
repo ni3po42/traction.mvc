@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import ni3po42.android.amvvm.R;
 import ni3po42.android.amvvm.implementations.BindingInventory;
 import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import org.xmlpull.v1.XmlPullParser;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -43,9 +44,9 @@ public class MVVMMenuInflater extends MenuInflater
 	private final WeakReference<Context> weakContextRef;
 	private final LinkedList<MenuBinding> menuBindings = new LinkedList<MenuBinding>();
 	private BindingInventory inventory = new BindingInventory();
-	private IObservableObject menuContext;
+	private IProxyObservableObject menuContext;
 	
-	public <S extends IObservableObject> MVVMMenuInflater(Context context, IObservableObject menuContext) 
+	public <S extends IObservableObject> MVVMMenuInflater(Context context, IProxyObservableObject menuContext) 
 	{
 		super(context);
 		

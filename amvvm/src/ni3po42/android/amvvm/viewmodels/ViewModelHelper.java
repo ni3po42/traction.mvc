@@ -22,7 +22,6 @@ import ni3po42.android.amvvm.implementations.observables.PropertyStore;
 import ni3po42.android.amvvm.implementations.ui.menubinding.MVVMMenuInflater;
 import ni3po42.android.amvvm.interfaces.IAccessibleFragmentManager;
 import ni3po42.android.amvvm.interfaces.IObjectListener;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
 import ni3po42.android.amvvm.interfaces.IViewModel;
 import android.app.Activity;
 import android.app.Fragment;
@@ -101,10 +100,12 @@ implements IAccessibleFragmentManager
 	 * fragment implementing IViewModel
 	 */
 	@Override
-	public IObservableObject getSource()
+	public Object getSource()
 	{
 		return getActivity();
 	}
+	
+	
 	
 	/**
 	 * inflates a view and registers the view-model
@@ -115,7 +116,7 @@ implements IAccessibleFragmentManager
 	public View inflateView(int layoutResID, ViewGroup parent)
 	{
 		View v = getActivity().getLayoutInflater().inflate(layoutResID, parent, false);		
-		ViewFactory.RegisterContext(v, getSource());
+		ViewFactory.RegisterContext(v,this);
 		return v;
 	}
 		
@@ -137,7 +138,7 @@ implements IAccessibleFragmentManager
 	public MenuInflater getMenuInflater()
 	{
 		if (menuInflater == null)
-			menuInflater = new MVVMMenuInflater(getActivity(),getSource());
+			menuInflater = new MVVMMenuInflater(getActivity(),this);
 		return menuInflater;
 	}
 	
@@ -186,9 +187,9 @@ implements IAccessibleFragmentManager
 			return false;
 		
 		getMenuInflater().inflate(menuLayoutId, menu);
-		getSource().unregisterListener(null, invalidateMenuListener);
-		getSource().notifyListener();
-		getSource().registerListener(null, invalidateMenuListener);
+		unregisterListener(null, invalidateMenuListener);
+		notifyListener();
+		registerListener(null, invalidateMenuListener);
 		
 		return true;
 	}

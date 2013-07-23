@@ -28,8 +28,7 @@ public class MainActivity extends ActivityViewModel
 {
 	private DemoViewModelChoice currentChoice;
 	private boolean multiViewModelSupport = false;
-	
-	
+		
 	public ViewModel getMainViewModel()
 	{
 		return getViewModel("MainViewModel");

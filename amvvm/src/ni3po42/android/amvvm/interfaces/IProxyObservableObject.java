@@ -13,24 +13,26 @@
    limitations under the License.
  */
 
-package ni3po42.android.amvvm.implementations.ui;
-
-import ni3po42.android.amvvm.interfaces.IObservableList;
-import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
-import ni3po42.android.amvvm.interfaces.IViewBinding;
+package ni3po42.android.amvvm.interfaces;
 
 /**
- * Defines the UI end for a list. It's pretty much just a UIBindingProperty that uses an IObservableList as it's item type.
+ * Allows non-IObservableObject to be handled like IObservableObject by composition instead of inheritance/interface
+ * Objects can implement this interface and expose a composed observableObject to handle event delegations
  * @author Tim Stratton
  *
- * @param <T> : the item type of the list
  */
-public class UIBindedList<T extends IProxyObservableObject> 
-extends UIBindedProperty<IObservableList<T>>
+public interface IProxyObservableObject
 {
-	public UIBindedList(IViewBinding viewBinding, int pathAttribute)
-	{
-		super(viewBinding, pathAttribute);
-	}	
+	/**
+	 * Allow access to the composed IObservableObject
+	 * @return
+	 */
+	IObservableObject getProxyObservableObject();
+	
+	/**
+	 * Returns source object that is being extended with the IObservableObject properties
+	 * @return
+	 */
+	Object getSource();
 	
 }

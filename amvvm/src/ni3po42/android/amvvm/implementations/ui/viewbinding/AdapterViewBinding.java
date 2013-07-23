@@ -21,7 +21,7 @@ import ni3po42.android.amvvm.implementations.ui.UIBindedList;
 import ni3po42.android.amvvm.implementations.ui.UIBindedProperty;
 import ni3po42.android.amvvm.implementations.ui.UIHandler;
 import ni3po42.android.amvvm.interfaces.IObservableList;
-import ni3po42.android.amvvm.interfaces.IObservableObject;
+import ni3po42.android.amvvm.interfaces.IProxyObservableObject;
 import ni3po42.android.amvvm.interfaces.IUIElement.IUIUpdateListener;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -44,7 +44,7 @@ import android.widget.BaseAdapter;
  * @param <V> : subtype of AdapterView<Q>
  * @param <Q> : subtype of Adapter
  */
-public class AdapterViewBinding<T extends IObservableObject, V extends AdapterView<Q>, Q extends Adapter>
+public class AdapterViewBinding<T extends IProxyObservableObject, V extends AdapterView<Q>, Q extends Adapter>
 extends GenericViewBinding<V>
 {	
 	public final UIBindedList<T> Items = new UIBindedList<T>(this, R.styleable.AdapterView_Items);
