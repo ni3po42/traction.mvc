@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mockito-all-1.9.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/amvvm.test/libs/mockito-all-1.9.1-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

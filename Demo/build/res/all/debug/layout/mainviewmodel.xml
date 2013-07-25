@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:choiceMode="singleChoice"
+    
+    android:columnWidth="90dp"
+    android:numColumns="auto_fit"
+    android:verticalSpacing="10dp"
+    android:horizontalSpacing="10dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center"
+    
+    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
+ 	mvvm:IsBindable="true"  
+  	mvvm:IsRoot="true"
+    mvvm:Items="ViewModelChoices"
+    mvvm:SelectedItem="\\CurrentChoice"
+    mvvm:ItemTemplate="@layout/viewmodelchoice"    
+    >
+</ListView>
+<!-- From: file:/C:/amvvm/Demo/src/main/res/layout/mainviewmodel.xml -->

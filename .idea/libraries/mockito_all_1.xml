@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mockito-all-1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/amvvm.test/libs/mockito-all-1.9" />
+      <root url="file://$PROJECT_DIR$/amvvm.test/libs/mockito-all-1.9" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

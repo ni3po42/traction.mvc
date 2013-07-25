@@ -1,0 +1,9 @@
+# incremental data. DO NOT EDIT.
+# format is <lastModified> <length> <SHA-1> <path>
+# Encoding is UTF-8
+1374725437356 9193 450d3d44325fdf259810a60e6afa36103e186b3d C:\amvvm\amvvm.test\build\res\all\debug\drawable-hdpi\ic_launcher.png
+1374725437346 291 256c16490447618b92948f1c65deeed83e7a608a C:\amvvm\amvvm.test\build\res\all\debug\values-v11\values.xml
+1374725437351 5057 23730fd0d5e720d1f719be1afc8c48fa7305da6c C:\amvvm\amvvm.test\build\res\all\debug\drawable-mdpi\ic_launcher.png
+1374725437345 735 a8a894599ec5b6bfd4e752ce4b7663c30f9c92aa C:\amvvm\amvvm.test\build\res\all\debug\values\values.xml
+1374725437366 14068 502cd84fa444f26d7ecfdf4a355064867977f236 C:\amvvm\amvvm.test\build\res\all\debug\drawable-xhdpi\ic_launcher.png
+1374725437345 305 6db4a791780ace7bd636792889445486ac559571 C:\amvvm\amvvm.test\build\res\all\debug\values-v14\values.xml

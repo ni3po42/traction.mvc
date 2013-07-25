@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\amvvm\Demo\src\main\res" >
+            <file
+                name="slide_in_left"
+                path="C:\amvvm\Demo\src\main\res\animator\slide_in_left.xml"
+                qualifiers=""
+                type="animator" />
+            <file
+                name="ic_launcher"
+                path="C:\amvvm\Demo\src\main\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\amvvm\Demo\src\main\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\amvvm\Demo\src\main\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="C:\amvvm\Demo\src\main\res\drawable-xxhdpi\ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="dialoglauncher"
+                path="C:\amvvm\Demo\src\main\res\layout\dialoglauncher.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="dialogviewmodel"
+                path="C:\amvvm\Demo\src\main\res\layout\dialogviewmodel.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="gender"
+                path="C:\amvvm\Demo\src\main\res\layout\gender.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="C:\amvvm\Demo\src\main\res\layout\main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="mainviewmodel"
+                path="C:\amvvm\Demo\src\main\res\layout\mainviewmodel.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="multiselection"
+                path="C:\amvvm\Demo\src\main\res\layout\multiselection.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="selectable"
+                path="C:\amvvm\Demo\src\main\res\layout\selectable.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="uiwiring"
+                path="C:\amvvm\Demo\src\main\res\layout\uiwiring.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="userinfo"
+                path="C:\amvvm\Demo\src\main\res\layout\userinfo.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="viewmodelchoice"
+                path="C:\amvvm\Demo\src\main\res\layout\viewmodelchoice.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="C:\amvvm\Demo\src\main\res\layout-large\main.xml"
+                qualifiers="large"
+                type="layout" />
+            <file
+                name="multiselectoptions"
+                path="C:\amvvm\Demo\src\main\res\menu\multiselectoptions.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="C:\amvvm\Demo\src\main\res\values\strings.xml"
+                qualifiers="" >
+                <string name="app_name" >Demo
+                </string>
+            </file>
+            <file
+                path="C:\amvvm\Demo\src\main\res\values\styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="C:\amvvm\Demo\src\main\res\values-v11\styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="C:\amvvm\Demo\src\main\res\values-v14\styles.xml"
+                qualifiers="v14" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- API 14 theme customizations can go here. -->
+                </style>
+            </file>
+        </source>
+        <source path="C:\amvvm\Demo\build\res\rs\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\amvvm\Demo\src\debug\res" />
+    </dataSet>
+
+</merger>

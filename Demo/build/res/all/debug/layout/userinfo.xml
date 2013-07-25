@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    
+    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
+ 	mvvm:IsBindable="true"  
+  	mvvm:IsRoot="true" 
+    >
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First Name"
+         mvvm:IsBindable="true"
+         mvvm:Text="CurrentUserInfo.FirstName"
+        />
+    
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Last Name"
+         mvvm:IsBindable="true"
+         mvvm:Text="CurrentUserInfo.LastName"
+        />
+    
+    <Spinner
+         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        mvvm:IsBindable="true"
+        mvvm:Items="Genders"
+        mvvm:SelectedItem="CurrentUserInfo.UserGender"
+        mvvm:ItemTemplate="@layout/gender"
+        />
+    
+    <DatePicker
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        mvvm:IsBindable="true"
+        mvvm:SelectedDate="CurrentUserInfo.DateOfBirth"
+ 	       />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        mvvm:IsBindable="true"
+        mvvm:OnClick="Save" 
+        />
+    
+</LinearLayout>
+<!-- From: file:/C:/amvvm/Demo/src/main/res/layout/userinfo.xml -->
