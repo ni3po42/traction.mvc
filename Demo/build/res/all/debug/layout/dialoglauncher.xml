@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
+
+    mvvm:IsRoot="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"     
+    android:orientation="vertical"
+    >
+             />
+    <Button
+            android:name="android.widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Dialog"
+        mvvm:IsBindable="true"
+        mvvm:OnClick="OpenDialog"
+        >
+        </Button>
+
+</LinearLayout>
+<!-- From: file:/C:/Users/tstratto/Documents/GitHub/amvvm/Demo/src/main/res/layout/dialoglauncher.xml -->
