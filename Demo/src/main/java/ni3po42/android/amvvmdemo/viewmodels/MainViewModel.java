@@ -18,8 +18,8 @@ package ni3po42.android.amvvmdemo.viewmodels;
 import java.util.ArrayList;
 import android.os.Bundle;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvm.implementations.observables.ObservableList;
-import ni3po42.android.amvvm.viewmodels.ViewModel;
+import amvvm.implementations.observables.ObservableList;
+import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
 
 public class MainViewModel extends ViewModel

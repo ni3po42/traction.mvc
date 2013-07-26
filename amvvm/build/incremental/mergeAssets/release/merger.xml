@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\assets" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\release\assets" />
+    </dataSet>
+
+</merger>

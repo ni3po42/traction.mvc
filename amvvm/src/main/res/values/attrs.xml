@@ -20,7 +20,6 @@
 
     <attr name="IsVisible" format="string"  />
     <attr name="OnClick" format="string" />
-    <attr name="IsBindable" format="boolean" />
     <attr name="IsChecked" format="string" />
     <attr name="MinValue" format="string" />
     <attr name="MaxValue" format="string" />
@@ -28,14 +27,7 @@
     <attr name="SelectedDate" format="string" />
     <attr name="MinDate" format="string" />
     <attr name="MaxDate" format="string" />
-
-    <declare-styleable name="meta">
-        <attr name="name" format="string" />
-        <attr name="path" format="string" />
-        <attr name="stringValue" format="string" />
-        <attr name="boolValue" format="boolean" />
-        <attr name="intValue" format="integer" />
-    </declare-styleable>
+    <attr name="IsBindable" format="boolean" />
 
     <declare-styleable name="Menu">
         <attr name="IsVisible"  />
@@ -45,10 +37,10 @@
 
     <declare-styleable name="View">
         <attr name="IsRoot" format="boolean" />
+        <attr name="IsBindable" />
         <attr name="IsVisible" />
         <attr name="BindingType" format="string" />
         <attr name="GenericBindings" format="string" />
-        <attr name="IsBindable" />
         <attr name="IgnoreChildren" format="boolean" />
     </declare-styleable>
 
@@ -58,18 +50,15 @@
     </declare-styleable>
 
     <declare-styleable name="Button">
-        <attr name="IsBindable" />
         <attr name="OnClick" />
         <attr name="OnLongClick" format="string" />
     </declare-styleable>
 
     <declare-styleable name="Toggle">
-        <attr name="IsBindable" />
         <attr name="IsChecked" />
     </declare-styleable>
 
     <declare-styleable name="ToggleButton">
-        <attr name="IsBindable" />
         <attr name="IsChecked" />
     </declare-styleable>
 

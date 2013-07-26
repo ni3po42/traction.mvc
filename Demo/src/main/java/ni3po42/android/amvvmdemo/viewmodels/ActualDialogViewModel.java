@@ -19,8 +19,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Window;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvm.implementations.observables.Command;
-import ni3po42.android.amvvm.viewmodels.DialogViewModel;
+import amvvm.implementations.observables.Command;
+import amvvm.viewmodels.DialogViewModel;
 
 public class ActualDialogViewModel extends DialogViewModel
 {

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="dexmaker20120514">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/amvvm.test/libs/dexmaker20120514.jar!/" />
+      <root url="jar://$PROJECT_DIR$/amvvm/libs/dexmaker20120514.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

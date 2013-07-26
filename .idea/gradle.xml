@@ -3,7 +3,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="C:\amvvm" />
+        <option name="externalProjectPath" value="C:\" />
         <option name="useAutoImport" value="true" />
       </GradleProjectSettings>
     </option>

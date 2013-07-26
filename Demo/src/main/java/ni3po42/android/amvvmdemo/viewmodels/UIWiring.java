@@ -18,8 +18,8 @@ package ni3po42.android.amvvmdemo.viewmodels;
 import android.os.Bundle;
 import android.widget.Toast;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvm.implementations.observables.Command;
-import ni3po42.android.amvvm.viewmodels.ViewModel;
+import amvvm.implementations.observables.Command;
+import amvvm.viewmodels.ViewModel;
 
 public class UIWiring extends ViewModel
 {

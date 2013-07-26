@@ -11,7 +11,140 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f2cd861-5216-446f-a39f-885d5b283565" name="Default" comment="" />
+    <list default="true" id="3f2cd861-5216-446f-a39f-885d5b283565" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\.idea\libraries\libs.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\.idea\libraries\mockito_all.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\.idea\libraries\mockito_all_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\.idea\libraries\support_v4_13_0_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\libs\android-support-v4.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\amvvm.test.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build.gradle" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\aidl\debug\dependency.store" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\aidl\debug\inputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\aidl\debug\outputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeAssets\debug\inputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeAssets\debug\merger.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeAssets\debug\outputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeResources\debug\inputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeResources\debug\merger.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\incremental\mergeResources\debug\outputs.data" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\libs\amvvm.test-debug.ap_" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\manifests\debug\AndroidManifest.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\drawable-hdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\drawable-mdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\drawable-xhdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\values-v11\values.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\values-v14\values.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\res\all\debug\values\values.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\source\buildConfig\debug\ni3po42\android\amvvm2\test\BuildConfig.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\build\source\r\debug\ni3po42\android\amvvm2\test\R.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\libs\android-support-v4.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\libs\dexmaker20120514.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\libs\mockito-all-1.9.1-SNAPSHOT.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\AndroidManifest.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\java\ni3po42\android\amvvm2\test\TestBindingInventory.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\java\ni3po42\android\amvvm2\test\TestObservableObject.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\drawable-hdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\drawable-mdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\drawable-xhdpi\ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\values-v11\styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\values-v14\styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\values\strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm.test\src\main\res\values\styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\libs\android-support-v4.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\BindingInventory.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\PathBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ViewFactory.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\Command.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\GenericArgument.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\ObjectChangedEventArg.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\ObservableList.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\ObservableObject.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\PropertyChangedEventArg.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\observables\PropertyStore.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\UIBindedEvent.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\UIBindedList.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\UIBindedProperty.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\UIHandler.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\menubinding\MVVMMenuInflater.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\menubinding\MenuBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\AdapterViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\ButtonBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\CalendarViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\CompoundButtonBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\DatePickerBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\GenericViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\ImageButtonBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\ImageViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\InternalAdapter.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\ListViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\NumberPickerBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\ProgressBarBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\SeekBarBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\SpinnerViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\TextViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\implementations\ui\viewbinding\TimePickerBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IAccessibleFragmentManager.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\ICommand.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IDefaultActivityService.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IObjectListener.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IObservableCommand.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IObservableList.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IObservableObject.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IProxyObservableObject.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IUIElement.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IViewBinding.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\interfaces\IViewModel.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\test.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\util\Log.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\util\ObjectPool.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\viewmodels\ActivityViewModel.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\viewmodels\DialogViewModel.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\viewmodels\ViewModel.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\src\main\java\ni3po42\android\amvvm\viewmodels\ViewModelHelper.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\tstratto\Documents\GitHub\amvvm\local.properties" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/ActualDialogViewModel.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/ActualDialogViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/Demo.iml" afterPath="$PROJECT_DIR$/Demo/Demo.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/DemoADialogViewModel.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/DemoADialogViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/DemoViewModelChoice.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/DemoViewModelChoice.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MainViewModel.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MainViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MultiSelectViewModel.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MultiSelectViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/SelectableItem.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/SelectableItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/SimpleFormViewModel.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/SimpleFormViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/UIWiring.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/UIWiring.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/UserInfo.java" afterPath="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/UserInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/amvvm/amvvm-amvvm.iml" afterPath="$PROJECT_DIR$/amvvm/amvvm-amvvm.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/amvvm/src/main/res/values/attrs.xml" afterPath="$PROJECT_DIR$/amvvm/src/main/res/values/attrs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build.gradle" afterPath="$PROJECT_DIR$/Demo/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/amvvm/build.gradle" afterPath="$PROJECT_DIR$/amvvm/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dexmaker20120514.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dexmaker20120514.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/dialoglauncher.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/dialoglauncher.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml" afterPath="$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/dialogviewmodel.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/dialogviewmodel.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/gender.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/gender.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/main.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout-large/main.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout-large/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml" afterPath="$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/mainviewmodel.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/mainviewmodel.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/mockito_all_1_9_1_SNAPSHOT.xml" afterPath="$PROJECT_DIR$/.idea/libraries/mockito_all_1_9_1_SNAPSHOT.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/multiselection.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/multiselection.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/menu/multiselectoptions.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/menu/multiselectoptions.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/selectable.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/selectable.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/animator/slide_in_left.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/animator/slide_in_left.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/uiwiring.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/uiwiring.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/userinfo.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/userinfo.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/values/values.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/values/values.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/values-v11/values.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/values-v11/values.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/values-v14/values.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/values-v14/values.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/viewmodelchoice.xml" afterPath="$PROJECT_DIR$/Demo/build/res/all/debug/layout/viewmodelchoice.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="amvvm.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -77,107 +210,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ViewModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ViewModel.java">
+      <file leaf-file-name="main.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="203" column="35" selection-start="5403" selection-end="5403" vertical-scroll-proportion="0.0" vertical-offset="2772" max-vertical-offset="3349">
-              <folding>
-                <element signature="e#0#5645#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-              </folding>
+            <state line="17" column="35" selection-start="673" selection-end="673" vertical-scroll-proportion="-11.56" vertical-offset="0" max-vertical-offset="578">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ActivityViewModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ActivityViewModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="177" column="25" selection-start="4673" selection-end="4673" vertical-scroll-proportion="0.0" vertical-offset="2330" max-vertical-offset="2907">
-              <folding>
-                <element signature="e#0#4927#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#1947#2138#0" expanded="false" />
-                <element signature="e#2131#2132#0" expanded="false" />
-              </folding>
-            </state>
+      <file leaf-file-name="dialoglauncher.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml">
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DialogViewModel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/DialogViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="199" column="25" selection-start="5366" selection-end="5366" vertical-scroll-proportion="0.0" vertical-offset="2425" max-vertical-offset="3298">
-              <folding>
-                <element signature="e#0#5618#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm.test/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="30" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
+            <state line="21" column="0" selection-start="655" selection-end="655" vertical-scroll-proportion="-14.28" vertical-offset="0" max-vertical-offset="493">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm.test/src/main/AndroidManifest.xml">
+        <entry file="file://$PROJECT_DIR$/Demo/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
-              <folding>
-                <element signature="e#480#498#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Demo/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="1" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.gradle" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="16" selection-start="16" selection-end="16" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="119">
+            <state line="17" column="42" selection-start="759" selection-end="759" vertical-scroll-proportion="0.59958506" vertical-offset="0" max-vertical-offset="493">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="48" selection-start="1015" selection-end="1015" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1683">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dialoglauncher.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="22" selection-start="199" selection-end="199" vertical-scroll-proportion="0.123188406" vertical-offset="0" max-vertical-offset="552">
-              <folding />
-            </state>
-          </provider>
+      <file leaf-file-name="uiwiring.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/uiwiring.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="attrs.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/amvvm/src/main/res/values/attrs.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="34" selection-start="2240" selection-end="2240" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="2159">
+            <state line="24" column="12" selection-start="636" selection-end="636" vertical-scroll-proportion="-16.32" vertical-offset="0" max-vertical-offset="1632">
               <folding />
             </state>
           </provider>
@@ -190,6 +271,14 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
   <component name="GradleLocalSettings">
     <option name="availableProjects">
       <map>
@@ -197,22 +286,22 @@
           <key>
             <ExternalProjectPojo>
               <option name="name" value="amvvm" />
-              <option name="path" value="C:\amvvm" />
+              <option name="path" value="C:\Users\tstratto\Documents\GitHub\amvvm" />
             </ExternalProjectPojo>
           </key>
           <value>
             <list>
               <ExternalProjectPojo>
                 <option name="name" value="amvvm-amvvm" />
-                <option name="path" value="C://amvvm/amvvm" />
+                <option name="path" value="$PROJECT_DIR$/amvvm" />
               </ExternalProjectPojo>
               <ExternalProjectPojo>
                 <option name="name" value="Demo" />
-                <option name="path" value="C://amvvm/Demo" />
+                <option name="path" value="$PROJECT_DIR$/Demo" />
               </ExternalProjectPojo>
               <ExternalProjectPojo>
                 <option name="name" value="amvvm" />
-                <option name="path" value="C://amvvm" />
+                <option name="path" value="$PROJECT_DIR$" />
               </ExternalProjectPojo>
             </list>
           </value>
@@ -221,39 +310,61 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="C:\amvvm" value="1374719812257" />
+        <entry key="C:\Users\tstratto\Documents\GitHub\amvvm" value="1374728152370" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/ImageButtonBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/ImageViewBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/ListViewBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/NumberPickerBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/ProgressBarBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/SeekBarBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/TextViewBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/TimePickerBinding.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ViewModel.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ActivityViewModel.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/DialogViewModel.java" />
-        <option value="$PROJECT_DIR$/amvvm.test/build.gradle" />
-        <option value="$PROJECT_DIR$/settings.gradle" />
-        <option value="$PROJECT_DIR$/Demo/build.gradle" />
+        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/SimpleFormViewModel.java" />
+        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/UserInfo.java" />
+        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/SelectableItem.java" />
+        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ActivityViewModel.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IViewModel.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java" />
+        <option value="$PROJECT_DIR$/Demo/src/main/res/xml/test.xml" />
+        <option value="$PROJECT_DIR$/amvvm/assets/amvvm.xsd" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java" />
         <option value="$PROJECT_DIR$/amvvm/src/main/res/values/attrs.xml" />
+        <option value="$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml" />
         <option value="$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="width" value="1616" />
+    <option name="height" value="916" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Annotator</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -264,7 +375,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -297,8 +408,63 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="amvvm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -306,10 +472,6 @@
               <option name="myItemId" value="amvvm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="amvvm-amvvm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -320,34 +482,71 @@
               <option name="myItemId" value="amvvm-amvvm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ni3po42.android.amvvm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.1328125" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="project.propCompiler" />
+    <property name="options.lastSelected" value="preferences.externalResources" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/GitHub/amvvm/amvvm.test" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Demo" />
+    <property name="project.structure.side.proportion" value="0.39046538" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.Demo">
+    <configuration default="false" name="amvvm.tests in amvvm-amvvm" type="AndroidTestRunConfigurationType" factoryName="Android Tests" temporary="true">
+      <module name="amvvm-amvvm" />
+      <option name="TESTING_TYPE" value="1" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="amvvm.tests" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="amvvm-amvvm" type="AndroidTestRunConfigurationType" factoryName="Android Tests" temporary="true">
+      <module name="amvvm-amvvm" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -355,7 +554,7 @@
       <option name="METHOD_NAME" value="" />
       <option name="CLASS_NAME" value="" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -437,46 +636,12 @@
       <option name="CLEAR_LOGCAT" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="amvvm-amvvm" type="AndroidRunConfigurationType" factoryName="Android Application">
-      <module name="amvvm-amvvm" />
+    <configuration default="false" name="main" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="main" />
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="amvvm.test" type="AndroidRunConfigurationType" factoryName="Android Application">
-      <module name="amvvm.test" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="amvvm.test" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
-      <module name="amvvm.test" />
-      <option name="TESTING_TYPE" value="0" />
-      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -492,7 +657,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -501,14 +666,22 @@
       <option name="NETWORK_SPEED" value="full" />
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
     </configuration>
     <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Android Application.amvvm-amvvm" />
-      <item index="1" class="java.lang.String" itemvalue="Android Application.amvvm.test" />
-      <item index="2" class="java.lang.String" itemvalue="Android Tests.amvvm.test" />
-      <item index="3" class="java.lang.String" itemvalue="Android Application.Demo" />
+      <item index="0" class="java.lang.String" itemvalue="Android Application.main" />
+      <item index="1" class="java.lang.String" itemvalue="Android Application.Demo" />
+      <item index="2" class="java.lang.String" itemvalue="Android Tests.amvvm.tests in amvvm-amvvm" />
+      <item index="3" class="java.lang.String" itemvalue="Android Tests.amvvm-amvvm" />
     </list>
+    <recent_temporary>
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Android Tests.amvvm-amvvm" />
+        <item index="1" class="java.lang.String" itemvalue="Android Tests.amvvm.tests in amvvm-amvvm" />
+      </list>
+    </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -529,6 +702,23 @@
       <AnalysisUIOptions />
     </option>
   </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="sslv3">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3f2cd861-5216-446f-a39f-885d5b283565" name="Default" comment="" />
@@ -538,35 +728,35 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1616" height="916" extended-state="1" />
+    <editor active="true" />
     <layout>
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32977587" sideWeight="0.67074525" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36082473" sideWeight="0.6701847" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32925472" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2497332" sideWeight="0.67074525" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24967825" sideWeight="0.6701847" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3298153" sideWeight="0.66494846" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -630,138 +820,136 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/TextViewBinding.java">
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/UserInfo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="31" selection-start="1310" selection-end="1310" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3944">
+        <state line="18" column="29" selection-start="717" selection-end="717" vertical-scroll-proportion="0.19721578" vertical-offset="221" max-vertical-offset="3111">
           <folding>
-            <element signature="imports" expanded="false" />
+            <element signature="e#0#3589#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/implementations/ui/viewbinding/TimePickerBinding.java">
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="31" selection-start="1166" selection-end="1166" vertical-scroll-proportion="0.36221838" vertical-offset="29" max-vertical-offset="1258">
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/interfaces/IObservableObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="7" selection-start="976" selection-end="976" vertical-scroll-proportion="0.0" vertical-offset="590" max-vertical-offset="1819">
+        <state line="49" column="6" selection-start="1371" selection-end="1371" vertical-scroll-proportion="0.6832298" vertical-offset="282" max-vertical-offset="765">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ViewModel.java">
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ActivityViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="203" column="35" selection-start="5403" selection-end="5403" vertical-scroll-proportion="0.0" vertical-offset="2772" max-vertical-offset="3349">
-          <folding>
-            <element signature="e#0#5645#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/ActivityViewModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="177" column="25" selection-start="4673" selection-end="4673" vertical-scroll-proportion="0.0" vertical-offset="2330" max-vertical-offset="2907">
-          <folding>
-            <element signature="e#0#4927#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#1947#2138#0" expanded="false" />
-            <element signature="e#2131#2132#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/ni3po42/android/amvvm/viewmodels/DialogViewModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="199" column="25" selection-start="5366" selection-end="5366" vertical-scroll-proportion="0.0" vertical-offset="2425" max-vertical-offset="3298">
-          <folding>
-            <element signature="e#0#5618#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm.test/amvvm.test.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="12" selection-start="930" selection-end="930" vertical-scroll-proportion="-0.18785796" vertical-offset="470" max-vertical-offset="1343">
+        <state line="87" column="4" selection-start="2659" selection-end="2962" vertical-scroll-proportion="0.29813665" vertical-offset="859" max-vertical-offset="2924">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm.test/build.gradle">
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="30" selection-start="409" selection-end="409" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm.test/src/main/java/ni3po42/android/amvvm/test/TestBindingInventory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="291" column="4" selection-start="7896" selection-end="7896" vertical-scroll-proportion="0.0" vertical-offset="4534" max-vertical-offset="5627">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="873">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm.test/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="577">
-          <folding>
-            <element signature="e#480#498#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Demo/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="1" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="16" selection-start="16" selection-end="16" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="577">
+        <state line="166" column="4" selection-start="4647" selection-end="4647" vertical-scroll-proportion="0.7908903" vertical-offset="1760" max-vertical-offset="3570">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="48" selection-start="1015" selection-end="1015" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1683">
+        <state line="34" column="22" selection-start="1176" selection-end="1176" vertical-scroll-proportion="0.0" vertical-offset="408" max-vertical-offset="2023">
+          <folding>
+            <element signature="e#0#2948#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="10" selection-start="3152" selection-end="3152" vertical-scroll-proportion="0.0" vertical-offset="1063" max-vertical-offset="3264">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="0" selection-start="2968" selection-end="2968" vertical-scroll-proportion="0.4389234" vertical-offset="944" max-vertical-offset="3349">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/gender.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="289">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="277" column="0" selection-start="9265" selection-end="9265" vertical-scroll-proportion="0.40511727" vertical-offset="4009" max-vertical-offset="7276">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/amvvm/src/main/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="34" selection-start="2240" selection-end="2240" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="2159">
+        <state line="100" column="0" selection-start="3357" selection-end="3357" vertical-scroll-proportion="3.5269709" vertical-offset="0" max-vertical-offset="1972">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="0" selection-start="443" selection-end="443" vertical-scroll-proportion="-8.84" vertical-offset="0" max-vertical-offset="357">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="35" selection-start="673" selection-end="673" vertical-scroll-proportion="-11.56" vertical-offset="0" max-vertical-offset="578">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/uiwiring.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="12" selection-start="636" selection-end="636" vertical-scroll-proportion="-16.32" vertical-offset="0" max-vertical-offset="1632">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Demo/src/main/res/layout/dialoglauncher.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="22" selection-start="199" selection-end="199" vertical-scroll-proportion="0.123188406" vertical-offset="0" max-vertical-offset="552">
+        <state line="21" column="0" selection-start="655" selection-end="655" vertical-scroll-proportion="-14.28" vertical-offset="0" max-vertical-offset="493">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="42" selection-start="759" selection-end="759" vertical-scroll-proportion="0.59958506" vertical-offset="0" max-vertical-offset="493">
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>
@@ -773,7 +961,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
               </list>
             </option>
           </splitter-proportions>
@@ -781,11 +969,11 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>Android</last-edited>
+          <last-edited>Android (amvvm-amvvm)|Android</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
               </list>
             </option>
           </splitter-proportions>
@@ -796,7 +984,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
               </list>
             </option>
           </splitter-proportions>
@@ -804,11 +992,11 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.6</last-edited>
+          <last-edited>Android SDK</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
               </list>
             </option>
           </splitter-proportions>
@@ -816,11 +1004,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>amvvm-amvvm</last-edited>
+          <last-edited>Demo</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
                 <option value="0.5" />
               </list>
             </option>
@@ -841,11 +1029,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>libs</last-edited>
+          <last-edited>mockito-all-1.9.1-SNAPSHOT</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046538" />
               </list>
             </option>
           </splitter-proportions>

@@ -19,8 +19,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import ni3po42.android.amvvmdemo.R;
 import ni3po42.android.amvvmdemo.viewmodels.MainViewModel;
-import ni3po42.android.amvvm.viewmodels.ActivityViewModel;
-import ni3po42.android.amvvm.viewmodels.ViewModel;
+import amvvm.viewmodels.ActivityViewModel;
+import amvvm.interfaces.IViewModel;
+import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
 
 

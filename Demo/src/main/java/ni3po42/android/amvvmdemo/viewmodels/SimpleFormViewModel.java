@@ -20,15 +20,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvm.implementations.observables.Command;
-import ni3po42.android.amvvm.implementations.observables.ObservableList;
-import ni3po42.android.amvvm.viewmodels.ViewModel;
+import amvvm.implementations.observables.Command;
+import amvvm.implementations.observables.ObservableList;
+import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.UserInfo;
 import ni3po42.android.amvvmdemo.models.UserInfo.Gender;
 
 public class SimpleFormViewModel extends ViewModel
 {
-	private static String prefName = "ni3po42.android.amvvm.demo.userinfo";
+	private static String prefName = "ni3po42.android.amvvmdemo.userinfo";
 	
 	public final ObservableList<Gender> Genders = 
 			new ObservableList<Gender>(new ArrayList<Gender>())

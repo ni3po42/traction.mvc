@@ -15,9 +15,9 @@
 
 package ni3po42.android.amvvmdemo.models;
 
-import ni3po42.android.amvvm.implementations.observables.ObservableObject;
-import ni3po42.android.amvvm.implementations.observables.PropertyStore;
-import ni3po42.android.amvvm.viewmodels.ViewModel;
+import amvvm.implementations.observables.ObservableObject;
+import amvvm.implementations.observables.PropertyStore;
+import amvvm.viewmodels.ViewModel;
 
 
 public class DemoViewModelChoice extends ObservableObject

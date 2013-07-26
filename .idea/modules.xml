@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/amvvm.iml" filepath="$PROJECT_DIR$/amvvm.iml" />
       <module fileurl="file://$PROJECT_DIR$/amvvm/amvvm-amvvm.iml" filepath="$PROJECT_DIR$/amvvm/amvvm-amvvm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/amvvm.test/amvvm.test.iml" filepath="$PROJECT_DIR$/amvvm.test/amvvm.test.iml" />
     </modules>
   </component>
 </project>
