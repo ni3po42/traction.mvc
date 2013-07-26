@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:mvvm="http://schemas.android.com/apk/res-auto"
+       
+ 	mvvm:IsBindable="true"  
+  	mvvm:IsRoot="true" 
+     
+ 	
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:useDefaultMargins="true" >
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    > 
+	 
+	    
+	     <ToggleButton
+	 	       android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        
+	        mvvm:IsBindable="true"
+	        mvvm:IsChecked="MainFlagOn"	        
+	 	       />
+	 	   
+	 	   <CheckBox 
+	 	       android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        mvvm:IsBindable="true"
+	        mvvm:IsChecked="MainFlagOn"
+	 	       />
+	 	   
+	 	     <Switch 
+	 	         android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	       mvvm:IsBindable="true"
+	        mvvm:IsChecked="MainFlagOn"
+	 	       />
+	 	   
+	 	      <ImageView
+	 	         android:layout_width="100dip"
+	        android:layout_height="100dip"
+	      
+	       mvvm:IsBindable="true"
+	       mvvm:Image="Image"
+	 	       />
+	 	   
+	 	      
+	 	        <NumberPicker  	  
+	 	            android:layout_width="wrap_content"   
+	 	            android:layout_height="wrap_content"   
+	 	       mvvm:IsBindable="true"
+	 	       mvvm:MinValue="Smallest"
+	 	       mvvm:MaxValue="Largest"
+	 	       mvvm:Value="UpperBound" 
+	 	       />    
+	 	      
+	 	        <NumberPicker  	        
+	 	            android:layout_width="wrap_content"
+	 	            android:layout_height="wrap_content"
+	 	       mvvm:IsBindable="true"
+	 	       mvvm:MinValue="Smallest"
+	 	       mvvm:MaxValue="UpperBound"
+	 	       mvvm:Value="CurrentInteger" 
+	 	       />    
+	 	      
+	 	        
+	 	        <SeekBar 
+	 	            android:layout_width="match_parent"
+	 	            android:layout_height="wrap_content"
+	 	            mvvm:IsBindable="true"
+	 	            mvvm:MaxValue="UpperBound"
+	 	            mvvm:Value="CurrentInteger"
+	 	            />
+	 	        
+	 	   <Button 
+	 	         android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	       android:text="Execute"
+	       mvvm:IsBindable="true"
+	 	       mvvm:OnClick="MyEvent"
+	 	       />
+	 	   
+	
+	</LinearLayout>
+</ScrollView>
+<!-- From: file:/C:/Users/tstratto/Documents/GitHub/amvvm/Demo/src/main/res/layout/uiwiring.xml -->

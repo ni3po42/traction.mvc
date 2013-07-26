@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="AmvvmAmvvmUnspecified.aar" >
+        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\build\exploded-bundles\AmvvmAmvvmUnspecified.aar\assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\main\assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\debug\assets" />
+    </dataSet>
+
+</merger>
