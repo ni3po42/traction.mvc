@@ -182,31 +182,12 @@ implements Factory2
         }
     }
 
-	@SuppressLint("DefaultLocale")
-	private boolean tryHandleFragment(View parent, String name, Context context, AttributeSet attrs)
-	{
-		boolean isFragment = false;
-        String className = (name.toLowerCase().equals("fragment")) ? attrs.getAttributeValue(androidRESNamespace, "name") : name;
-        Class<?> c = null;
-        try
-        {
-            c = Class.forName(className);
-        }
-        catch (ClassNotFoundException e)
-        {
-            Log.e("HH", e);
-        }
-
-        return c!= null && Fragment.class.isAssignableFrom(c);
-	}
-
     private final String tagPrefix = "amvvm.";
 
 	@SuppressLint("DefaultLocale")
 	@Override
 	public View onCreateView(View parent, String name, Context context,	AttributeSet attrs) 
 	{
-        boolean isBindable = false;
         //no name, no view
 		if (name == null)
 			return null;
@@ -220,21 +201,17 @@ implements Factory2
             String viewFullName = "android.widget." + name;
             if (name.equals("View") || name.equals("ViewGroup"))
            	 viewFullName = "android.view." + name;            
-            else 
+            else if (name.toLowerCase().equals("fragment"))
             {
-                if(tryHandleFragment(parent, name, context, attrs))
-                {
-                    return null;
-                }
-
-                if (name.toLowerCase().equals("fragmentstub"))
-                {
-                    viewFullName = android.widget.FrameLayout.class.getName();
-                }
-                else if (name.contains("."))
-                    viewFullName = name;
-
+                //ignore if it's a fragment, it's handled higher in the parser, and no way will I try to mimic or override that
+                return null;
             }
+            else if (name.toLowerCase().equals("fragmentstub"))
+            {
+                viewFullName = android.widget.FrameLayout.class.getName();
+            }
+            else if (name.contains("."))
+                viewFullName = name;
             
             //inflate
             view = inflater.createView(viewFullName, null, attrs);            
@@ -255,7 +232,7 @@ implements Factory2
  		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.View); 		
  		viewHolder.ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);	
  		viewHolder.isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
-        isBindable = ta.getBoolean(R.styleable.View_IsBindable, false);
+        boolean isBindable = ta.getBoolean(R.styleable.View_IsBindable, false);
 
  		//grab custom binding type, if available
          String bindingType = ta.getString(R.styleable.View_BindingType);
@@ -272,8 +249,7 @@ implements Factory2
     		 if (parentViewHolder != null)
     			 parentInv = parentViewHolder.inventory;
     	 }
-         
-         //assuming this means root...
+
          if (viewHolder.isRoot)
         	 viewHolder.inventory = new BindingInventory(parentInv);
          else

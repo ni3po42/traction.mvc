@@ -95,11 +95,12 @@ public class MainActivity extends ActivityViewModel
 		if (viewModel == null)
 			throw new RuntimeException("Cannot find View Model : " + getCurrentChoice().getViewModelType().getName());
 		
-		getFragmentManager().beginTransaction()
+		FragmentTransaction trans = getFragmentManager().beginTransaction()
 		.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-		.replace(R.id.main_view_id, viewModel)
-		.addToBackStack(null)
-		.commit();	
+		.replace(R.id.main_view_id, viewModel);
+        if (!multiViewModelSupport)
+		    trans.addToBackStack(null);
+		trans.commit();
 	}
 	
 	@Override

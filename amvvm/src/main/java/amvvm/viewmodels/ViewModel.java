@@ -120,7 +120,7 @@ implements IViewModel, IObservableObject
 	{
 		if (contentViewId == 0)
 			return null;	
-		return helper.inflateView(contentViewId, container, false);
+		return helper.inflateView(contentViewId, container, container != null);
 	}
 	
 	@Override

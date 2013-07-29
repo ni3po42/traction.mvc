@@ -33,6 +33,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -70,23 +71,6 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java" line="243" class="amvvm.implementations.ViewFactory" package="amvvm.implementations">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -102,16 +86,16 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="-10.88" vertical-offset="0" max-vertical-offset="544">
+            <state line="16" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="544">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewFactory.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ViewFactory.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="196" column="26" selection-start="6852" selection-end="6852" vertical-scroll-proportion="0.0" vertical-offset="2462" max-vertical-offset="6936">
+            <state line="273" column="10" selection-start="9611" selection-end="9611" vertical-scroll-proportion="0.45742092" vertical-offset="3926" max-vertical-offset="6528">
               <folding />
             </state>
           </provider>
@@ -120,18 +104,16 @@
       <file leaf-file-name="IAccessibleFragmentManager.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IAccessibleFragmentManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="38" selection-start="1093" selection-end="1111" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-              <folding>
-                <element signature="e#0#1117#0" expanded="false" />
-              </folding>
+            <state line="30" column="38" selection-start="1093" selection-end="1111" vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="646">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewModelHelper.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ViewModelHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="0" selection-start="4659" selection-end="4659" vertical-scroll-proportion="0.5450122" vertical-offset="1714" max-vertical-offset="4267">
+            <state line="155" column="0" selection-start="4659" selection-end="4659" vertical-scroll-proportion="0.0" vertical-offset="1921" max-vertical-offset="4267">
               <folding />
             </state>
           </provider>
@@ -140,7 +122,7 @@
       <file leaf-file-name="ViewModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="0" selection-start="3550" selection-end="3550" vertical-scroll-proportion="0.0" vertical-offset="1425" max-vertical-offset="3706">
+            <state line="121" column="28" selection-start="3549" selection-end="3549" vertical-scroll-proportion="0.0" vertical-offset="1972" max-vertical-offset="3706">
               <folding />
             </state>
           </provider>
@@ -149,7 +131,7 @@
       <file leaf-file-name="MainViewModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MainViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="43" selection-start="1220" selection-end="1220" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+            <state line="33" column="43" selection-start="1220" selection-end="1220" vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="884">
               <folding />
             </state>
           </provider>
@@ -158,11 +140,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="0" selection-start="1728" selection-end="1728" vertical-scroll-proportion="0.0" vertical-offset="507" max-vertical-offset="1683">
-              <folding>
-                <element signature="e#0#2948#0" expanded="false" />
-                <element signature="imports" expanded="false" />
-              </folding>
+            <state line="96" column="8" selection-start="2620" selection-end="2620" vertical-scroll-proportion="0.0" vertical-offset="968" max-vertical-offset="1700">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -170,7 +149,7 @@
       <file leaf-file-name="ActivityViewModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ActivityViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="5" selection-start="2545" selection-end="2545" vertical-scroll-proportion="0.0" vertical-offset="677" max-vertical-offset="2924">
+            <state line="77" column="5" selection-start="2545" selection-end="2545" vertical-scroll-proportion="0.0" vertical-offset="1292" max-vertical-offset="3417">
               <folding />
             </state>
           </provider>
@@ -179,7 +158,7 @@
       <file leaf-file-name="DialogViewModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="64" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0" vertical-offset="1385" max-vertical-offset="3502">
+            <state line="121" column="64" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0" vertical-offset="2295" max-vertical-offset="3502">
               <folding />
             </state>
           </provider>
@@ -240,7 +219,6 @@
       <list>
         <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/UserInfo.java" />
         <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/models/SelectableItem.java" />
-        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IViewModel.java" />
         <option value="$PROJECT_DIR$/Demo/src/main/res/xml/test.xml" />
         <option value="$PROJECT_DIR$/amvvm/assets/amvvm.xsd" />
@@ -249,11 +227,12 @@
         <option value="$PROJECT_DIR$/amvvm/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IAccessibleFragmentManager.java" />
         <option value="$PROJECT_DIR$/Demo/src/main/res/layout-large/main.xml" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java" />
         <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java" />
         <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ActivityViewModel.java" />
-        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java" />
         <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java" />
+        <option value="$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java" />
+        <option value="$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java" />
       </list>
     </option>
   </component>
@@ -619,11 +598,11 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.Demo">
     <configuration default="false" name="amvvm.tests in amvvm-amvvm" type="AndroidTestRunConfigurationType" factoryName="Android Tests" temporary="true">
@@ -854,7 +833,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36036035" sideWeight="0.57651716" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34828496" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -874,6 +852,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36036035" sideWeight="0.57651716" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32849604" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -977,46 +956,23 @@
     <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/interfaces/IAccessibleFragmentManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="38" selection-start="1093" selection-end="1111" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <folding>
-            <element signature="e#0#1117#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Development/adt-bundle-windows-x86_64-20130522/adt-bundle-windows-x86_64-20130522/sdk/platforms/android-17/android.jar!/android/view/LayoutInflater.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="0" selection-start="2845" selection-end="2845" vertical-scroll-proportion="0.74371856" vertical-offset="605" max-vertical-offset="1003">
-          <folding />
-        </state>
+        <state line="54" column="0" selection-start="2845" selection-end="2845" vertical-scroll-proportion="0.74371856" vertical-offset="605" max-vertical-offset="1003" />
       </provider>
     </entry>
     <entry file="jar://C:/Development/adt-bundle-windows-x86_64-20130522/adt-bundle-windows-x86_64-20130522/sdk/platforms/android-17/android.jar!/android/app/Activity.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="432" column="0" selection-start="19421" selection-end="19421" vertical-scroll-proportion="0.74371856" vertical-offset="7031" max-vertical-offset="7429">
-          <folding />
-        </state>
+        <state line="432" column="0" selection-start="19421" selection-end="19421" vertical-scroll-proportion="0.74371856" vertical-offset="7031" max-vertical-offset="7429" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/viewmodels/MainViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="33" column="43" selection-start="1220" selection-end="1220" vertical-scroll-proportion="0.0" vertical-offset="7" max-vertical-offset="578">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="0" selection-start="1728" selection-end="1728" vertical-scroll-proportion="0.0" vertical-offset="526" max-vertical-offset="1683">
-          <folding>
-            <element signature="e#0#2948#0" expanded="false" />
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="64" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0" vertical-offset="1385" max-vertical-offset="3502">
           <folding />
         </state>
       </provider>
@@ -1033,35 +989,47 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="-10.88" vertical-offset="0" max-vertical-offset="544">
+        <state line="16" column="0" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="544">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Development/adt-bundle-windows-x86_64-20130522/adt-bundle-windows-x86_64-20130522/sdk/platforms/android-17/android.jar!/android/app/Fragment.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="29" selection-start="4698" selection-end="4698" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="2975">
-          <folding />
-        </state>
+        <state line="109" column="29" selection-start="4698" selection-end="4698" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="2975" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java">
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="196" column="26" selection-start="6852" selection-end="6852" vertical-scroll-proportion="0.0" vertical-offset="2462" max-vertical-offset="6936">
+        <state line="155" column="0" selection-start="4659" selection-end="4659" vertical-scroll-proportion="0.0" vertical-offset="1921" max-vertical-offset="4267">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="122" column="0" selection-start="3550" selection-end="3550" vertical-scroll-proportion="0.0" vertical-offset="1425" max-vertical-offset="3706">
+        <state line="121" column="28" selection-start="3549" selection-end="3549" vertical-scroll-proportion="0.0" vertical-offset="1972" max-vertical-offset="3706">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/ViewModelHelper.java">
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/viewmodels/DialogViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="0" selection-start="4659" selection-end="4659" vertical-scroll-proportion="0.5450122" vertical-offset="1714" max-vertical-offset="4267">
+        <state line="121" column="64" selection-start="3621" selection-end="3621" vertical-scroll-proportion="0.0" vertical-offset="2295" max-vertical-offset="3502">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/src/main/java/ni3po42/android/amvvmdemo/activities/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="96" column="8" selection-start="2620" selection-end="2620" vertical-scroll-proportion="0.0" vertical-offset="968" max-vertical-offset="1700">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/amvvm/src/main/java/amvvm/implementations/ViewFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="273" column="10" selection-start="9611" selection-end="9611" vertical-scroll-proportion="0.45742092" vertical-offset="3926" max-vertical-offset="6528">
           <folding />
         </state>
       </provider>
