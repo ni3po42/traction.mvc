@@ -19,6 +19,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
@@ -174,52 +175,29 @@ implements Factory2
 		return viewBinding;		
 	}
 
-	/**
-	 * Not used anymore, but will hold onto because much of this logic will be used to handle Dynamic fragments better
-	 */
-	@Deprecated
+    private static class fragmentFailedView extends View
+    {
+        public fragmentFailedView(Context context) {
+            super(context);
+        }
+    }
+
 	@SuppressLint("DefaultLocale")
-	private boolean tryHandleFragmentX(View parent, String name, Context context, AttributeSet attrs) 
+	private boolean tryHandleFragment(View parent, String name, Context context, AttributeSet attrs)
 	{
 		boolean isFragment = false;
-		
-		if (name.toLowerCase().equals("fragment"))
-		{
-			isFragment = true;
-		}
-		else
-		{
-			Class<?> c = null;
-			try
-			{
-				c = Class.forName(name);
-			}
-			catch (ClassNotFoundException e)
-			{
-			}
-			if (c != null && Fragment.class.isAssignableFrom(c))
-				isFragment = true;
-		}
-		if (!isFragment)
-			return false;
-				
-		ViewHolder parentViewHolder = getViewHolder(parent);
-		
-        if (parentViewHolder == null || parentViewHolder.inventory == null)
-        	return true;
-        
-    	String fragmentId = attrs.getAttributeValue(androidRESNamespace, "id");	  
-    	fragmentId = fragmentId.replace("@","");
-    	int id = Integer.parseInt(fragmentId);
-    	if (id == 0)
-    		return true;
-         
-		String path = attrs.getAttributeValue(android.R.attr.tag);		
-		if (path != null)
-		{
-			//parentViewHolder.inventory.trackFragment(id, path);
-		}	 
-        return true;
+        String className = (name.toLowerCase().equals("fragment")) ? attrs.getAttributeValue(androidRESNamespace, "name") : name;
+        Class<?> c = null;
+        try
+        {
+            c = Class.forName(className);
+        }
+        catch (ClassNotFoundException e)
+        {
+            Log.e("HH", e);
+        }
+
+        return c!= null && Fragment.class.isAssignableFrom(c);
 	}
 
     private final String tagPrefix = "amvvm.";
@@ -244,16 +222,18 @@ implements Factory2
            	 viewFullName = "android.view." + name;            
             else 
             {
-            	//not used anymore, but will hold on to to handle Dynamic Fragments later...
-            	//if (tryHandleFragment(parent, viewFullName, context, attrs))
-            	//	return null;
-            	//else 
-            	if (name.toLowerCase().equals("fragmentstub"))
-            	{
-            		viewFullName = android.widget.FrameLayout.class.getName();
-            	}
-            	else if (name.contains("."))
-                  	 viewFullName = name; 
+                if(tryHandleFragment(parent, name, context, attrs))
+                {
+                    return null;
+                }
+
+                if (name.toLowerCase().equals("fragmentstub"))
+                {
+                    viewFullName = android.widget.FrameLayout.class.getName();
+                }
+                else if (name.contains("."))
+                    viewFullName = name;
+
             }
             
             //inflate
@@ -261,6 +241,7 @@ implements Factory2
 	     } 
 	     catch (Exception e)
 	     {
+             Log.e("BHA", e);
 	    	 //ok to return silently; the factory this is merged with will handle situations 
 	    	 //where this can't (it does fail for weird reasons)
 	     }

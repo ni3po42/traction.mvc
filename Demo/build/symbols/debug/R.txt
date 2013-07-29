@@ -27,9 +27,8 @@ int attr Text 0x7f010013
 int attr Value 0x7f010009
 int drawable ic_launcher 0x7f020000
 int id amvvm_viewholder 0x7f050000
-int id layout_main_listfragment 0x7f050002
 int id main_view_id 0x7f050001
-int id menu_multiselection 0x7f050003
+int id menu_multiselection 0x7f050002
 int layout dialoglauncher 0x7f030000
 int layout dialogviewmodel 0x7f030001
 int layout gender 0x7f030002

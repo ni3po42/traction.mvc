@@ -23,6 +23,7 @@ import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewModel;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.util.Property;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,8 +65,8 @@ implements IViewModel, IObservableObject
 	{
 		helper.linkFragments(inventory);
 	};
-		
-	@Override
+
+    @Override
 	public Object getDefaultActivityService(String name)
 	{
 		//note the super: this calls the base activities getSystemService instead of the overridden one here.
@@ -75,7 +76,7 @@ implements IViewModel, IObservableObject
 	@Override
 	public void setContentView(int layoutResID)
 	{
-		setContentView(helper.inflateView(layoutResID, null));
+		setContentView(helper.inflateView(layoutResID, null, true));
 	}
 	
 	@Override

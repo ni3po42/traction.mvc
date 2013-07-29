@@ -26,6 +26,7 @@ import amvvm.interfaces.IObjectListener;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -105,8 +106,31 @@ implements IAccessibleFragmentManager
 	{
 		return getActivity();
 	}
-	
-	
+
+
+    public void registerFragmentToActivity(Fragment fragment, Activity activity)
+    {
+        if (!(fragment instanceof IViewModel) || !(activity instanceof IViewModel))
+            return;
+
+        String tag = fragment.getTag();
+        if (tag == null)
+            return;
+
+        ((IViewModel)fragment).getProxyObservableObject().registerAs(tag, (IViewModel)activity);
+    }
+
+    public void unregisterFragmentFromActivity(Fragment fragment, Activity activity)
+    {
+        if (!(fragment instanceof IViewModel) || !(activity instanceof IViewModel))
+            return;
+
+        String tag = fragment.getTag();
+        if (tag == null)
+            return;
+
+        ((IViewModel)fragment).getProxyObservableObject().unregisterListener(tag, ((IViewModel) activity).getProxyObservableObject());
+    }
 	
 	/**
 	 * inflates a view and registers the view-model
@@ -114,13 +138,26 @@ implements IAccessibleFragmentManager
 	 * @param parent : parent view. May be null in certain cases
 	 * @return : a inflated view or null if inflation can not happen
 	 */
-	public View inflateView(int layoutResID, ViewGroup parent)
+	public View inflateView(int layoutResID, ViewGroup parent, boolean attacheToContext)
 	{
-		View v = getActivity().getLayoutInflater().inflate(layoutResID, parent, false);		
-		ViewFactory.RegisterContext(v, this);
+		View v = getActivity().getLayoutInflater().inflate(layoutResID, parent, false);
+        if (attacheToContext)
+		    ViewFactory.RegisterContext(v, this);
 		return v;
 	}
-		
+
+    public void connectFragmentViewToParentView(Fragment fragment)
+    {
+        ViewFactory.ViewHolder vh = ViewFactory.getViewHolder(fragment.getView());
+        if (vh == null || vh.inventory.getParentInventory() != null)
+            return;
+
+        ViewFactory.ViewHolder parentVH = ViewFactory.getViewHolder((View)fragment.getView().getParent());
+
+        vh.inventory.setParentInventory(parentVH.inventory);
+        ViewFactory.RegisterContext(fragment.getView(), this);
+    }
+
 	/**
 	 * links fragments registered to the binding inventory 
 	 */
@@ -129,8 +166,13 @@ implements IAccessibleFragmentManager
 	{
 		inventory.linkFragments(getActivity().getFragmentManager());
 	}
-	
-	@Override
+
+    @Override
+    public FragmentManager getFragmentManager() {
+        return getActivity().getFragmentManager();
+    }
+
+    @Override
 	public PropertyStore getPropertyStore()
 	{
 		return store;

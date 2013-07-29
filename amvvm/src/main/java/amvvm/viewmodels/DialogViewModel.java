@@ -23,6 +23,7 @@ import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewModel;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Property;
@@ -118,7 +119,7 @@ implements IViewModel, IObservableObject
 	{
 		if (contentViewId == 0)//container will be null most likely
 			return null;	
-		return helper.inflateView(contentViewId, container);
+		return helper.inflateView(contentViewId, container, true);
 	}
 		
 	@Override
@@ -132,9 +133,23 @@ implements IViewModel, IObservableObject
 	public Object getDefaultActivityService(String name)
 	{
 		return helper.getActivity().getDefaultActivityService(name);
-	}	
-	
-	/*
+	}
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        helper.registerFragmentToActivity(this, activity);
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        helper.unregisterFragmentFromActivity(this, getActivity());
+    }
+
+    /*
 	 * All code from this point down are not neccessary, however it's being provided here as a convenience
 	 */
 	

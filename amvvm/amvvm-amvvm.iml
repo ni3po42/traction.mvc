@@ -6,6 +6,7 @@
         <option name="SELECTED_BUILD_VARIANT" value="Debug" />
         <option name="ASSEMBLE_TASK_NAME" value="bundleDebug" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleTest" />
+        <option name="SOURCE_GEN_TASK_NAME" value="TODO" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -69,8 +70,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="dexmaker20120514" level="project" />
-    <orderEntry type="library" scope="TEST" name="mockito-all-1.9.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="dexmaker20120514" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="mockito-all-1.9.1-SNAPSHOT" level="project" />
   </component>
 </module>
 

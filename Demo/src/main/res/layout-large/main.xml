@@ -2,7 +2,6 @@
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
       mvvm:IsRoot="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,14 +10,13 @@
     
     <fragment 
         android:name="ni3po42.android.amvvmdemo.viewmodels.MainViewModel"
-        android:id="@+id/layout.main.listfragment"            
         android:layout_weight="1"
         android:layout_width="0dp"
   		android:layout_height="match_parent" 
-  		android:tag="MainViewModel"
-        tools:layout="@layout/mainviewmodel"/>
-  
-    <fragmentstub
+  		android:tag="MainViewModel" />
+
+    <!--<fragmentstub-->
+    <FrameLayout
         android:id="@+id/main.view.id"
          android:layout_weight="2"
         android:layout_width="0dp"

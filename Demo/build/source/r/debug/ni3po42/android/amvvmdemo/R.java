@@ -220,9 +220,8 @@ containing a value of this type.
     }
     public static final class id {
         public static final int amvvm_viewholder=0x7f050000;
-        public static final int layout_main_listfragment=0x7f050002;
         public static final int main_view_id=0x7f050001;
-        public static final int menu_multiselection=0x7f050003;
+        public static final int menu_multiselection=0x7f050002;
     }
     public static final class layout {
         public static final int dialoglauncher=0x7f030000;

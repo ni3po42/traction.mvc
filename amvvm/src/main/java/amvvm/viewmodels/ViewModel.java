@@ -15,6 +15,7 @@
 
 package amvvm.viewmodels;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Property;
@@ -117,9 +118,9 @@ implements IViewModel, IObservableObject
 	@Override
 	public View onCreateView(LayoutInflater notUsed, ViewGroup container, Bundle savedInstanceState) 
 	{
-		if (contentViewId == 0 || container == null)
+		if (contentViewId == 0)
 			return null;	
-		return helper.inflateView(contentViewId, container);
+		return helper.inflateView(contentViewId, container, false);
 	}
 	
 	@Override
@@ -140,8 +141,29 @@ implements IViewModel, IObservableObject
 	{
 		return helper.getActivity().getDefaultActivityService(name);
 	}
-	
-	/*
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        helper.registerFragmentToActivity(this, activity);
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        helper.unregisterFragmentFromActivity(this, getActivity());
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        helper.connectFragmentViewToParentView(this);
+    }
+
+    /*
 	 * All code from this point down are not neccessary, however it's being provided here as a convenience
 	 */
 	

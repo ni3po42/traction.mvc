@@ -15,6 +15,8 @@
 
 package amvvm.interfaces;
 
+import android.app.FragmentManager;
+
 import amvvm.implementations.BindingInventory;
 
 /**
@@ -25,5 +27,6 @@ import amvvm.implementations.BindingInventory;
  */
 public interface IAccessibleFragmentManager
 {
-	public void linkFragments(BindingInventory inventory);
+	void linkFragments(BindingInventory inventory);
+    FragmentManager getFragmentManager();
 }

@@ -12,7 +12,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="ALPHA 0.1.1" package="amvvm">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="ALPHA 0.1.2" package="amvvm">
 
     <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="17"/>
 
