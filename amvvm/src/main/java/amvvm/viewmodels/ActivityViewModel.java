@@ -94,10 +94,7 @@ implements IViewModel, IObservableObject
     @Override
 	public Object getSystemService(String name)
 	{
-        if (helper.shouldExecuteDefaultGetSystemService(name))
-            return super.getSystemService(name);
-        else
-		    return helper.getLayoutInflater();
+        return helper.tweakServiceCall(name, super.getSystemService(name));
 	}
 		
 	@Override

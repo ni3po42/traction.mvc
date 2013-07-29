@@ -31,3 +31,8 @@ local.properties
 *.ipr
 *~
 *.swp
+
+Demo/build
+Demo/*.iml
+amvvm/build
+amvvm/*.iml

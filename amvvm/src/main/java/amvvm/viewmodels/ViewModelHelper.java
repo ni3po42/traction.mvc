@@ -257,29 +257,23 @@ implements IAccessibleFragmentManager
 		getActivity().invalidateOptionsMenu();
 	}
 
-    public boolean shouldExecuteDefaultGetSystemService(String serviceName)
-    {
-        return serviceName != Context.LAYOUT_INFLATER_SERVICE;
-    }
-
-	public LayoutInflater getLayoutInflater()
+	public Object tweakServiceCall(String name, Object obj)
 	{
-		//if cache exist
-		if (injectedInflater != null)
-		{
-			return injectedInflater;
-		}
-		//if no cache yet...
-		else
-		{				
-			LayoutInflater inflater = ((LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).cloneInContext(getActivity());
-			
-			//custom ViewFactory for building BindingInventory and what not..
-			ViewFactory vf = new ViewFactory(inflater);
-            inflater.setFactory2(vf);
-            injectedInflater = inflater;			
-			return injectedInflater;
-		}
+        if (name.equals(Context.LAYOUT_INFLATER_SERVICE))
+        {
+            if (injectedInflater == null)
+            {
+                LayoutInflater inflater = ((LayoutInflater)obj).cloneInContext(getActivity());
+
+                //custom ViewFactory for building BindingInventory and what not..
+                ViewFactory vf = new ViewFactory(inflater);
+                inflater.setFactory2(vf);
+                injectedInflater = inflater;
+            }
+            return injectedInflater;
+        }
+        else
+            return obj;
 	}
 
 }
