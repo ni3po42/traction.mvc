@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -87,12 +88,12 @@ implements CalendarView.OnDateChangeListener
 		});
 	}
 
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
 		getWidget().setOnDateChangeListener(this);
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.CalendarView);
 		SelectedDate.initialize(ta, inventory, uiHandler);
 		MinDate.initialize(ta, inventory, uiHandler);
 		MaxDate.initialize(ta, inventory, uiHandler);

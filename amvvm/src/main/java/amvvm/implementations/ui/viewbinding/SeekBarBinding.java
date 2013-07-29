@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
@@ -42,18 +43,18 @@ implements OnSeekBarChangeListener
 	
 	public final UIBindedEvent<Object> OnDragStart = new UIBindedEvent<Object>(this, R.styleable.SeekBar_OnDragStart);
 	public final UIBindedEvent<Object> OnDragEnd = new UIBindedEvent<Object>(this, R.styleable.SeekBar_OnDragEnd);
-	
-	
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);
+
+
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
 		if (getWidget() != null && getWidget() instanceof SeekBar)
 		{
 			((SeekBar)getWidget()).setOnSeekBarChangeListener(this);
 		}
 		
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SeekBar);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.SeekBar);
 		OnDragStart.initialize(ta, inventory, uiHandler);
 		OnDragEnd.initialize(ta, inventory, uiHandler);		
 		ta.recycle();

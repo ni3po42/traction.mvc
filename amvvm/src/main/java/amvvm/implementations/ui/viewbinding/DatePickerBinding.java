@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -86,13 +87,13 @@ implements DatePicker.OnDateChangedListener
 			}
 		});		
 	}
-	
-	
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.DatePicker);
+
+
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.DatePicker);
 		getWidget().init(1970, 0, 1, this);
 		SelectedDate.initialize(ta, inventory, uiHandler);
 		MinDate.initialize(ta, inventory, uiHandler);

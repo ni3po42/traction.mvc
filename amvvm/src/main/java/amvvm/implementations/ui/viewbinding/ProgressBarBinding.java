@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -86,12 +87,12 @@ extends GenericViewBinding<ProgressBar>
 			}
 		});		
 	}
-	
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ProgressView);
+
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.ProgressView);
 		MaxValue.initialize(ta, inventory, uiHandler);
 		Value.initialize(ta, inventory, uiHandler);
 		IsIndeterminate.initialize(ta, inventory, uiHandler);		

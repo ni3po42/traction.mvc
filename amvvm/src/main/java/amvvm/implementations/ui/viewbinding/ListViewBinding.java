@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
@@ -53,16 +54,16 @@ implements OnItemClickListener
 		
 	}
 
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{	
-		super.initialise(attrs, context, uiHandler, inventory);
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
 		
 		//this selected attribute is only valid if the choice mode is not single or none, only multiple.
 		if (getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
 				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
 		{
-			TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ListView);
+			TypedArray ta = attributeBridge.getAttributes(R.styleable.ListView);
 			selectionPath = ta.getString(R.styleable.ListView_Selected);
 			ta.recycle();
 		}

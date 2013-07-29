@@ -19,14 +19,12 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import amvvm.implementations.ui.UIHandler;
-import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -53,7 +51,7 @@ implements Factory2
 	
 	//cache of keys for the bindingConfig map
 	private Class<?>[] bindingKeys;
-	
+
 	/**
 	 * AMVVM uses the ViewHolder pattern. This is the data that is associated to each view that has bounded data.
 	 * @author Tim Stratton
@@ -184,6 +182,26 @@ implements Factory2
 
     private final String tagPrefix = "amvvm.";
 
+    public AttributeBridge createAttributeBridge(Context context, AttributeSet attrs)
+    {
+        return new AttributeBridge(context, attrs);
+    }
+
+    public View inflateViewByClassName(String className, AttributeSet attrs)
+    {
+        if (inflater == null)
+            return null;
+
+        try
+        {
+            return inflater.createView(className,null, attrs);
+        }
+        catch (ClassNotFoundException e)
+        {
+        }
+        return null;
+    }
+
 	@SuppressLint("DefaultLocale")
 	@Override
 	public View onCreateView(View parent, String name, Context context,	AttributeSet attrs) 
@@ -192,44 +210,34 @@ implements Factory2
 		if (name == null)
 			return null;
 
+        //figure out full name of view to inflate
+        String viewFullName = "android.widget." + name;
+        if (name.equals("View") || name.equals("ViewGroup"))
+         viewFullName = "android.view." + name;
+        else if (name.toLowerCase().equals("fragment"))
+        {
+            //ignore if it's a fragment, it's handled higher in the parser, and no way will I try to mimic or override that
+            return null;
+        }
+        else if (name.toLowerCase().equals("fragmentstub"))
+        {
+            viewFullName = android.widget.FrameLayout.class.getName();
+        }
+        else if (name.contains("."))
+            viewFullName = name;
 
+        //inflate
+        View view = inflateViewByClassName(viewFullName, attrs);
 
-		View view = null;
-		try
-	     {
-			//figure out full name of view to inflate
-            String viewFullName = "android.widget." + name;
-            if (name.equals("View") || name.equals("ViewGroup"))
-           	 viewFullName = "android.view." + name;            
-            else if (name.toLowerCase().equals("fragment"))
-            {
-                //ignore if it's a fragment, it's handled higher in the parser, and no way will I try to mimic or override that
-                return null;
-            }
-            else if (name.toLowerCase().equals("fragmentstub"))
-            {
-                viewFullName = android.widget.FrameLayout.class.getName();
-            }
-            else if (name.contains("."))
-                viewFullName = name;
-            
-            //inflate
-            view = inflater.createView(viewFullName, null, attrs);            
-	     } 
-	     catch (Exception e)
-	     {
-             Log.e("BHA", e);
-	    	 //ok to return silently; the factory this is merged with will handle situations 
-	    	 //where this can't (it does fail for weird reasons)
-	     }
 		//no view, um, well, no view.
          if (view==null) return null;
-                  
+
+        AttributeBridge attributeBridge = createAttributeBridge(context, attrs);
          ViewHolder viewHolder = new ViewHolder();
          UIHandler handler = new UIHandler();
          
        //pull base attributes
- 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.View); 		
+ 		TypedArray ta = attributeBridge.getAttributes(R.styleable.View);
  		viewHolder.ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);	
  		viewHolder.isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
         boolean isBindable = ta.getBoolean(R.styleable.View_IsBindable, false);
@@ -270,7 +278,7 @@ implements Factory2
          //if at this point we actually have a view binding...
          if (viewHolder.viewBinding != null)
          {
-        	 viewHolder.viewBinding.initialise(view, attrs, context, handler, viewHolder.inventory);
+        	 viewHolder.viewBinding.initialise(view, attributeBridge, handler, viewHolder.inventory);
          }
          
          return view;
@@ -351,7 +359,7 @@ implements Factory2
 			return null;
 		return (ViewHolder)view.getTag(R.id.amvvm_viewholder);
 	}
-	
+
 	/**
 	 * Registers (binds) View to an object. The framework support late binding, when this
 	 * observable is updated, it will bubble the event to all listening objects.

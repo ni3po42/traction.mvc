@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
@@ -46,14 +47,14 @@ implements OnClickListener, OnLongClickListener
 	{
 		super();
 	}
-	
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{	
-		super.initialise(attrs, context, uiHandler, inventory);
+
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
 		getWidget().setOnClickListener(this);
 		getWidget().setOnLongClickListener(this);
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.Button);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.Button);
 		
 		OnClick.initialize(ta, inventory, uiHandler);		
 		OnLongClick.initialize(ta, inventory, uiHandler);

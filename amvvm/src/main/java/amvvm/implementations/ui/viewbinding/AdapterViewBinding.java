@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedList;
@@ -196,14 +197,14 @@ extends GenericViewBinding<V>
 	}
 	
 	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
+	protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
 	{	
-		super.initialise(attrs, context, uiHandler, inventory);
+		super.initialise(attributeBridge, uiHandler, inventory);
 		
 		//sets the internal adapter
 		getWidget().setAdapter(getAdapter());
 		
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.AdapterView);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.AdapterView);
 		
 		//sets the item template
 		itemTemplateId = ta.getResourceId(R.styleable.AdapterView_ItemTemplate, -1);

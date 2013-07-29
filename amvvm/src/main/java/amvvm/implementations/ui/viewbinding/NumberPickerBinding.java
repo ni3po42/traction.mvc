@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -151,13 +152,13 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 		//into a list to grab other values.
 		return String.valueOf(value);
 	}
-	
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);
+
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
 		getWidget().setOnValueChangedListener(this);
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.NumberPicker);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.NumberPicker);
 		MinValue.initialize(ta, inventory, uiHandler);
 		MaxValue.initialize(ta, inventory, uiHandler);
 		Value.initialize(ta, inventory, uiHandler);

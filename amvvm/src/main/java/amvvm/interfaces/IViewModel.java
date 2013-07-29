@@ -21,7 +21,7 @@ package amvvm.interfaces;
  *
  */
 public interface IViewModel
-extends IAccessibleFragmentManager, IDefaultActivityService, IProxyObservableObject
+extends IAccessibleFragmentManager, IProxyObservableObject
 {
 	/**
 	 * lets view model set which view to use

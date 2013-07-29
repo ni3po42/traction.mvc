@@ -66,13 +66,6 @@ implements IViewModel, IObservableObject
 		helper.linkFragments(inventory);
 	};
 
-    @Override
-	public Object getDefaultActivityService(String name)
-	{
-		//note the super: this calls the base activities getSystemService instead of the overridden one here.
-		return super.getSystemService(name);
-	}
-		
 	@Override
 	public void setContentView(int layoutResID)
 	{
@@ -100,8 +93,11 @@ implements IViewModel, IObservableObject
 
     @Override
 	public Object getSystemService(String name)
-	{	
-		return helper.getSystemService(name);
+	{
+        if (helper.shouldExecuteDefaultGetSystemService(name))
+            return super.getSystemService(name);
+        else
+		    return helper.getLayoutInflater();
 	}
 		
 	@Override

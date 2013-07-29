@@ -18,6 +18,7 @@ package amvvm.implementations.ui.viewbinding;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -226,11 +227,11 @@ implements IViewBinding, TextWatcher
 		//nothing for now...
 	}
 
-	@Override
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		super.initialise(attrs, context, uiHandler, inventory);		
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TextView);
+    @Override
+    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        super.initialise(attributeBridge, uiHandler, inventory);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.TextView);
 		Text.initialize(ta, inventory, uiHandler);
 		Format.initialize(ta, inventory, uiHandler);		
 		ta.recycle();

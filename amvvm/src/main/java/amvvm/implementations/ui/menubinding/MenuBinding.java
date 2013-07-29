@@ -23,6 +23,7 @@ import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
@@ -74,8 +75,14 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 		OnClick.execute(null);
 		return true;
 	}
-		
-	@Override
+
+    @Override
+    public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        //not used
+    }
+
+    @Override
 	public String getBasePath()
 	{
 		return null;
@@ -97,10 +104,5 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 		IsVisible.setUIUpdateListener(null);
 	}
 
-	@Override
-	public void initialise(View v, AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{
-		//not used
-	}
 
 }

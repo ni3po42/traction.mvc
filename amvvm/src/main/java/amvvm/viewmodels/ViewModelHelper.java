@@ -29,6 +29,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -255,24 +256,23 @@ implements IAccessibleFragmentManager
 		menuLayoutId = i;
 		getActivity().invalidateOptionsMenu();
 	}
-	
-	/**
-	 * Hijack of Activity's getSystemService in intercept calls to get the layout inflater. Calls the default
-	 * getSystemService if the call is not for the Layoutinflater.
-	 * @param serviceName
-	 * @return
-	 */
-	public Object getSystemService(String serviceName)
+
+    public boolean shouldExecuteDefaultGetSystemService(String serviceName)
+    {
+        return serviceName != Context.LAYOUT_INFLATER_SERVICE;
+    }
+
+	public LayoutInflater getLayoutInflater()
 	{
 		//if cache exist
-		if (serviceName == Context.LAYOUT_INFLATER_SERVICE && injectedInflater != null)
+		if (injectedInflater != null)
 		{
 			return injectedInflater;
 		}
 		//if no cache yet...
-		else if (serviceName == Context.LAYOUT_INFLATER_SERVICE && injectedInflater == null)
+		else
 		{				
-			LayoutInflater inflater = ((LayoutInflater)getActivity().getDefaultActivityService(serviceName)).cloneInContext(getActivity());
+			LayoutInflater inflater = ((LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).cloneInContext(getActivity());
 			
 			//custom ViewFactory for building BindingInventory and what not..
 			ViewFactory vf = new ViewFactory(inflater);
@@ -280,8 +280,6 @@ implements IAccessibleFragmentManager
             injectedInflater = inflater;			
 			return injectedInflater;
 		}
-		//if anything other then layout inflater, go ahead and use the default.
-		return getActivity().getDefaultActivityService(serviceName);
 	}
-		
+
 }

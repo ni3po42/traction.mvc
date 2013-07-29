@@ -22,6 +22,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIBindedProperty;
@@ -268,18 +269,10 @@ implements IViewBinding
 		}
 		
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initialise(View v, AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
-	{		
-		widget = new WeakReference<V>((V)v);
-		initialise(attrs, context, uiHandler, inventory);
-	}
-	
-	protected void initialise(AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory)
+
+	protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
 	{
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.View);
+		TypedArray ta = attributeBridge.getAttributes(R.styleable.View);
 		IsVisible.initialize(ta, inventory, uiHandler);		
 		
 		//get semi-colon delimited properties
@@ -306,7 +299,14 @@ implements IViewBinding
 		}
 	}
 
-	//not implemented yet
+    @Override
+    public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    {
+        widget = new WeakReference<V>((V)v);
+        initialise(attributeBridge, uiHandler, inventory);
+    }
+
+    //not implemented yet
 	@Override
 	public String getBasePath()
 	{

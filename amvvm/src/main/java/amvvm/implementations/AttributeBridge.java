@@ -13,19 +13,28 @@
    limitations under the License.
  */
 
-package amvvm.interfaces;
+package amvvm.implementations;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
 
 /**
- * The base Activity will need to be overridden and calls to getSystemService must be hijacked to return the new layout inflater.
- * To keep this logic out of the base Activity and in the ViewModelHelper, access to the default getSystemService is still required.
- * This allows object to define seperate the default calls from the overriden calls.
- * @author Tim Stratton
- *
+ * Wrapper for accessing attributes in the AttributeSet in such a way to make it easier to test
  */
-public interface IDefaultActivityService
+public class AttributeBridge
 {
-	/**
-	 * Access to 'super' activities' getSystemService
-	 */
-	Object getDefaultActivityService(String name);
+    private Context context;
+    private AttributeSet attrs;
+    public AttributeBridge(Context context, AttributeSet attrs)
+    {
+        this.context = context;
+        this.attrs = attrs;
+    }
+
+    public TypedArray getAttributes(int[] styles)
+    {
+        return context.obtainStyledAttributes(attrs, styles);
+    }
+
 }

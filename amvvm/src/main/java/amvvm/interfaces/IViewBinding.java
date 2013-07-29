@@ -15,6 +15,7 @@
 
 package amvvm.interfaces;
 
+import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 
@@ -36,13 +37,11 @@ public interface IViewBinding
 	/**
 	 * Initialise the ViewBinding. It is here you will read properties defined in the layout files
 	 * @param v : the view to init against
-	 * @param attrs : all attributes defined on the view. Refer to declared styleable fields for what attributes
-	 * 					can be pulled out.
-	 * @param context : current context performing the initialisation (it's going to be the activity).
+     * @param attributeBridge : access to inflated attributes
 	 * @param uiHandler : a handler for accessing the ui thread
 	 * @param inventory : inventory to register ui elements and paths
 	 */
-	void initialise(View v,AttributeSet attrs, Context context, UIHandler uiHandler, BindingInventory inventory);
+	void initialise(View v,AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory);
 		
 	/**
 	 * Not really implemented at this time

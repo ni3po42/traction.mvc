@@ -128,12 +128,6 @@ implements IViewModel, IObservableObject
 		super.onDestroyView();	
 		ViewFactory.DetachContext(getView());
 	}
-	
-	@Override
-	public Object getDefaultActivityService(String name)
-	{
-		return helper.getActivity().getDefaultActivityService(name);
-	}
 
     @Override
     public void onAttach(Activity activity)
