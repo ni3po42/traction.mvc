@@ -28,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory2;
 import android.view.View;
@@ -196,8 +197,13 @@ implements Factory2
         {
             return inflater.createView(className,null, attrs);
         }
-        catch (ClassNotFoundException e)
+        catch (Exception e)
         {
+            //fail silently. Sometimes the inflater will fail. This happens
+            //somewhere in the ViewConfiguration.get method when a Display metric
+            //is being retrieved, but null pointer exception occurs. I suspected it
+            //has to do with android remeasuring the layout and failing. I don't have a better
+            //fix for now except to ignore it; it apparently tries again successfully.
         }
         return null;
     }
