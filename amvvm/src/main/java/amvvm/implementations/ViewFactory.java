@@ -22,13 +22,11 @@ import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
-import amvvm.interfaces.IUIElement;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory2;
 import android.view.View;
@@ -41,9 +39,7 @@ import amvvm.R;
  */
 public class ViewFactory 
 implements Factory2
-{	
-	private static final String androidRESNamespace = "http://schemas.android.com/apk/res/android";
-	
+{
 	//stores current inflater
 	private LayoutInflater inflater;
 	
@@ -94,42 +90,57 @@ implements Factory2
 		{
 			//should move this out and allow user the option to register new ones if they so please...
 			String packageName = "amvvm.implementations.ui.viewbinding";
-			bindingConfig.put(Class.forName("android.view.View"), packageName+".GenericViewBinding");
-			bindingConfig.put(Class.forName("android.widget.AbsListView"), packageName+".ListViewBinding");
-			bindingConfig.put(Class.forName("android.widget.Spinner"), packageName+".SpinnerViewBinding");
-			bindingConfig.put(Class.forName("android.widget.TextView"), packageName+".TextViewBinding");
-			bindingConfig.put(Class.forName("android.widget.NumberPicker"), packageName+".NumberPickerBinding");
-			bindingConfig.put(Class.forName("android.widget.TimePicker"), packageName+".TimePickerBinding");
-			bindingConfig.put(Class.forName("android.widget.ProgressBar"), packageName+".ProgressBarBinding");
-			bindingConfig.put(Class.forName("android.widget.SeekBar"), packageName+".SeekBarBinding");
-			bindingConfig.put(Class.forName("android.widget.ImageView"), packageName+".ImageViewBinding");
-			bindingConfig.put(Class.forName("android.widget.ImageButton"), packageName+".ImageButtonBinding");
-			bindingConfig.put(Class.forName("android.widget.CompoundButton"), packageName+".CompoundButtonBinding");
-			bindingConfig.put(Class.forName("android.widget.Button"), packageName+".ButtonBinding");
-			bindingConfig.put(Class.forName("android.widget.CalendarView"), packageName+".CalendarViewBinding");
-			bindingConfig.put(Class.forName("android.widget.DatePicker"), packageName+".DatePickerBinding");
-			
-			bindingKeys = bindingConfig.keySet().toArray(new Class<?>[bindingConfig.size()]);
+            addBindingConfig("android.view.View", packageName+".GenericViewBinding");
+            addBindingConfig("android.widget.AbsListView", packageName+".ListViewBinding");
+            addBindingConfig("android.widget.Spinner", packageName+".SpinnerViewBinding");
+            addBindingConfig("android.widget.TextView", packageName+".TextViewBinding");
+            addBindingConfig("android.widget.NumberPicker", packageName+".NumberPickerBinding");
+            addBindingConfig("android.widget.TimePicker", packageName+".TimePickerBinding");
+            addBindingConfig("android.widget.ProgressBar", packageName+".ProgressBarBinding");
+            addBindingConfig("android.widget.SeekBar", packageName+".SeekBarBinding");
+            addBindingConfig("android.widget.ImageView", packageName+".ImageViewBinding");
+            addBindingConfig("android.widget.ImageButton", packageName+".ImageButtonBinding");
+            addBindingConfig("android.widget.CompoundButton", packageName+".CompoundButtonBinding");
+            addBindingConfig("android.widget.Button", packageName+".ButtonBinding");
+            addBindingConfig("android.widget.CalendarView", packageName+".CalendarViewBinding");
+            addBindingConfig("android.widget.DatePicker", packageName+".DatePickerBinding");
 		}
-		catch(Exception ex)
+		catch(ClassNotFoundException ex)
 		{
 			Log.e("error creating view binding config", ex);
 		}
 	}
-		
+
+    public void addBindingConfig(String viewClass, String viewBindingClass)
+            throws ClassNotFoundException
+    {
+        bindingConfig.put(Class.forName(viewClass), viewBindingClass);
+        bindingKeys = null;
+    }
+
+    public void clearBindingConfig()
+    {
+        bindingConfig.clear();
+        bindingKeys = null;
+    }
+
 	/**
 	 * Perform lookup to find which IViewBinding is needed for this view
 	 * @param view : view to check against
 	 * @param viewBindingTypeAsString : optional custom View type override as string. May be null.
 	 * @return : an instantiated IViewBinding object
 	 */
-	private IViewBinding getViewBinding(View view, String viewBindingTypeAsString)
+	public IViewBinding getViewBinding(View view, String viewBindingTypeAsString)
 	{	
 		//if no override is given...
 		if (viewBindingTypeAsString == null)
 		{
 			Class<?> currentClass = null;
 			//iterate through all keys...
+
+            if (bindingKeys == null)
+                bindingKeys = bindingConfig.keySet().toArray(new Class<?>[bindingConfig.size()]);
+
 			for(int i=0;i<bindingKeys.length;i++)
 			{
 				//..if the view is not an instance of the key, just skip it...
@@ -173,15 +184,6 @@ implements Factory2
 		}
 		return viewBinding;		
 	}
-
-    private static class fragmentFailedView extends View
-    {
-        public fragmentFailedView(Context context) {
-            super(context);
-        }
-    }
-
-    private final String tagPrefix = "amvvm.";
 
     public AttributeBridge createAttributeBridge(Context context, AttributeSet attrs)
     {
@@ -238,6 +240,14 @@ implements Factory2
 		//no view, um, well, no view.
          if (view==null) return null;
 
+        //should we go on?
+        ViewHolder parentViewHolder = (parent != null) ? getViewHolder(parent) : null;
+
+        //if either there is no viewholder for a non null parent or that parent's viewholder says to ignore chilrend..
+        if ((parent != null && parentViewHolder == null) || (parentViewHolder != null && parentViewHolder.ignoreChildren))
+            //then stop here and return the view, no binding steps needed now.
+            return view;
+
         AttributeBridge attributeBridge = createAttributeBridge(context, attrs);
          ViewHolder viewHolder = new ViewHolder();
          UIHandler handler = new UIHandler();
@@ -255,14 +265,7 @@ implements Factory2
          
          view.setTag(R.id.amvvm_viewholder, viewHolder);
          
-         BindingInventory parentInv = null;
-         ViewHolder parentViewHolder = null;
-    	 if (parent != null)
-    	 {
-    		 parentViewHolder = getViewHolder(parent);
-    		 if (parentViewHolder != null)
-    			 parentInv = parentViewHolder.inventory;
-    	 }
+         BindingInventory parentInv = (parentViewHolder != null) ? parentViewHolder.inventory : null;
 
          if (viewHolder.isRoot)
         	 viewHolder.inventory = new BindingInventory(parentInv);
@@ -290,63 +293,6 @@ implements Factory2
          return view;
 	}
 
-	//not used at this time..
-	class metaProperty
-	implements IUIElement<Object>
-	{
-		private final Object value;
-		private String path;
-		private BindingInventory inventory;
-				
-		public metaProperty(BindingInventory inventory, String path, Object value)
-		{	
-			this.path = path;
-			this.value = value;
-			this.inventory = inventory;
-		}
-		@Override
-		public String getPath()
-		{
-			return this.path;
-		}
-		@Override
-		public void setUIUpdateListener(IUIUpdateListener<Object> listener)
-		{
-			//not used
-		}
-		@Override
-		public void recieveUpdate(Object notUsed)
-		{
-			getBindingInventory().sendUpdateFromUIElement(this, value);
-		}
-		@Override
-		public void sendUpdate(Object value)
-		{
-			//not used
-		}
-		@Override
-		public void initialize(TypedArray x, BindingInventory y, UIHandler z)
-		{
-			//not used
-		}
-		@Override
-		public void disableRecieveUpdates()
-		{
-			//not used
-		}
-		@Override
-		public void enableRecieveUpdates()
-		{
-			//not used
-		}
-		@Override
-		public BindingInventory getBindingInventory()
-		{
-			return inventory;
-		}
-		
-	}
-	
 	/**
 	 * Not used, part of the ViewFactory interface, I need to use ViewFactory2
 	 */

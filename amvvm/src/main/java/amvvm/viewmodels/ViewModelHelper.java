@@ -108,7 +108,14 @@ implements IAccessibleFragmentManager
 		return getActivity();
 	}
 
-
+    /**
+     * Registers a fragment to the activity in an IObservable sense.
+     * When using Dynamic fragments, the get/setViewModel methods handle registration.
+     * This method is for registering static fragments when they are attached to the activity.
+     * See onAttach in the ViewModel class.
+     * @param fragment : newly attached view-model
+     * @param activity : activity containing view-model
+     */
     public void registerFragmentToActivity(Fragment fragment, Activity activity)
     {
         if (!(fragment instanceof IViewModel) || !(activity instanceof IViewModel))
@@ -121,6 +128,11 @@ implements IAccessibleFragmentManager
         ((IViewModel)fragment).getProxyObservableObject().registerAs(tag, (IViewModel)activity);
     }
 
+    /**
+     * Un-registers a view-model from the activity. See onDetach in the ViewModel class
+     * @param fragment : fragment detaching
+     * @param activity : activity that's detaching the fragment
+     */
     public void unregisterFragmentFromActivity(Fragment fragment, Activity activity)
     {
         if (!(fragment instanceof IViewModel) || !(activity instanceof IViewModel))
@@ -137,16 +149,22 @@ implements IAccessibleFragmentManager
 	 * inflates a view and registers the view-model
 	 * @param layoutResID
 	 * @param parent : parent view. May be null in certain cases
+     * @param attachToContext : true if view should force bind to model right now.
 	 * @return : a inflated view or null if inflation can not happen
 	 */
-	public View inflateView(int layoutResID, ViewGroup parent, boolean attacheToContext)
+	public View inflateView(int layoutResID, ViewGroup parent, boolean attachToContext)
 	{
 		View v = getActivity().getLayoutInflater().inflate(layoutResID, parent, false);
-        if (attacheToContext)
+        if (attachToContext)
 		    ViewFactory.RegisterContext(v, this);
 		return v;
 	}
 
+    /**
+     * The root view of fragments' viewbinding are disconnected from the parent layout's view
+     * biding; This will reconnect them.
+     * @param fragment
+     */
     public void connectFragmentViewToParentView(Fragment fragment)
     {
         ViewFactory.ViewHolder vh = ViewFactory.getViewHolder(fragment.getView());
@@ -266,8 +284,7 @@ implements IAccessibleFragmentManager
                 LayoutInflater inflater = ((LayoutInflater)obj).cloneInContext(getActivity());
 
                 //custom ViewFactory for building BindingInventory and what not..
-                ViewFactory vf = new ViewFactory(inflater);
-                inflater.setFactory2(vf);
+                inflater.setFactory2(new ViewFactory(inflater));
                 injectedInflater = inflater;
             }
             return injectedInflater;
