@@ -42,7 +42,7 @@ public class MultiSelectViewModel extends ViewModel
 	final IObjectListener selectectCountListener = new IObjectListener()
 	{				
 		@Override
-		public void onEvent(Object source, EventArg arg)
+		public void onEvent(EventArg arg)
 		{
 			notifyListener("SelectedCount");
 		}

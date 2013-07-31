@@ -162,9 +162,9 @@ implements IViewModel, IObservableObject
 	 */
 	
 	@Override
-	public void onEvent(Object source, EventArg arg)
+	public void onEvent(EventArg arg)
 	{
-		helper.onEvent(source, arg);
+		helper.onEvent(arg);
 	}
 
 	@Override

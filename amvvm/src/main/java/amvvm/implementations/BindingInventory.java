@@ -25,8 +25,6 @@ import java.util.regex.Pattern;
 import android.app.FragmentManager;
 import android.util.Property;
 
-import amvvm.implementations.observables.ObjectChangedEventArg;
-import amvvm.implementations.observables.PropertyChangedEventArg;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableList;
@@ -62,40 +60,16 @@ public class BindingInventory
 	private BindingInventory parentInventory;
 	
 	private final TreeMap<String, PathBinding> map = new TreeMap<String, PathBinding>();
-	
-	//will be used later..
-	//private final ArrayList<fragmentMap> fragmentMapping = new ArrayList<fragmentMap>();
-	
-	@Deprecated
-	private class fragmentMapX
-	{
-		public fragmentMapX(int id, String path)
-		{
-			this.id = id;
-			this.path = path;
-		}
-		public int id;
-		public String path;
-		
-		@Override
-		public boolean equals(Object o)
-		{
-			if (o == null || !(o instanceof fragmentMapX))
-				return false;
-			fragmentMapX m = (fragmentMapX)o;
-			return m.id == this.id && (m.path == null ? this.path == null : m.path.equals(this.path));
-		}
-	}
-	
+
 	private IObjectListener contextListener = new IObjectListener()
 	{		
 		@Override
-		public void onEvent(Object source, EventArg arg)
+		public void onEvent(EventArg arg)
 		{
 			if (arg ==  null)
 				return;
 			
-			onContextSignaled(source, arg);
+			onContextSignaled(arg);
 		}
 	};
 	
@@ -111,24 +85,15 @@ public class BindingInventory
 		
 	private String[] tempStringArray = new String[0];
 	
-	protected void onContextSignaled(Object source, EventArg arg)
+	protected void onContextSignaled(EventArg arg)
 	{			
 		String path = null;
 		Object value = null;
-		
-		if (arg instanceof PropertyChangedEventArg)
-		{
-			PropertyChangedEventArg parg = (PropertyChangedEventArg)arg;
-			path = parg.getProperty().getName();
-			if (path != null && map.containsKey(path))
-				value = parg.getProperty().get(source);
-		}
-		else if (arg instanceof ObjectChangedEventArg)
-		{
-			path = ((ObjectChangedEventArg)arg).getFullPathHistory();
-			if (path != null && map.containsKey(path))
-				value = DereferenceValue(path);
-		}
+
+        path = arg.generateNextPropagationId();
+        if (path != null && map.containsKey(path))
+            value = DereferenceValue(path);
+
 		if (path == null || !map.containsKey(path))
 		{
 			path = (path == null) ? "" : path + ".";

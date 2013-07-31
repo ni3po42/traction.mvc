@@ -15,10 +15,9 @@
 
 package amvvm.tests;
 
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
-import amvvm.implementations.observables.ObjectChangedEventArg;
 import amvvm.implementations.observables.ObservableObject;
-import amvvm.implementations.observables.PropertyChangedEventArg;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IObservableObject;
@@ -54,16 +53,14 @@ public class TestObservableObject extends TestCase
 		obj.notifyListener("prop");
 		
 		//assert
-		verify(listen).onEvent(eq(obj.getSource()),argThat(new ArgumentMatcher<PropertyChangedEventArg>(){
+        ArgumentCaptor<EventArg> argument = ArgumentCaptor.forClass(EventArg.class);
+		verify(listen).onEvent(argument.capture());
 
-			@Override
-			public boolean matches(Object argument)
-			{
-				PropertyChangedEventArg arg = (PropertyChangedEventArg)argument;
-				return arg.getProperty().getName().equals("prop") && arg.getSourceName().equals("testSource");
-			}
-			
-		}));		
+        EventArg arg = argument.getValue();
+
+        assertEquals("testSource", arg.getPropertyName());
+        assertEquals("prop", arg.getPropagationId());
+        assertEquals("testSource.prop", arg.generateNextPropagationId());
 	}
 	
 	public void testEventSendSourceNotThis()
@@ -85,8 +82,9 @@ public class TestObservableObject extends TestCase
 		
 		//act
 		obj.notifyListener();
-		
-		verify(listen).onEvent(eq(newSource), any(EventArg.class));
+        ArgumentCaptor<EventArg> argument = ArgumentCaptor.forClass(EventArg.class);
+		verify(listen).onEvent(argument.capture());
+        assertSame(newSource, argument.getValue().getSource());
 	}
 	
 	private ObservableObject createObj()

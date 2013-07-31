@@ -80,7 +80,7 @@ implements IAccessibleFragmentManager
 	private IObjectListener invalidateMenuListener = new IObjectListener()
 	{
 		@Override
-		public void onEvent(Object source, EventArg arg)
+		public void onEvent(EventArg arg)
 		{
 			getActivity().invalidateOptionsMenu();
 		}		

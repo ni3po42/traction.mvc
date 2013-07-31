@@ -117,8 +117,8 @@ implements IObservableObject
 	{	
 		synchronized (tracableListeners)
 		{
-			PropertyChangedEventArg arg = argPool.checkOut(PropertyChangedEventArg.class);
-			
+            EventArg arg = argPool.checkOut(EventArg.class);
+
 			//notify properties that react to this property
 			if (reactions.size() > 0 && reactions.containsKey(propertyName))
 			{
@@ -140,10 +140,10 @@ implements IObservableObject
 				ArrayList<String> sourceNames = tracableListeners.get(listener);
 				for(int j=0;j<sourceNames.size();j++)
 				{
-					String source = sourceNames.get(j);
-					arg.setProperty(getProperty(propertyName));
-					arg.setSourceName(source);
-					listener.onEvent(getSource(), arg);
+					String sourceName = sourceNames.get(j);
+                    arg.setAll(sourceName, getSource());
+                    arg.setPropagationId(propertyName);
+					listener.onEvent(arg);
 				}
 			}		
 			argPool.checkIn(arg);
@@ -156,18 +156,18 @@ implements IObservableObject
 		notifyListenerRecursive(null);
 	}
 	
-	private void notifyListenerRecursive(ObjectChangedEventArg bubbledArg)
+	private void notifyListenerRecursive(EventArg bubbledArg)
 	{
 		synchronized(tracableListeners)
 		{
-			ObjectChangedEventArg arg = argPool.checkOut(ObjectChangedEventArg.class);
+            EventArg arg = argPool.checkOut(EventArg.class);
 			
 			//if not null, means this change is bubbling up through the object till it reaches the top level
 			//(probably the activity or head view model)
 			//grab the full path at this point and add it to this new argument
 			if (bubbledArg != null)
-				arg.setPathHistory(bubbledArg.getFullPathHistory());
-			String ph = arg.getPathHistory();
+				arg.setPropagationId(bubbledArg.generateNextPropagationId());
+			String ph = arg.getPropagationId();
 			
 			//notify properties that react to this property
 			if (reactions.size() > 0 && reactions.containsKey(ph))
@@ -188,8 +188,8 @@ implements IObservableObject
 				ArrayList<String> sourceNames = tracableListeners.get(listener);
 				for(int j=0;j<sourceNames.size();j++)
 				{
-					arg.setSourceName(sourceNames.get(j));
-					listener.onEvent(getSource(), arg);
+                    arg.setAll(sourceNames.get(j), getSource());
+					listener.onEvent(arg);
 				}
 			}		
 			argPool.checkIn(arg);
@@ -211,25 +211,9 @@ implements IObservableObject
 	}
 	
 	@Override
-	public void onEvent(Object source, EventArg arg)
+	public void onEvent(EventArg arg)
 	{
-		if (arg instanceof PropertyChangedEventArg)
-		{
-			PropertyChangedEventArg parg = (PropertyChangedEventArg) arg;
-			ObjectChangedEventArg newArg = argPool.checkOut(ObjectChangedEventArg.class);	
-			
-			//get source name from lower level
-			newArg.setSourceName(parg.getSourceName());
-			
-			//set the property name that changes as the current path history
-			newArg.setPathHistory(parg.getProperty().getName());			
-			notifyListenerRecursive(newArg);			
-			argPool.checkIn(newArg);
-		}
-		else if (arg instanceof ObjectChangedEventArg)
-		{
-			notifyListenerRecursive((ObjectChangedEventArg)arg);
-		}
+        notifyListenerRecursive(arg);
 	}
 	
 	@SuppressWarnings("unchecked")

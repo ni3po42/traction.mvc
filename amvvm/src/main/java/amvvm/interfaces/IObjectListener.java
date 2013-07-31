@@ -25,29 +25,57 @@ public interface IObjectListener
 {	
 	public static class EventArg
 	{
-		private String sourceName;
-		
+		private String propertyName;
+        private String propagationId;
+        private Object source;
+
+        public void setAll(String propertyName, Object source)
+        {
+            this.propertyName = propertyName;
+            this.source = source;
+        }
+
+        public Object getSource()
+        {
+            return source;
+        }
+
+        public String getPropertyName()
+        {
+            return propertyName;
+        }
+
 		public void recycle()
 		{
-			sourceName = null;
+			setAll(null, null);
+            this.propagationId = null;
 		}
-		
-		public void setSourceName(String name)
-		{
-			sourceName = name;
-		}
-		
-		public String getSourceName()
-		{
-			return sourceName;
-		}		
+
+        public void setPropagationId(String id)
+        {
+            this.propagationId = id;
+        }
+
+        public String getPropagationId()
+        {
+            return this.propagationId;
+        }
+
+        public String generateNextPropagationId()
+        {
+            if (propertyName == null || propertyName.equals(""))
+                return propagationId;
+            else if (propagationId != null && !propagationId.equals(""))
+                return propertyName + "." + propagationId;
+            else
+                return propertyName;
+        }
 	}	
 	
 	/**
 	 * Fired when listener is signalled of something, anything really.
-	 * @param source - source of event (might not be the actually initiator)
 	 * @param arg
 	 */
-	void onEvent(Object source, EventArg arg);
+	void onEvent(EventArg arg);
 	
 }
