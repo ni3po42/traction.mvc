@@ -303,6 +303,8 @@ implements IViewBinding
     public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
     {
         widget = new WeakReference<V>((V)v);
+        if (attributeBridge == null)
+            return;
         initialise(attributeBridge, uiHandler, inventory);
     }
 

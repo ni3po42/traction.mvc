@@ -19,6 +19,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import amvvm.implementations.ui.UIHandler;
+import amvvm.implementations.ui.viewbinding.GenericViewBinding;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
@@ -30,6 +31,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory2;
 import android.view.View;
+import android.view.ViewParent;
+
 import amvvm.R;
 /**
  * Custom factory for creating Views during inflation. This determines which IViewBiding object will be associated with
@@ -56,6 +59,23 @@ implements Factory2
 	 */
 	public static class ViewHolder
 	{
+        private boolean synthetic;
+
+        public ViewHolder(boolean isSynthetic)
+        {
+            this.synthetic = isSynthetic;
+        }
+
+        public ViewHolder()
+        {
+            this(false);
+        }
+
+        public boolean isSynthetic()
+        {
+            return synthetic;
+        }
+
 		/**
 		 * Bridge between UI and data
 		 */
@@ -241,7 +261,7 @@ implements Factory2
          if (view==null) return null;
 
         //should we go on?
-        ViewHolder parentViewHolder = (parent != null) ? getViewHolder(parent) : null;
+        ViewHolder parentViewHolder = parent == null ? null : getViewHolder(parent);
 
         //if either there is no viewholder for a non null parent or that parent's viewholder says to ignore chilrend..
         if ((parent != null && parentViewHolder == null) || (parentViewHolder != null && parentViewHolder.ignoreChildren))
@@ -311,6 +331,26 @@ implements Factory2
 			return null;
 		return (ViewHolder)view.getTag(R.id.amvvm_viewholder);
 	}
+
+    /**
+     * Injects a 'synthetic' viewholder into the view
+     * @param view
+     * @param viewFactory
+     * @return : the newly injected viewHolder
+     */
+    public static ViewHolder createViewHolderFor(final View view, ViewFactory viewFactory)
+    {
+        //create 'synthetic' viewholder
+        ViewHolder vh = new ViewHolder(true);
+
+        vh.inventory = new BindingInventory();
+        vh.viewBinding = new GenericViewBinding<View>(); //viewFactory.getViewBinding(view, null);
+
+        vh.viewBinding.initialise(view, null, new UIHandler(), vh.inventory);
+
+        view.setTag(R.id.amvvm_viewholder, vh);
+        return vh;
+    }
 
 	/**
 	 * Registers (binds) View to an object. The framework support late binding, when this

@@ -85,7 +85,7 @@ extends GenericViewBinding<V>
 			};
 		return internalAdapter;
 	}
-	
+
 	//not used yet
 	@Override
 	public String getBasePath()

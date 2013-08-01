@@ -44,6 +44,8 @@ implements OnItemSelectedListener
 		super.detachBindings();
 	}
 
+
+
 	@Override
 	protected void disableListeners()
 	{

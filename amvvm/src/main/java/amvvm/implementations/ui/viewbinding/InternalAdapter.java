@@ -18,6 +18,8 @@ package amvvm.implementations.ui.viewbinding;
 import amvvm.implementations.ViewFactory;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
+
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,17 +68,34 @@ extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		//ViewFactory.DetachContext(convertView);
-		
+        //the adapter is expecting the parent to have a view holder. it should for the most part..
+        //except the weird Spinner. There are at least two different parent ViewGroups that can
+        //show up; the spinner and it's popup window. In the case the popup window (or some other
+        //viewgroup) comes up, this will synthetically add a viewHolder with the proper objects
+        //and register the list as the root context.
+        if (ViewFactory.getViewHolder(parent) == null)
+        {
+            ViewFactory.ViewHolder vh = ViewFactory.createViewHolderFor(parent,null);
+            vh.isRoot = true;
+            vh.ignoreChildren = false;
+            ViewFactory.RegisterContext(parent, getList());
+        }
+
 		if (convertView == null)
 		{	
-			convertView = getLayoutInflater(parent).inflate(getItemTemplateId(), parent,false);			
+			convertView = getLayoutInflater(parent).inflate(getItemTemplateId(), parent ,false);
 		}	
 		ViewFactory.RegisterContext(convertView, getList().get(position));
-		
+
+        //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'
+        if (ViewFactory.getViewHolder(parent).isSynthetic())
+            ViewFactory.DetachContext(parent);
+
 		return convertView;
 	}
-		
+
+
+
 	
 	@Override
 	public int getCount()

@@ -2,8 +2,14 @@ package amvvm.tests;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.ActionMode;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.LinearLayout;
 
 import junit.framework.TestCase;
@@ -311,6 +317,46 @@ public class TestViewFactory extends TestCase
         assertTrue(vb instanceof customViewBinding);
     }
 
+    private void XXXtestGetParentInventoryFromFirstAncestorWithAViewHolder()
+    {
+        //arrange
+        String viewClass = "ni3po42.android.amvvm.views.realview";
+
+        View parentLayout = mock(View.class);
+        View childView = mock(View.class);
+        ViewGroup grandParentLayout = mock(ViewGroup.class);
+
+        when(parentLayout.getParent()).thenReturn(grandParentLayout);
+
+        AttributeBridge bridge = mock(AttributeBridge.class);
+        ViewFactory vf = createViewFactory(bridge,childView, viewClass);
+
+        TypedArray ta = mock(TypedArray.class);
+        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
+        mockTypedArrayBaseValues(ta, true, true, false, null);
+
+        ViewFactory.ViewHolder ancestorVH = new ViewFactory.ViewHolder();
+        ancestorVH.inventory = mock(BindingInventory.class);
+        ancestorVH.viewBinding = mock(IViewBinding.class);
+        ancestorVH.isRoot = true;
+        ancestorVH.ignoreChildren = false;
+        when(grandParentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(ancestorVH);
+
+        //act
+        View v = vf.onCreateView(parentLayout, viewClass, stubContext, stubAttributeSet);
+
+        //assert
+        assertNotNull(v);
+        ArgumentCaptor<ViewFactory.ViewHolder> argument = ArgumentCaptor.forClass(ViewFactory.ViewHolder.class);
+        verify(v).setTag(eq(R.id.amvvm_viewholder), argument.capture());
+        ViewFactory.ViewHolder vh = argument.getValue();
+
+        assertNotSame(ancestorVH, vh);
+        assertNotSame(ancestorVH.inventory, vh.inventory);
+        assertNotNull(vh.inventory);
+        assertSame(ancestorVH.inventory, vh.inventory.getParentInventory());
+    }
+
     private void mockTypedArrayBaseValues(TypedArray ta,boolean isBindable, boolean isRoot, boolean ignoreChildren, String bindingType)
     {
         when(ta.getBoolean(eq(R.styleable.View_IsRoot) , eq(false))).thenReturn(isRoot);
@@ -342,6 +388,7 @@ public class TestViewFactory extends TestCase
 
         }
     }
+
     public static class A extends View{
         public A(Context context) {
             super(context);
