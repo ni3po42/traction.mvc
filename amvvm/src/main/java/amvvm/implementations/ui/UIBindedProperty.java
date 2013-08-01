@@ -121,8 +121,14 @@ implements IUIElement<T>
 	{
 		return path;
 	}
-	
-	@Override
+
+    @Override
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+
+    @Override
 	public void setUIUpdateListener(IUIElement.IUIUpdateListener<T> listener)
 	{
 		this.updateListener = listener;

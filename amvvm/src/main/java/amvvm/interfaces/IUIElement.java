@@ -33,7 +33,13 @@ public interface IUIElement<T>
 	 * @return
 	 */
 	public String getPath();
-	
+
+    /**
+     * set path to model/view-model data
+     * @param path
+     */
+    public void setPath(String path);
+
 	/**
 	 * sets a handler for when the ui recieves data from the model/view-model
 	 * @param listener
