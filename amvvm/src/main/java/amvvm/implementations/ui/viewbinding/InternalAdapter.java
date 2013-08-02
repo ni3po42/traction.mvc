@@ -15,7 +15,9 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
+import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
 
@@ -75,7 +77,7 @@ extends BaseAdapter
         //and register the list as the root context.
         if (ViewFactory.getViewHolder(parent) == null)
         {
-            ViewFactory.ViewHolder vh = ViewFactory.createViewHolderFor(parent,null);
+            ViewFactory.ViewHolder vh = ViewFactory.createViewHolderFor(parent,new BindingInventory(), new GenericViewBinding<View>(), new UIHandler());
             vh.isRoot = true;
             vh.ignoreChildren = false;
             ViewFactory.RegisterContext(parent, getList());

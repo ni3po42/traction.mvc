@@ -335,18 +335,18 @@ implements Factory2
     /**
      * Injects a 'synthetic' viewholder into the view
      * @param view
-     * @param viewFactory
+     * @param inventory
+     * @param viewBinding
+     * @param uiHandler
      * @return : the newly injected viewHolder
      */
-    public static ViewHolder createViewHolderFor(final View view, ViewFactory viewFactory)
+    public static ViewHolder createViewHolderFor(final View view, BindingInventory inventory, IViewBinding viewBinding, UIHandler uiHandler)
     {
         //create 'synthetic' viewholder
         ViewHolder vh = new ViewHolder(true);
 
-        vh.inventory = new BindingInventory();
-        vh.viewBinding = new GenericViewBinding<View>(); //viewFactory.getViewBinding(view, null);
-
-        vh.viewBinding.initialise(view, null, new UIHandler(), vh.inventory);
+        vh.inventory =inventory;
+        vh.viewBinding = viewBinding;
 
         view.setTag(R.id.amvvm_viewholder, vh);
         return vh;
