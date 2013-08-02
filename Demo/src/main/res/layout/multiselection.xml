@@ -24,7 +24,8 @@
  	mvvm:IsBindable="true" 
     mvvm:Items="Items"
     mvvm:Selected="Selected"
-    mvvm:ItemTemplate="@layout/selectable"    
+    mvvm:ItemTemplate="@layout/selectable"
+
     >
 </GridView>
 <TextView 

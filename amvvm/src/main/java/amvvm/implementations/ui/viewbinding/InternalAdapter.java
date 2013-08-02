@@ -96,10 +96,7 @@ extends BaseAdapter
 		return convertView;
 	}
 
-
-
-	
-	@Override
+    @Override
 	public int getCount()
 	{
 		if (getList() == null)
@@ -122,5 +119,5 @@ extends BaseAdapter
 			return -1;
 		return getList().get(position).hashCode();
 	}
-		
+
 }

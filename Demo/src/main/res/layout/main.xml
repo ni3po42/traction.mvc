@@ -5,7 +5,7 @@
     xmlns:mvvm="http://schemas.android.com/apk/res-auto"
   	mvvm:IsRoot="true" 
      >
-    
+
     <fragmentstub
         android:id="@+id/main.view.id"
          android:layout_width="match_parent"

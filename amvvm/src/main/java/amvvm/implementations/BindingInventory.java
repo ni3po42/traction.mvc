@@ -382,7 +382,10 @@ public class BindingInventory
 
 	@SuppressWarnings("unchecked")
 	public Class<?> DereferencePropertyType(String path)
-	{		
+	{
+        if (path == null)
+            return null;
+
 		if (path != null && path.equals("."))
 			return context.getSource() == null ? null : context.getSource().getClass();
 		

@@ -40,7 +40,7 @@ public class MainViewModel extends ViewModel
 		ViewModelChoices.add(new DemoViewModelChoice(UIWiring.class, "UI Wiring", "Demonstrates how elements can react to other elements changing without referencing other UI elements!"));
 		ViewModelChoices.add(new DemoViewModelChoice(DemoADialogViewModel.class, "Dialog view model", "Shows a view model hooking to a dialog."));
 		ViewModelChoices.add(new DemoViewModelChoice(MultiSelectViewModel.class, "Multi-selection", "Gives an example on how multi-selection could work in AMVVM."));
-        ViewModelChoices.add(new DemoViewModelChoice(EntryViewModel.class, "Swipe List", "A custom view is built that binds data and provides catchy UX."));
+        ViewModelChoices.add(new DemoViewModelChoice(EntryViewModel.class, "Swipe List", "A custom view is built that binds data and provides a catchy (ok, at least not boring) UX. Swipe items to the left to activate/de-active."));
 		
 		setContentView(R.layout.mainviewmodel);
 	}

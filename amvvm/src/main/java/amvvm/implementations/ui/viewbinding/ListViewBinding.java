@@ -48,7 +48,9 @@ implements OnItemClickListener
 {	
 	//stores the path to the property that denotes if the item is selected.
 	private String selectionPath;
-	
+	private String enabledPath;
+    private Boolean enabledOverride;
+
 	public ListViewBinding()
 	{
 		
@@ -58,16 +60,27 @@ implements OnItemClickListener
     protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
     {
         super.initialise(attributeBridge, uiHandler, inventory);
-		
+
+        TypedArray ta = attributeBridge.getAttributes(R.styleable.ListView);
 		//this selected attribute is only valid if the choice mode is not single or none, only multiple.
 		if (getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
 				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
 		{
-			TypedArray ta = attributeBridge.getAttributes(R.styleable.ListView);
 			selectionPath = ta.getString(R.styleable.ListView_Selected);
-			ta.recycle();
 		}
-		
+
+        if (ta.hasValue(R.styleable.ListView_SelectionEnabled))
+        {
+            enabledPath = ta.getString(R.styleable.ListView_SelectionEnabled);
+            if (enabledPath == null || enabledPath.equals("") ||
+                    enabledPath.toLowerCase().equals("true") || enabledPath.toLowerCase().equals("false"))//if must be a boolean
+            {
+                enabledPath = null;
+                enabledOverride = ta.getBoolean(R.styleable.ListView_SelectionEnabled, true);
+            }
+        }
+
+        ta.recycle();
 		getWidget().setOnItemClickListener(this);
 	}
 	
@@ -79,8 +92,24 @@ implements OnItemClickListener
 		return getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_SINGLE ||
 				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_NONE;
 	}
-	
-	@Override
+
+    @Override
+    protected boolean isSelectionEnabledAt(int position)
+    {
+        if (enabledPath == null && enabledOverride != null)
+            return enabledOverride;
+        else if (enabledPath != null)
+        {
+            View view = getWidget().getChildAt(position);
+            ViewHolder vh = ViewFactory.getViewHolder(view);
+            Object value = vh.inventory.DereferenceValue(enabledPath);
+            if (value instanceof Boolean)
+                return (Boolean)value;
+        }
+        return super.isSelectionEnabledAt(position);
+    }
+
+    @Override
 	public void detachBindings()
 	{
 		getWidget().setOnItemClickListener(null);

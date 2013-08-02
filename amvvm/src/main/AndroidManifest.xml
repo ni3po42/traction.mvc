@@ -15,7 +15,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="amvvm"
           android:versionCode="1"
-          android:versionName="ALPHA 0.1.2" >
+          android:versionName="ALPHA 0.2.0" >
 
     <uses-sdk android:minSdkVersion="16"
               android:targetSdkVersion="16" />

@@ -61,7 +61,8 @@ extends GenericViewBinding<V>
 	//local reference to the selected item
 	private T currentSelection;
 	private int currentIndex=-1;
-	
+
+
 	/**
 	 * get adapter for the adapterview
 	 * @return
@@ -81,8 +82,13 @@ extends GenericViewBinding<V>
 				{
 					return itemTemplateId;
 				}
-			
-			};
+
+                @Override
+                public boolean isEnabled(int position)
+                {
+                    return isSelectionEnabledAt(position);
+                }
+            };
 		return internalAdapter;
 	}
 
@@ -92,7 +98,12 @@ extends GenericViewBinding<V>
 	{
 		return Items.getPath();
 	}
-	
+
+    protected boolean isSelectionEnabledAt(int position)
+    {
+        return true;
+    }
+
 	/**
 	 * gets type safe adapter
 	 * @return
