@@ -16,12 +16,12 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int BindingType=0x7f010017;
+        public static int BindingType=0x7f010018;
         /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
          */
-        public static int Format=0x7f010014;
+        public static int Format=0x7f010015;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -29,7 +29,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int GenericBindings=0x7f010018;
+        public static int GenericBindings=0x7f010019;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -37,7 +37,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IgnoreChildren=0x7f010019;
+        public static int IgnoreChildren=0x7f01001a;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -70,7 +70,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IsIndeterminate=0x7f010010;
+        public static int IsIndeterminate=0x7f010011;
         /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -78,7 +78,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int IsRoot=0x7f010016;
+        public static int IsRoot=0x7f010017;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -146,7 +146,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int OnDragEnd=0x7f010012;
+        public static int OnDragEnd=0x7f010013;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -154,7 +154,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int OnDragStart=0x7f010011;
+        public static int OnDragStart=0x7f010012;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -194,7 +194,16 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int SelectedTime=0x7f010015;
+        public static int SelectedTime=0x7f010016;
+        /** <p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static int SelectionEnabled=0x7f010010;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -202,7 +211,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static int Text=0x7f010013;
+        public static int Text=0x7f010014;
         /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
 "<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
@@ -468,11 +477,13 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #ListView_Selected amvvm:Selected}</code></td><td></td></tr>
+           <tr><td><code>{@link #ListView_SelectionEnabled amvvm:SelectionEnabled}</code></td><td></td></tr>
            </table>
            @see #ListView_Selected
+           @see #ListView_SelectionEnabled
          */
         public static final int[] ListView = {
-            0x7f01000f
+            0x7f01000f, 0x7f010010
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#Selected}
@@ -488,6 +499,21 @@ containing a value of this type.
           @attr name android:Selected
         */
         public static final int ListView_Selected = 0;
+        /**
+          <p>This symbol is the offset where the {@link amvvm.R.attr#SelectionEnabled}
+          attribute's value can be found in the {@link #ListView} array.
+
+
+          <p>May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:SelectionEnabled
+        */
+        public static final int ListView_SelectionEnabled = 1;
         /** Attributes that can be used with a Menu.
            <p>Includes the following attributes:</p>
            <table>
@@ -623,7 +649,7 @@ containing a value of this type.
            @see #ProgressView_Value
          */
         public static final int[] ProgressView = {
-            0x7f010004, 0x7f010009, 0x7f010010
+            0x7f010004, 0x7f010009, 0x7f010011
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#IsIndeterminate}
@@ -680,7 +706,7 @@ containing a value of this type.
            @see #SeekBar_OnDragStart
          */
         public static final int[] SeekBar = {
-            0x7f010011, 0x7f010012
+            0x7f010012, 0x7f010013
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#OnDragEnd}
@@ -723,7 +749,7 @@ containing a value of this type.
            @see #TextView_Text
          */
         public static final int[] TextView = {
-            0x7f010013, 0x7f010014
+            0x7f010014, 0x7f010015
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#Format}
@@ -761,7 +787,7 @@ containing a value of this type.
            @see #TimePicker_SelectedTime
          */
         public static final int[] TimePicker = {
-            0x7f010015
+            0x7f010016
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#SelectedTime}
@@ -852,8 +878,8 @@ containing a value of this type.
            @see #View_IsVisible
          */
         public static final int[] View = {
-            0x7f010000, 0x7f010002, 0x7f010016, 0x7f010017,
-            0x7f010018, 0x7f010019
+            0x7f010000, 0x7f010002, 0x7f010017, 0x7f010018,
+            0x7f010019, 0x7f01001a
         };
         /**
           <p>This symbol is the offset where the {@link amvvm.R.attr#BindingType}

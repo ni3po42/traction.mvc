@@ -17,11 +17,11 @@
                 </declare-styleable>
 
                 <attr
-                    name="SelectedDate"
-                    format="string" />
-                <attr
                     name="IsBindable"
                     format="boolean" />
+                <attr
+                    name="SelectedDate"
+                    format="string" />
 
                 <declare-styleable name="DatePicker" >
                     <attr name="SelectedDate" />
@@ -106,6 +106,9 @@
                     <attr
                         name="Selected"
                         format="string" />
+                    <attr
+                        name="SelectionEnabled"
+                        format="string|boolean" />
                 </declare-styleable>
                 <declare-styleable name="TimePicker" >
                     <attr
@@ -125,6 +128,11 @@
                     <attr name="MinDate" />
                     <attr name="MaxDate" />
                 </declare-styleable>
+
+                <attr
+                    name="MaxValue"
+                    format="string" />
+
                 <declare-styleable name="AdapterView" >
                     <attr
                         name="SelectedItem"
@@ -136,11 +144,6 @@
                         name="ItemTemplate"
                         format="reference" />
                 </declare-styleable>
-
-                <attr
-                    name="MaxValue"
-                    format="string" />
-
                 <declare-styleable name="ToggleButton" >
                     <attr name="IsChecked" />
                 </declare-styleable>
@@ -288,6 +291,30 @@
 
                     <!-- API 14 theme customizations can go here. -->
                 </style>
+            </file>
+            <file
+                name="entryitem"
+                path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\main\res\layout\entryitem.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="swipeentry"
+                path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\main\res\layout\swipeentry.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="entryviewmodel"
+                path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\main\res\layout\entryviewmodel.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\src\main\res\values\attrs.xml"
+                qualifiers="" >
+                <declare-styleable name="SwipeEntryView" >
+                    <attr
+                        name="Active"
+                        format="string" />
+                </declare-styleable>
             </file>
         </source>
         <source path="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\build\res\rs\debug" />

@@ -1,12 +1,12 @@
-int attr BindingType 0x7f010017
-int attr Format 0x7f010014
-int attr GenericBindings 0x7f010018
-int attr IgnoreChildren 0x7f010019
+int attr BindingType 0x7f010018
+int attr Format 0x7f010015
+int attr GenericBindings 0x7f010019
+int attr IgnoreChildren 0x7f01001a
 int attr Image 0x7f01000e
 int attr IsBindable 0x7f010000
 int attr IsChecked 0x7f010001
-int attr IsIndeterminate 0x7f010010
-int attr IsRoot 0x7f010016
+int attr IsIndeterminate 0x7f010011
+int attr IsRoot 0x7f010017
 int attr IsVisible 0x7f010002
 int attr ItemTemplate 0x7f01000c
 int attr Items 0x7f01000b
@@ -15,14 +15,15 @@ int attr MaxValue 0x7f010004
 int attr MinDate 0x7f010005
 int attr MinValue 0x7f010006
 int attr OnClick 0x7f010007
-int attr OnDragEnd 0x7f010012
-int attr OnDragStart 0x7f010011
+int attr OnDragEnd 0x7f010013
+int attr OnDragStart 0x7f010012
 int attr OnLongClick 0x7f01000d
 int attr Selected 0x7f01000f
 int attr SelectedDate 0x7f010008
 int attr SelectedItem 0x7f01000a
-int attr SelectedTime 0x7f010015
-int attr Text 0x7f010013
+int attr SelectedTime 0x7f010016
+int attr SelectionEnabled 0x7f010010
+int attr Text 0x7f010014
 int attr Value 0x7f010009
 int id amvvm_viewholder 0x7f020000
 int[] styleable AdapterView { 0x7f01000a, 0x7f01000b, 0x7f01000c }
@@ -42,8 +43,9 @@ int styleable DatePicker_MinDate 1
 int styleable DatePicker_SelectedDate 2
 int[] styleable ImageView { 0x7f01000e }
 int styleable ImageView_Image 0
-int[] styleable ListView { 0x7f01000f }
+int[] styleable ListView { 0x7f01000f, 0x7f010010 }
 int styleable ListView_Selected 0
+int styleable ListView_SelectionEnabled 1
 int[] styleable Menu { 0x7f010000, 0x7f010002, 0x7f010007 }
 int styleable Menu_IsBindable 0
 int styleable Menu_IsVisible 1
@@ -52,23 +54,23 @@ int[] styleable NumberPicker { 0x7f010004, 0x7f010006, 0x7f010009 }
 int styleable NumberPicker_MaxValue 0
 int styleable NumberPicker_MinValue 1
 int styleable NumberPicker_Value 2
-int[] styleable ProgressView { 0x7f010004, 0x7f010009, 0x7f010010 }
+int[] styleable ProgressView { 0x7f010004, 0x7f010009, 0x7f010011 }
 int styleable ProgressView_IsIndeterminate 2
 int styleable ProgressView_MaxValue 0
 int styleable ProgressView_Value 1
-int[] styleable SeekBar { 0x7f010011, 0x7f010012 }
+int[] styleable SeekBar { 0x7f010012, 0x7f010013 }
 int styleable SeekBar_OnDragEnd 1
 int styleable SeekBar_OnDragStart 0
-int[] styleable TextView { 0x7f010013, 0x7f010014 }
+int[] styleable TextView { 0x7f010014, 0x7f010015 }
 int styleable TextView_Format 1
 int styleable TextView_Text 0
-int[] styleable TimePicker { 0x7f010015 }
+int[] styleable TimePicker { 0x7f010016 }
 int styleable TimePicker_SelectedTime 0
 int[] styleable Toggle { 0x7f010001 }
 int styleable Toggle_IsChecked 0
 int[] styleable ToggleButton { 0x7f010001 }
 int styleable ToggleButton_IsChecked 0
-int[] styleable View { 0x7f010000, 0x7f010002, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019 }
+int[] styleable View { 0x7f010000, 0x7f010002, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a }
 int styleable View_BindingType 3
 int styleable View_GenericBindings 4
 int styleable View_IgnoreChildren 5

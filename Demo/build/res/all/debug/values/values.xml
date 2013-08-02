@@ -37,6 +37,7 @@
     </declare-styleable>
     <declare-styleable name="ListView">
         <attr name="Selected" format="string" />
+        <attr name="SelectionEnabled" format="string|boolean" />
     </declare-styleable>
     <declare-styleable name="Menu">
         <attr name="IsVisible" />
@@ -57,6 +58,11 @@
         <attr name="OnDragStart" format="string" />
         <attr name="OnDragEnd" format="string" />
     </declare-styleable>
+    <!-- From: file:/C:/Users/tstratto/Documents/GitHub/amvvm/Demo/src/main/res/values/attrs.xml -->
+    <declare-styleable name="SwipeEntryView">
+        <attr name="Active" format="string" />
+    </declare-styleable>
+    <!-- From: file:/C:/Users/tstratto/Documents/GitHub/amvvm/Demo/build/exploded-bundles/AmvvmAmvvmUnspecified.aar/res/values/values.xml -->
     <declare-styleable name="TextView">
         <attr name="Text" format="string" />
         <attr name="Format" format="string|reference" />

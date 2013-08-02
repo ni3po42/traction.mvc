@@ -37,6 +37,7 @@
     </declare-styleable>
     <declare-styleable name="ListView">
         <attr name="Selected" format="string" />
+        <attr name="SelectionEnabled" format="string|boolean" />
     </declare-styleable>
     <declare-styleable name="Menu">
         <attr name="IsVisible" />

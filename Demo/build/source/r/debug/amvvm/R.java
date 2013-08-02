@@ -8,15 +8,15 @@ package amvvm;
 
 public final class R {
 	public static final class attr {
-		public static final int BindingType = 0x7f010017;
-		public static final int Format = 0x7f010014;
-		public static final int GenericBindings = 0x7f010018;
-		public static final int IgnoreChildren = 0x7f010019;
+		public static final int BindingType = 0x7f010019;
+		public static final int Format = 0x7f010016;
+		public static final int GenericBindings = 0x7f01001a;
+		public static final int IgnoreChildren = 0x7f01001b;
 		public static final int Image = 0x7f01000e;
 		public static final int IsBindable = 0x7f010000;
 		public static final int IsChecked = 0x7f010001;
-		public static final int IsIndeterminate = 0x7f010010;
-		public static final int IsRoot = 0x7f010016;
+		public static final int IsIndeterminate = 0x7f010011;
+		public static final int IsRoot = 0x7f010018;
 		public static final int IsVisible = 0x7f010002;
 		public static final int ItemTemplate = 0x7f01000c;
 		public static final int Items = 0x7f01000b;
@@ -25,14 +25,15 @@ public final class R {
 		public static final int MinDate = 0x7f010005;
 		public static final int MinValue = 0x7f010006;
 		public static final int OnClick = 0x7f010007;
-		public static final int OnDragEnd = 0x7f010012;
-		public static final int OnDragStart = 0x7f010011;
+		public static final int OnDragEnd = 0x7f010013;
+		public static final int OnDragStart = 0x7f010012;
 		public static final int OnLongClick = 0x7f01000d;
 		public static final int Selected = 0x7f01000f;
 		public static final int SelectedDate = 0x7f010008;
 		public static final int SelectedItem = 0x7f01000a;
-		public static final int SelectedTime = 0x7f010015;
-		public static final int Text = 0x7f010013;
+		public static final int SelectedTime = 0x7f010017;
+		public static final int SelectionEnabled = 0x7f010010;
+		public static final int Text = 0x7f010015;
 		public static final int Value = 0x7f010009;
 	}
 	public static final class id {
@@ -56,8 +57,9 @@ public final class R {
 		public static final int DatePicker_SelectedDate = 2;
 		public static final int[] ImageView = { 0x7f01000e };
 		public static final int ImageView_Image = 0;
-		public static final int[] ListView = { 0x7f01000f };
+		public static final int[] ListView = { 0x7f01000f, 0x7f010010 };
 		public static final int ListView_Selected = 0;
+		public static final int ListView_SelectionEnabled = 1;
 		public static final int[] Menu = { 0x7f010000, 0x7f010002, 0x7f010007 };
 		public static final int Menu_IsBindable = 0;
 		public static final int Menu_IsVisible = 1;
@@ -66,23 +68,23 @@ public final class R {
 		public static final int NumberPicker_MaxValue = 0;
 		public static final int NumberPicker_MinValue = 1;
 		public static final int NumberPicker_Value = 2;
-		public static final int[] ProgressView = { 0x7f010004, 0x7f010009, 0x7f010010 };
+		public static final int[] ProgressView = { 0x7f010004, 0x7f010009, 0x7f010011 };
 		public static final int ProgressView_IsIndeterminate = 2;
 		public static final int ProgressView_MaxValue = 0;
 		public static final int ProgressView_Value = 1;
-		public static final int[] SeekBar = { 0x7f010011, 0x7f010012 };
+		public static final int[] SeekBar = { 0x7f010012, 0x7f010013 };
 		public static final int SeekBar_OnDragEnd = 1;
 		public static final int SeekBar_OnDragStart = 0;
-		public static final int[] TextView = { 0x7f010013, 0x7f010014 };
+		public static final int[] TextView = { 0x7f010015, 0x7f010016 };
 		public static final int TextView_Format = 1;
 		public static final int TextView_Text = 0;
-		public static final int[] TimePicker = { 0x7f010015 };
+		public static final int[] TimePicker = { 0x7f010017 };
 		public static final int TimePicker_SelectedTime = 0;
 		public static final int[] Toggle = { 0x7f010001 };
 		public static final int[] ToggleButton = { 0x7f010001 };
 		public static final int ToggleButton_IsChecked = 0;
 		public static final int Toggle_IsChecked = 0;
-		public static final int[] View = { 0x7f010000, 0x7f010002, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019 };
+		public static final int[] View = { 0x7f010000, 0x7f010002, 0x7f010018, 0x7f010019, 0x7f01001a, 0x7f01001b };
 		public static final int View_BindingType = 3;
 		public static final int View_GenericBindings = 4;
 		public static final int View_IgnoreChildren = 5;
