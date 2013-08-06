@@ -17,16 +17,15 @@ package amvvm.implementations.ui.menubinding;
 
 import java.lang.ref.WeakReference;
 
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 
-import amvvm.implementations.AttributeBridge;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
@@ -46,14 +45,14 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 	private final WeakReference<MenuItem> menuItem;
 	private final WeakReference<BindingInventory> inventoryReference;
 	
-	public MenuBinding(MenuItem item, TypedArray attrs, BindingInventory inventory)
+	public MenuBinding(MenuItem item, IAttributeGroup attrs, BindingInventory inventory)
 	{
 		menuItem = new WeakReference<MenuItem>(item);
 		inventoryReference = new WeakReference<BindingInventory>(inventory);
 		item.setOnMenuItemClickListener(this);	
 		
-		OnClick.initialize(attrs, inventory, null);
-		IsVisible.initialize(attrs, inventory, null);
+		OnClick.initialize(attrs);
+		IsVisible.initialize(attrs);
 		
 		IsVisible.setUIUpdateListener(new IUIElement.IUIUpdateListener<Boolean>()
 		{			
@@ -77,7 +76,7 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 	}
 
     @Override
-    public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
     {
         //not used
     }
@@ -103,6 +102,45 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 		
 		IsVisible.setUIUpdateListener(null);
 	}
+
+    @Override
+    public BindingInventory getBindingInventory()
+    {
+        if (inventoryReference.get() != null)
+            return  inventoryReference.get();
+        return null;
+    }
+
+    @Override
+    public UIHandler getUIHandler()
+    {
+        //not used
+        return null;
+    }
+
+    @Override
+    public boolean isRoot()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean ignoreChildren()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isSynthetic()
+    {
+        return false;
+    }
+
+    @Override
+    public void markAsSynthetic()
+    {
+
+    }
 
 
 }

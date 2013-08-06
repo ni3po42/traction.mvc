@@ -15,21 +15,19 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.ViewFactory.ViewHolder;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyObservableObject;
-import android.content.Context;
+
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import amvvm.R;
+import amvvm.interfaces.IViewBinding;
 
 /**
  * Binding for a list view; it just extends the AdapterViewBinding to add a special attribute: 'Selected'.
@@ -57,11 +55,11 @@ implements OnItemClickListener
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
+        super.initialise(attributeBridge);
 
-        TypedArray ta = attributeBridge.getAttributes(R.styleable.ListView);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ListView);
 		//this selected attribute is only valid if the choice mode is not single or none, only multiple.
 		if (getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
 				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
@@ -101,8 +99,8 @@ implements OnItemClickListener
         else if (enabledPath != null)
         {
             View view = getWidget().getChildAt(position);
-            ViewHolder vh = ViewFactory.getViewHolder(view);
-            Object value = vh.inventory.DereferenceValue(enabledPath);
+            IViewBinding vb = ViewFactory.getViewBinding(view);
+            Object value = vb.getBindingInventory().dereferenceValue(enabledPath);
             if (value instanceof Boolean)
                 return (Boolean)value;
         }
@@ -126,18 +124,18 @@ implements OnItemClickListener
 		if (!isSelectionEnabled())
 		{
 			//get the binding inventory for the child item..
-			ViewHolder vh = ViewFactory.getViewHolder(childView);
-			if (vh != null && vh.inventory != null)
+			IViewBinding vb = ViewFactory.getViewBinding(childView);
+			if (vb != null)
 			{
 				//look up the current value for that property
-				Object b = vh.inventory.DereferenceValue(selectionPath);
+				Object b = vb.getBindingInventory().dereferenceValue(selectionPath);
 				
 				//confirm it's a boolean property..
 				if (b != null && (b instanceof Boolean || b.getClass().equals(boolean.class)))
 				{
 					//..flip it's state
 					Boolean bb = (Boolean)b;
-					vh.inventory.sendUpdate(selectionPath, !bb);
+                    vb.getBindingInventory().sendUpdate(selectionPath, !bb);
 				}
 			}
 		}

@@ -22,19 +22,18 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import amvvm.implementations.AttributeBridge;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.GenericArgument;
 
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.util.Property;
 import android.view.View;
 import amvvm.R;
@@ -57,8 +56,46 @@ implements IViewBinding
 	public final UIBindedProperty<Boolean> IsVisible = new UIBindedProperty<Boolean>(this, R.styleable.View_IsVisible);
 	
 	private WeakReference<V> widget;
-	
-	/**
+
+    private final ViewBindingHelper helper = new ViewBindingHelper();
+
+    @Override
+    public BindingInventory getBindingInventory()
+    {
+        return helper.getBindingInventory();
+    }
+
+    @Override
+    public UIHandler getUIHandler()
+    {
+        return helper.getUIHandler();
+    }
+
+    @Override
+    public boolean isRoot()
+    {
+        return helper.isRoot();
+    }
+
+    @Override
+    public boolean ignoreChildren()
+    {
+        return helper.ignoreChildren();
+    }
+
+    @Override
+    public boolean isSynthetic()
+    {
+        return helper.isSynthetic();
+    }
+
+    @Override
+    public void markAsSynthetic()
+    {
+       helper.markAsSynthetic();
+    }
+
+    /**
 	 * Gets the view (widget) this view binding is associated with.
 	 * @return view (widget) if available. null otherwise.
 	 */
@@ -137,18 +174,15 @@ implements IViewBinding
 		
 		@SuppressWarnings("unchecked")
 		@Override
-		public void initialize(TypedArray notUsed, BindingInventory inventory, UIHandler uiHandler)
+		public void initialize(IAttributeGroup notUsed)
 		{
-			this.uiHandler = uiHandler;
-			this.inventory = inventory;
-			
 			String[] pairs = split.split(connection);
 			
 			//let the property store find the property for me...
 			viewProperty = (Property<Object, Object>) PropertyStore.find(getWidget().getClass(), pairs[0].trim());
 			
 			this.path = pairs[1].trim();
-			inventory.track(this);
+            getBindingInventory().track(this);
 		}
 		
 	}
@@ -185,11 +219,8 @@ implements IViewBinding
 		}
 		
 		@Override
-		public void initialize(TypedArray notUsed, BindingInventory inventory, UIHandler uiHandler)
+		public void initialize(IAttributeGroup notUsed)
 		{
-			this.uiHandler = uiHandler;
-			this.inventory = inventory;
-			
 			String[] pairs = split.split(connection);
 			String setName = pairs[0].trim();
 			
@@ -248,8 +279,7 @@ implements IViewBinding
 			{
 				//Log.
 			}
-			
-			inventory.track(this);
+			getBindingInventory().track(this);
 		}
 		
 		/**
@@ -270,10 +300,13 @@ implements IViewBinding
 		
 	}
 
-	protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+	protected void initialise(IAttributeBridge attributeBridge)
 	{
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.View);
-		IsVisible.initialize(ta, inventory, uiHandler);		
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
+        if (ta == null)
+            return;
+
+		IsVisible.initialize(ta);
 		
 		//get semi-colon delimited properties
 		String bindings = ta.getString(R.styleable.View_GenericBindings);		
@@ -289,23 +322,27 @@ implements IViewBinding
 			if (!bindingList[i].contains("+="))//events
 			{
 				GenericUIBindedProperty prop = new GenericUIBindedProperty(this, bindingList[i].trim());
-				prop.initialize(null, inventory, uiHandler);
+				prop.initialize(null);
 			}
 			else//properties
 			{	
 				GenericUIBindedEvent evnt = new GenericUIBindedEvent(this, bindingList[i].trim());
-				evnt.initialize(null, inventory, uiHandler);
+				evnt.initialize(null);
 			}			
 		}
 	}
 
     @Override
-    public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
     {
         widget = new WeakReference<V>((V)v);
         if (attributeBridge == null)
             return;
-        initialise(attributeBridge, uiHandler, inventory);
+        helper.setRoot(isRoot);
+        helper.setIgnoreChildren(ignoreChildren);
+        helper.setBindingInventory(inventory);
+        helper.setUiHandler(uiHandler);
+        initialise(attributeBridge);
     }
 
     //not implemented yet

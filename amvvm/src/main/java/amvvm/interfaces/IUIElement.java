@@ -57,14 +57,17 @@ public interface IUIElement<T>
 	 * @param value
 	 */
 	public void sendUpdate(T value);
-	
+
+    /**
+     * trys to lookup current value
+     * @return
+     */
+    public T dereferenceValue();
+
 	/**
 	 * Initializes data for ui element during inflation
-	 * @param styledAttributes
-	 * @param inventory
-	 * @param uiHandler : handler giving specific access to ui thread
 	 */
-	public void initialize(TypedArray styledAttributes, BindingInventory inventory, UIHandler uiHandler);
+	public void initialize(IAttributeGroup attributeGroup);
 	
 	/**
 	 * turns off ability to receive updates from model/view-model

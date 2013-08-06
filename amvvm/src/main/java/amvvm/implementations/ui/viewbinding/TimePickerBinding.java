@@ -15,16 +15,14 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedProperty;
-import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.implementations.BindingInventory;
 
-import android.util.AttributeSet;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.format.Time;
 import amvvm.R;
@@ -59,11 +57,11 @@ implements OnTimeChangedListener
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.TimePicker);
-		SelectedTime.initialize(ta, inventory, uiHandler);
+        super.initialise(attributeBridge);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TimePicker);
+		SelectedTime.initialize(ta);
 		ta.recycle();
 	}
 
@@ -78,7 +76,7 @@ implements OnTimeChangedListener
 	public void onTimeChanged(TimePicker arg0, int hourOfDay, int minutes)
 	{
 		BindingInventory inv = SelectedTime.getBindingInventory();
-		Time t = new Time((Time)inv.DereferenceValue(SelectedTime.getPath()));	
+		Time t = new Time(SelectedTime.dereferenceValue());
 		t.set(0, minutes, hourOfDay, t.monthDay, t.month, t.year);
 		SelectedTime.sendUpdate(t);
 	}

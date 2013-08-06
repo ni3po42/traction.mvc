@@ -13,7 +13,7 @@
    limitations under the License.
  */
 
-package amvvm.implementations;
+package amvvm.interfaces;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -22,19 +22,7 @@ import android.util.AttributeSet;
 /**
  * Wrapper for accessing attributes in the AttributeSet in such a way to make it easier to test
  */
-public class AttributeBridge
+public interface IAttributeBridge
 {
-    private Context context;
-    private AttributeSet attrs;
-    public AttributeBridge(Context context, AttributeSet attrs)
-    {
-        this.context = context;
-        this.attrs = attrs;
-    }
-
-    public TypedArray getAttributes(int[] styles)
-    {
-        return context.obtainStyledAttributes(attrs, styles);
-    }
-
+    IAttributeGroup getAttributes(int[] styles);
 }

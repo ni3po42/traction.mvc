@@ -5,8 +5,7 @@
     
     <item android:id="@+id/menu.multiselection" 
         android:titleCondensed="Get Count" android:showAsAction="ifRoom" 
-        android:title="Get Count" 
-        mvvm:IsBindable="true"
+        android:title="Get Count"
         mvvm:OnClick="CountSelected"      
         >   
     </item>

@@ -92,7 +92,7 @@ public class BindingInventory
 
         path = arg.generateNextPropagationId();
         if (path != null && map.containsKey(path))
-            value = DereferenceValue(path);
+            value = dereferenceValue(path);
 
 		if (path == null || !map.containsKey(path))
 		{
@@ -107,7 +107,7 @@ public class BindingInventory
 			{
 				String subPath = tempStringArray[i];
 				ArrayList<IUIElement<?>> elements = subMap.get(subPath).getUIElements();
-				Object subValue = DereferenceValue(subPath);
+				Object subValue = dereferenceValue(subPath);
 									
 				for(int j=0;j<elements.size();j++)
 				{
@@ -151,7 +151,7 @@ public class BindingInventory
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void  fireCommand(String commandPath, Object commandArg)
 	{
-		Object command = DereferenceValue(commandPath);
+		Object command = dereferenceValue(commandPath);
 		if (command instanceof ICommand)
 		{
 			ICommand c = (ICommand)command;
@@ -324,7 +324,7 @@ public class BindingInventory
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Object DereferenceValue(String path)
+	public Object dereferenceValue(String path)
 	{		
 		if (path == null || context == null || context.getSource() == null)
 			return null;
@@ -381,7 +381,7 @@ public class BindingInventory
 	
 
 	@SuppressWarnings("unchecked")
-	public Class<?> DereferencePropertyType(String path)
+	public Class<?> dereferencePropertyType(String path)
 	{
         if (path == null)
             return null;

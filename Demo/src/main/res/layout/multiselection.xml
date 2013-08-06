@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-     
- 	mvvm:IsBindable="true"  
   	mvvm:IsRoot="true"
     >
 <GridView
@@ -20,8 +18,6 @@
     android:horizontalSpacing="10dp"
     android:stretchMode="columnWidth"
     android:gravity="center"
-    
- 	mvvm:IsBindable="true" 
     mvvm:Items="Items"
     mvvm:Selected="Selected"
     mvvm:ItemTemplate="@layout/selectable"
@@ -31,7 +27,6 @@
 <TextView 
         android:layout_width="match_parent"
     android:layout_height="match_parent"
-    mvvm:IsBindable="true"
     mvvm:Text="SelectedCount"
     />
 </LinearLayout>

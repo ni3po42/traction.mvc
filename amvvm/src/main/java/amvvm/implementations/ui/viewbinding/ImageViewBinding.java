@@ -15,19 +15,16 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedProperty;
-import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.AttributeSet;
 import android.widget.ImageView;
 import amvvm.R;
 
@@ -87,11 +84,11 @@ implements IViewBinding
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.ImageView);
-		Image.initialize(ta, inventory, uiHandler);
+        super.initialise(attributeBridge);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ImageView);
+		Image.initialize(ta);
 		ta.recycle();
 	}
 

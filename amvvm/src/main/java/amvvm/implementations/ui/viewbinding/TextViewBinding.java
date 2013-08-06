@@ -18,17 +18,15 @@ package amvvm.implementations.ui.viewbinding;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 import amvvm.interfaces.IViewBinding;
-import android.content.Context;
+
 import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView;
 import amvvm.R;
@@ -67,7 +65,7 @@ implements IViewBinding, TextWatcher
 					initFormatSet = true;
 					
 					currentFormat = value;
-					Object obj = Format.getBindingInventory().DereferenceValue(Text.getPath());
+					Object obj = Text.dereferenceValue();
 					
 					//force an update on the Text element
 					Text.recieveUpdate(obj);
@@ -98,7 +96,7 @@ implements IViewBinding, TextWatcher
 					if (!initFormatSet && Format.getPath() != null)
 					{
 						//..grab that format
-						currentFormat = Text.getBindingInventory().DereferenceValue(Format.getPath());
+						currentFormat = Format.dereferenceValue();
 					}
 					
 					//if still no format, then just use the value as is.
@@ -155,7 +153,7 @@ implements IViewBinding, TextWatcher
 			return;
 
 		//get the type of property
-		Class<?> fieldType = Text.getBindingInventory().DereferencePropertyType(Text.getPath());
+		Class<?> fieldType = Text.getBindingInventory().dereferencePropertyType(Text.getPath());
 		
 		//field type can be null if:
 		//1) there is a null object down the path that's not the last chain, which would be impossible to set a value anyways, so we can exit
@@ -228,14 +226,13 @@ implements IViewBinding, TextWatcher
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.TextView);
-		Text.initialize(ta, inventory, uiHandler);
-		Format.initialize(ta, inventory, uiHandler);		
+        super.initialise(attributeBridge);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TextView);
+		Text.initialize(ta);
+		Format.initialize(ta);
 		ta.recycle();
-		
 	}
 
 	@Override

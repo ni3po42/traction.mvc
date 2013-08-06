@@ -17,30 +17,24 @@ package ni3po42.android.amvvmdemo.views;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import amvvm.implementations.AttributeBridge;
+import amvvm.implementations.SyntheticAttributes.Builder;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.ui.viewbinding.TextViewBinding;
+import amvvm.implementations.ui.viewbinding.ViewBindingHelper;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvmdemo.models.EntryItem;
 
 public class SwipeEntryView
     extends LinearLayout
@@ -48,6 +42,8 @@ public class SwipeEntryView
 {
     private TextView content;
     private TextView id;
+
+    private final ViewBindingHelper helper = new ViewBindingHelper();
 
     public UIBindedProperty<Boolean> Active = new UIBindedProperty<Boolean>(this, R.styleable.SwipeEntryView_Active);
 
@@ -92,31 +88,32 @@ public class SwipeEntryView
     }
 
     @Override
-    public void initialise(View notUsed, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    public void initialise(View notUsed, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
     {
+        helper.setBindingInventory(inventory);
+        helper.setUiHandler(uiHandler);
+
         //when this view is initialised, the internal views must also be initialised so they
         //can take advantage of binding
-        TypedArray ta = attributeBridge.getAttributes(R.styleable.SwipeEntryView);
-        Active.initialize(ta, inventory, uiHandler);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.SwipeEntryView);
+        Active.initialize(ta);
         ta.recycle();
 
-        //for now, the bindings are hard coded, this should rely on the viewfactory to determine this
-        TextViewBinding contentBinding = new TextViewBinding();
-        TextViewBinding idBinding = new TextViewBinding();
+        IViewBinding contentBinding = helper.createSyntheticFor(content, null);
+        IViewBinding idBinding = helper.createSyntheticFor(id, null);
 
+        IAttributeBridge contentBridge = Builder
+            .begin()
+            .addAttribute(R.styleable.TextView, R.styleable.TextView_Text, "Content", Builder.TYPE_STRING)
+            .build();
 
-        //the order of these are important. will try to make this process a little more
-        //simple in the future.
-        ViewFactory.createViewHolderFor(content, inventory, contentBinding, uiHandler);
-        ViewFactory.createViewHolderFor(id, inventory, idBinding, uiHandler);
+        IAttributeBridge idBridge = Builder
+            .begin()
+            .addAttribute(R.styleable.TextView, R.styleable.TextView_Text, "Id", Builder.TYPE_STRING)
+            .build();
 
-        contentBinding.initialise(content, attributeBridge, uiHandler, inventory);
-        idBinding.initialise(id, attributeBridge, uiHandler, inventory);
-
-        contentBinding.Text.setPath("Content");
-        idBinding.Text.setPath("Id");
-        contentBinding.Text.initialize(null, inventory, uiHandler);
-        idBinding.Text.initialize(null, inventory, uiHandler);
+        contentBinding.initialise(content, contentBridge, uiHandler, inventory, false, false);
+        idBinding.initialise(id, idBridge, uiHandler, inventory, false, false);
     }
 
     @Override
@@ -127,15 +124,51 @@ public class SwipeEntryView
     @Override
     public void detachBindings()
     {
-        ViewFactory.getViewHolder(content).viewBinding.detachBindings();
-        ViewFactory.getViewHolder(id).viewBinding.detachBindings();
+        ViewFactory.getViewBinding(content).detachBindings();
+        ViewFactory.getViewBinding(id).detachBindings();
+    }
+
+    @Override
+    public BindingInventory getBindingInventory()
+    {
+        return helper.getBindingInventory();
+    }
+
+    @Override
+    public UIHandler getUIHandler()
+    {
+        return helper.getUIHandler();
+    }
+
+    @Override
+    public boolean isRoot()
+    {
+        return helper.isRoot();
+    }
+
+    @Override
+    public boolean ignoreChildren()
+    {
+        return helper.ignoreChildren();
+    }
+
+    @Override
+    public boolean isSynthetic()
+    {
+        return helper.isSynthetic();
+    }
+
+    @Override
+    public void markAsSynthetic()
+    {
+        helper.markAsSynthetic();
     }
 
     @Override
     public void onLeftSwipe()
     {
-        Object value = Active.getBindingInventory().DereferenceValue(Active.getPath());
-        if (value instanceof Boolean)
+        Boolean value = Active.dereferenceValue();
+        if (value != null)
         {
              Active.sendUpdate(!(Boolean)value);
             performAnimation(!(Boolean)value);

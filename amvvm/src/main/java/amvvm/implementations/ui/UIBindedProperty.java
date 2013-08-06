@@ -17,6 +17,7 @@ package amvvm.implementations.ui;
 
 import android.content.res.TypedArray;
 
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
 import amvvm.interfaces.IUIElement;
@@ -39,17 +40,18 @@ implements IUIElement<T>
 	private boolean _isUpdating;
 	
 	private int pathAttribute;
-	protected UIHandler uiHandler;
-	protected BindingInventory inventory;
-	
+	private IViewBinding parentViewBinding;
+
 	public UIBindedProperty(IViewBinding viewBinding, int pathAttribute)
 	{
 		this.pathAttribute = pathAttribute;
+        this.parentViewBinding = viewBinding;
 	}
 	
 	public UIBindedProperty(IViewBinding viewBinding)
 	{
 		this.pathAttribute = -1;
+        this.parentViewBinding = viewBinding;
 	}
 	
 	/**
@@ -80,7 +82,7 @@ implements IUIElement<T>
 				return;
 			
 			//if no handler, then just run on current thread
-			if (uiHandler == null)
+			if (parentViewBinding.getUIHandler() == null)
 			{
 				updateListener.onUpdate((T)value);
 			}
@@ -88,14 +90,14 @@ implements IUIElement<T>
 			{
 				//call the update listener on the UI thread. Needs to be on the UI thread because it is most
 				//certainly updating something on the UI
-				uiHandler.tryPostImmediatelyToUIThread(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						updateListener.onUpdate((T)value);
-					}
-				});
+                parentViewBinding.getUIHandler().tryPostImmediatelyToUIThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        updateListener.onUpdate((T) value);
+                    }
+                });
 			}
 		}				
 	}
@@ -108,12 +110,18 @@ implements IUIElement<T>
 		if (path == null)
 			return;
 		
-		disableRecieveUpdates();		
-		inventory.sendUpdateFromUIElement(this, value);		
+		disableRecieveUpdates();
+        parentViewBinding.getBindingInventory().sendUpdateFromUIElement(this, value);
 		enableRecieveUpdates();		
 	}
-	
-	/**
+
+    @Override
+    public T dereferenceValue()
+    {
+        return (T) getBindingInventory().dereferenceValue(getPath());
+    }
+
+    /**
 	 * Gets the full path the ui element is bounded to
 	 */
 	@Override
@@ -159,18 +167,16 @@ implements IUIElement<T>
 	}
 
 	@Override
-	public void initialize(TypedArray styledAttributes, BindingInventory inventory, UIHandler uiHandler)
+	public void initialize(IAttributeGroup attributeGroup)
 	{
-		this.uiHandler = uiHandler;
-		this.inventory = inventory;
-		if (pathAttribute >= 0 && styledAttributes != null)
-			path = styledAttributes.getString(pathAttribute);
-		inventory.track(this);
+		if (pathAttribute >= 0 && attributeGroup != null)
+			path = attributeGroup.getString(pathAttribute);
+        parentViewBinding.getBindingInventory().track(this);
 	}
 
 	@Override
 	public BindingInventory getBindingInventory()
 	{
-		return inventory;
+		return parentViewBinding.getBindingInventory();
 	}	
 }

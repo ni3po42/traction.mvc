@@ -16,10 +16,12 @@
 package amvvm.viewmodels;
 
 import amvvm.implementations.BindingInventory;
+import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.menubinding.MVVMMenuInflater;
+import amvvm.interfaces.IViewBinding;
 import amvvm.interfaces.IViewModel;
 import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IObjectListener;
@@ -167,13 +169,13 @@ implements IAccessibleFragmentManager
      */
     public void connectFragmentViewToParentView(Fragment fragment)
     {
-        ViewFactory.ViewHolder vh = ViewFactory.getViewHolder(fragment.getView());
-        if (vh == null || vh.inventory.getParentInventory() != null)
+        IViewBinding vb = ViewFactory.getViewBinding(fragment.getView());
+        if (vb == null || vb.getBindingInventory().getParentInventory() != null)
             return;
 
-        ViewFactory.ViewHolder parentVH = ViewFactory.getViewHolder((View)fragment.getView().getParent());
+        IViewBinding parentVB = ViewFactory.getViewBinding((View)fragment.getView().getParent());
 
-        vh.inventory.setParentInventory(parentVH.inventory);
+        vb.getBindingInventory().setParentInventory(parentVB.getBindingInventory());
         ViewFactory.RegisterContext(fragment.getView(), this);
     }
 
@@ -284,7 +286,7 @@ implements IAccessibleFragmentManager
                 LayoutInflater inflater = ((LayoutInflater)obj).cloneInContext(getActivity());
 
                 //custom ViewFactory for building BindingInventory and what not..
-                inflater.setFactory2(new ViewFactory(inflater));
+                inflater.setFactory2(new ViewFactory(inflater, new ViewBindingFactory()));
                 injectedInflater = inflater;
             }
             return injectedInflater;

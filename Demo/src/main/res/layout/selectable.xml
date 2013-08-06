@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
      xmlns:mvvm="http://schemas.android.com/apk/res-auto"
- 	mvvm:IsBindable="true"  
   	mvvm:IsRoot="true"
      >
     
@@ -11,14 +10,12 @@
         android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="X"
-    mvvm:IsBindable="true"
     mvvm:IsVisible="Selected"
          />
     
     <ImageView 
         android:layout_width="match_parent"
     android:layout_height="match_parent"
-    mvvm:IsBindable="true"
     mvvm:Image="Image"
         />
 

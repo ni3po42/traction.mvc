@@ -5,7 +5,6 @@
     android:orientation="vertical"
     
     xmlns:mvvm="http://schemas.android.com/apk/res-auto"
- 	mvvm:IsBindable="true"  
   	mvvm:IsRoot="true" 
     >
     
@@ -13,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="First Name"
-         mvvm:IsBindable="true"
          mvvm:Text="CurrentUserInfo.FirstName"
         />
     
@@ -21,14 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Last Name"
-         mvvm:IsBindable="true"
          mvvm:Text="CurrentUserInfo.LastName"
         />
     
     <Spinner
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        mvvm:IsBindable="true"
         mvvm:Items="Genders"
         mvvm:SelectedItem="CurrentUserInfo.UserGender"
         mvvm:ItemTemplate="@layout/gender"
@@ -37,7 +33,6 @@
     <DatePicker
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        mvvm:IsBindable="true"
         mvvm:SelectedDate="CurrentUserInfo.DateOfBirth"
  	       />
 
@@ -45,7 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
-        mvvm:IsBindable="true"
         mvvm:OnClick="Save" 
         />
     
