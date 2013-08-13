@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import amvvm.implementations.observables.ResourceArgument;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 import amvvm.R;
@@ -40,6 +41,9 @@ implements OnClickListener, OnLongClickListener
 {
 	public UIBindedEvent<Object> OnClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnClick);
 	public UIBindedEvent<Object> OnLongClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnLongClick);
+
+    private int commandValueResourceId = -1;
+
 	public ImageButtonBinding()
 	{
 		super();
@@ -52,9 +56,9 @@ implements OnClickListener, OnLongClickListener
 		getWidget().setOnClickListener(this);
 		getWidget().setOnLongClickListener(this);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
-		
 		OnClick.initialize(ta);
 		OnLongClick.initialize(ta);
+        commandValueResourceId = ta.getResourceId(R.styleable.Button_CommandValue, -1);
 		ta.recycle();
 	}
 
@@ -70,14 +74,20 @@ implements OnClickListener, OnLongClickListener
 	@Override
 	public void onClick(View arg0) 
 	{
-		OnClick.execute(null);
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+        OnClick.execute(arg);
 	}
 
 	@Override
 	public boolean onLongClick(View v) 
-	{		
-		OnLongClick.execute(null);
-		return true;
+	{
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+        OnLongClick.execute(arg);
+        return true;
 	}
 	
 }

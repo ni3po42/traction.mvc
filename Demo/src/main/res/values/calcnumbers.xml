@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="zero">0</integer>
+    <integer name="one">1</integer>
+    <integer name="two">2</integer>
+    <integer name="three">3</integer>
+    <integer name="four">4</integer>
+    <integer name="five">5</integer>
+    <integer name="six">6</integer>
+    <integer name="seven">7</integer>
+    <integer name="eight">8</integer>
+    <integer name="nine">9</integer>
+</resources>

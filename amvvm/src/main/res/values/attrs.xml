@@ -27,6 +27,8 @@
     <attr name="SelectedDate" format="string" />
     <attr name="MinDate" format="string" />
     <attr name="MaxDate" format="string" />
+    <attr name="CommandValue" format="reference" />
+
 
     <declare-styleable name="Menu">
         <attr name="IsVisible"  />
@@ -49,14 +51,17 @@
     <declare-styleable name="Button">
         <attr name="OnClick" />
         <attr name="OnLongClick" format="string" />
+        <attr name="CommandValue" />
     </declare-styleable>
 
     <declare-styleable name="Toggle">
         <attr name="IsChecked" />
+        <attr name="CommandValue" />
     </declare-styleable>
 
     <declare-styleable name="ToggleButton">
         <attr name="IsChecked" />
+        <attr name="CommandValue" />
     </declare-styleable>
 
     <declare-styleable name="AdapterView">
