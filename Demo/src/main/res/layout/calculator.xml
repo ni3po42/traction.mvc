@@ -121,6 +121,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="0"
+            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/zero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -131,6 +132,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="+"
+            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -140,6 +142,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="X"
+            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.multiply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -149,6 +152,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="-"
+            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.subtract"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -158,6 +162,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="/"
+            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.divide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -177,6 +182,7 @@
     <Button
             android:layout_rowSpan="2" android:layout_columnSpan="1"
             android:text="="
+            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.equals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"

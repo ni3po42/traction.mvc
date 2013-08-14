@@ -16,6 +16,7 @@
 package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
+import android.util.FloatMath;
 
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ResourceArgument;
@@ -23,26 +24,44 @@ import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.R;
 
 /**
- * A simple calculator
+ * A simple calculator. not perfect, but fine for a demonstration
  */
 public class CalculatorViewModel extends ViewModel
 {
+    private static final int MAX_DIGITS = 7;
+
     private double currentValue = 0;
     private int decimalPlace = 0;
+    private int totalDigits = 0;
+
+    private double stack = 0;
+    private int stackSize = 0;
+
+    private int currentAction = -1;
 
     public String getDisplay()
     {
         return String.valueOf(currentValue);
     }
 
-    public final Command<ResourceArgument> NumberUpdate = new Command<ResourceArgument>()
+    public final Command<ResourceArgument> NumberUpdate = new Command<ResourceArgument>("NumberUpdate", this)
+                .setOnExecuteListener(new Command.IOnExecuteListener<ResourceArgument>()
+                {
+                    @Override
+                    public void onExecuted(ResourceArgument resourceArgument)
+                    {
+                        int nextInput = getResources().getInteger(resourceArgument.getResourceId());
+                        updateCurrentNumber(nextInput);
+                    }
+                });
+
+    public final Command<ResourceArgument> Operation = new Command<ResourceArgument>()
     {
-        { registerAs("NumberUpdate", CalculatorViewModel.this);}
+        { registerAs("Operation", CalculatorViewModel.this);}
         @Override
         protected void onExecuted(ResourceArgument resourceArgument)
         {
-            int nextInput = getResources().getInteger(resourceArgument.getResourceId());
-            updateCurrentNumber(nextInput);
+            doOperation(resourceArgument.getResourceId());
         }
     };
 
@@ -66,15 +85,74 @@ public class CalculatorViewModel extends ViewModel
         }
     };
 
+    public void doOperation(int action)
+    {
+        if (action != R.id.calc_equals)
+        {
+            currentAction = action;
+            pushStack();
+        }
+        else
+        {
+            popStack();
+            switch (currentAction)
+            {
+                //push to stack
+                case R.id.calc_add:
+                    currentValue += stack;
+                    break;
+                case R.id.calc_subtract:
+                    currentValue = stack - currentValue;
+                    break;
+                case R.id.calc_multiply:
+                    currentValue *= stack;
+                    break;
+                case R.id.calc_divide:
+                    if (currentValue == 0)
+                    {
+                        currentValue = Double.NaN;
+                    }
+                    else
+                    {
+                        currentValue = stack / currentValue;
+                    }
+                    break;
+            }
+            currentAction = -1;
+            notifyListener("Display");
+            return;
+        }
+        totalDigits = 0;
+    }
+
+    public void pushStack()
+    {
+        stackSize++;
+        stack = currentValue;
+        decimalPlace = 0;
+        currentValue = 0;
+    }
+
+    public void popStack()
+    {
+        if (stackSize != 0)
+            stackSize--;
+        decimalPlace = 0;
+    }
+
     public void doClearDisplay()
     {
         currentValue = 0;
         decimalPlace = 0;
+        totalDigits = 0;
         notifyListener("Display");
     }
 
     public void updateCurrentNumber(int nextInput)
     {
+        if (totalDigits == MAX_DIGITS)
+            return;
+
         if (currentValue == 0)
             currentValue = nextInput;
         else if (decimalPlace == 0)
@@ -83,9 +161,10 @@ public class CalculatorViewModel extends ViewModel
         }
         else
         {
-            currentValue = currentValue +  (nextInput / Math.pow(10, decimalPlace));
+            currentValue = currentValue +  (nextInput * Math.pow(10, -decimalPlace));
             decimalPlace++;
         }
+        totalDigits++;
         notifyListener("Display");
     }
 

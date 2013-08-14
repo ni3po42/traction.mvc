@@ -1,4 +1,4 @@
-amvvm, v ALPHA 0.2.0
+amvvm, v BETA 0.3.0
 
 INTRODUCTION
 

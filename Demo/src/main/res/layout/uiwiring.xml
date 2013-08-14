@@ -8,34 +8,40 @@
     android:layout_height="match_parent"
     android:useDefaultMargins="true" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="6" android:columnCount="3"
         android:orientation="vertical">
 
          <ToggleButton
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:layout_row="0" android:layout_column="0"
              mvvm:IsChecked="MainFlagOn" />
 	 	   
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_row="1" android:layout_column="0"
             mvvm:IsChecked="MainFlagOn" />
 	 	   
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_row="2" android:layout_column="0"
             mvvm:IsChecked="MainFlagOn" />
 	 	   
         <ImageView
             android:layout_width="100dip"
             android:layout_height="100dip"
+            android:layout_row="3" android:layout_column="0"
             mvvm:Image="Image" />
 	 	      
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_row="0" android:layout_column="1" android:layout_rowSpan="4"
             mvvm:MinValue="Smallest"
             mvvm:MaxValue="Largest"
             mvvm:Value="UpperBound" />
@@ -43,6 +49,7 @@
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_row="0" android:layout_column="2" android:layout_rowSpan="4"
             mvvm:MinValue="Smallest"
             mvvm:MaxValue="UpperBound"
             mvvm:Value="CurrentInteger" />
@@ -50,6 +57,7 @@
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_row="4" android:layout_column="0" android:layout_columnSpan="3"
             mvvm:MaxValue="UpperBound"
             mvvm:Value="CurrentInteger" />
 	 	        
@@ -57,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Execute"
+            android:layout_row="5" android:layout_column="0"
             mvvm:OnClick="MyEvent" />
-    </LinearLayout>
+    </GridLayout>
 </ScrollView>
