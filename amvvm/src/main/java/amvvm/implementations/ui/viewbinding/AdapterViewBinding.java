@@ -15,17 +15,15 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedList;
 import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
-import android.content.Context;
+
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -208,21 +206,21 @@ extends GenericViewBinding<V>
 	}
 	
 	@Override
-	protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+	protected void initialise(IAttributeBridge attributeBridge)
 	{	
-		super.initialise(attributeBridge, uiHandler, inventory);
+		super.initialise(attributeBridge);
 		
 		//sets the internal adapter
 		getWidget().setAdapter(getAdapter());
-		
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.AdapterView);
+
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.AdapterView);
 		
 		//sets the item template
 		itemTemplateId = ta.getResourceId(R.styleable.AdapterView_ItemTemplate, -1);
 		
-		Items.initialize(ta, inventory, uiHandler);
+		Items.initialize(ta);
 		if (isSelectionEnabled())
-			SelectedItem.initialize(ta, inventory, uiHandler);
+			SelectedItem.initialize(ta);
 		ta.recycle();
 	}
 	

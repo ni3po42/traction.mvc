@@ -15,15 +15,13 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
-import android.content.Context;
+
 import android.content.res.TypedArray;
 import android.text.format.Time;
-import android.util.AttributeSet;
 import android.widget.DatePicker;
 import amvvm.R;
 
@@ -90,14 +88,14 @@ implements DatePicker.OnDateChangedListener
 
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.DatePicker);
+        super.initialise(attributeBridge);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.DatePicker);
 		getWidget().init(1970, 0, 1, this);
-		SelectedDate.initialize(ta, inventory, uiHandler);
-		MinDate.initialize(ta, inventory, uiHandler);
-		MaxDate.initialize(ta, inventory, uiHandler);
+		SelectedDate.initialize(ta);
+		MinDate.initialize(ta);
+		MaxDate.initialize(ta);
 		ta.recycle();
 	}
 	
@@ -112,12 +110,10 @@ implements DatePicker.OnDateChangedListener
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 	{
-		BindingInventory inv = SelectedDate.getBindingInventory();
-		
 		//wanted to keep the time consistant with the date, just cause we are changing the date,
 		//doesn't mean the view-model isn't also keeping track of the current time elsewhere.
 		//so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet)
-		Time t = (Time) inv.DereferenceValue(SelectedDate.getPath());
+		Time t = SelectedDate.dereferenceValue();
 		t = (t == null) ? new Time() : new Time(t);			
 		t.set(t.second, t.minute, t.hour, dayOfMonth, monthOfYear, year);
 		SelectedDate.sendUpdate(t);

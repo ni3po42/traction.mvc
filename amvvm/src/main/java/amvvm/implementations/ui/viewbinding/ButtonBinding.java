@@ -15,19 +15,17 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.implementations.observables.ResourceArgument;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
 
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import amvvm.R;
+import amvvm.interfaces.IAttributeGroup;
 
 /**
  * Handles binding elements to buttons
@@ -45,21 +43,24 @@ implements OnClickListener, OnLongClickListener
 {
 	public UIBindedEvent<Object> OnClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnClick);
 	public UIBindedEvent<Object> OnLongClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnLongClick);
-		
+
+    private int commandValueResourceId = -1;
+
 	public ButtonBinding()
 	{
 		super();
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
+        super.initialise(attributeBridge);
 		getWidget().setOnClickListener(this);
 		getWidget().setOnLongClickListener(this);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.Button);
-		OnClick.initialize(ta, inventory, uiHandler);
-		OnLongClick.initialize(ta, inventory, uiHandler);	
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
+		OnClick.initialize(ta);
+		OnLongClick.initialize(ta);
+        commandValueResourceId = ta.getResourceId(R.styleable.Button_CommandValue, -1);
 		ta.recycle();
 	}
 	
@@ -75,7 +76,10 @@ implements OnClickListener, OnLongClickListener
 	@Override
 	public void onClick(View arg0) 
 	{
-		OnClick.execute(null);
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+		OnClick.execute(arg);
 	}
 
 	@Override
@@ -83,7 +87,10 @@ implements OnClickListener, OnLongClickListener
 	{	
 		//at this time, no arguments exists to inform the ui from a executed command that it handled the event and to 
 		//return true or false, so it always returns true, for now...
-		OnClick.execute(null);
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+		OnLongClick.execute(arg);
 		return true;
 	}
 

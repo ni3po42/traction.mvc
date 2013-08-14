@@ -19,6 +19,9 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 
 import amvvm.implementations.BindingInventory;
+import amvvm.implementations.InflatedAttributes;
+import amvvm.interfaces.IAttributeBridge;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IObservableObject;
 import amvvm.interfaces.IProxyObservableObject;
 
@@ -42,7 +45,7 @@ import amvvm.R;
 public class MVVMMenuInflater extends MenuInflater
 {
 	private static final String androidRESNamespace = "http://schemas.android.com/apk/res/android";
-	
+
 	private final WeakReference<Context> weakContextRef;
 	private final LinkedList<MenuBinding> menuBindings = new LinkedList<MenuBinding>();
 	private BindingInventory inventory = new BindingInventory();
@@ -74,13 +77,16 @@ public class MVVMMenuInflater extends MenuInflater
 		for(int i=0;i<menuBindings.size();i++)
 			menuBindings.get(i).detachBindings();
 		menuBindings.clear();
-		
+
 		XmlResourceParser parser = null;
 		
         try {
         	//get parser and attributes for the menu layout
             parser = context.getResources().getLayout(menuRes);
             AttributeSet attrs = Xml.asAttributeSet(parser);
+
+            IAttributeBridge bridge = new InflatedAttributes(context, attrs);
+
             int eventType = parser.getEventType();
             
             //while the xml document has not ended...
@@ -89,24 +95,19 @@ public class MVVMMenuInflater extends MenuInflater
             	if (eventType == XmlPullParser.START_TAG && parser.getName().equals("item"))
             	{
             		//.. then get the menu's id
-            		TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.Menu);	            		
-            		String IdAsString = attrs.getAttributeValue(androidRESNamespace, "id");	  
-            		
-            		boolean isBindable = ta.getBoolean(R.styleable.Menu_IsBindable, false);	            		
-                    if (IdAsString != null && isBindable) 
-                    {   
-                    	//parse id (there's a better way, i just know it...
-                    	IdAsString = IdAsString.replace("@","");
-                    	int id = Integer.parseInt(IdAsString);
-                    	if (id != 0)
-                        {
-                    		//get menu item, create bindings from it
-                            MenuItem m = menu.findItem(id);	                            
-                            MenuBinding mb = new MenuBinding(m, ta,inventory);
-                            menuBindings.add(mb);
-                        }
+            		String idStr = attrs.getAttributeValue(androidRESNamespace, "id");
+                    idStr = idStr == null ? "0" : idStr;
+                    int id = Integer.parseInt(idStr.replace("@",""));
+                    if (id != 0)
+                    {
+                        //get menu item, create bindings from it
+                        IAttributeGroup ag = bridge.getAttributes(R.styleable.Menu);
+                        MenuItem m = menu.findItem(id);
+                        MenuBinding mb = new MenuBinding(m, ag ,inventory);
+                        menuBindings.add(mb);
+                        ag.recycle();
                     }
-                    ta.recycle();
+
                 }	                
                 eventType = parser.next();
             }

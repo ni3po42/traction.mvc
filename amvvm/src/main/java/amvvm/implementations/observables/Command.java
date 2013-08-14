@@ -18,18 +18,54 @@ package amvvm.implementations.observables;
 import android.util.Property;
 
 import amvvm.interfaces.IObservableCommand;
+import amvvm.interfaces.IProxyObservableObject;
 
 /**
- * Abstract class representing a Command. It exposes a property that can be used to determine if
+ * class representing a Command. It exposes a property that can be used to determine if
  * the command can execute and gives a handle to override to perform functions when the command has been invoked
  * @author Tim Stratton
  *
  * @param <TArg> : argument type for the command
  */
-public abstract class Command<TArg> 
+public class Command<TArg>
 extends ObservableObject
 implements IObservableCommand<TArg>
-{	
+{
+    private IOnExecuteListener<TArg> onExecuteListener;
+
+    public Command()
+    {
+        setCanExecute(true);
+    }
+
+    public Command(boolean initCanExecute)
+    {
+        setCanExecute(initCanExecute);
+    }
+
+    public Command(String name, IProxyObservableObject parent)
+    {
+        registerAs(name, parent);
+        setCanExecute(true);
+    }
+
+    public Command(String name, IProxyObservableObject parent, boolean initCanExecute)
+    {
+        registerAs(name, parent);
+        setCanExecute(initCanExecute);
+    }
+
+    public interface IOnExecuteListener<PArg>
+    {
+        void onExecuted(PArg arg);
+    }
+
+    public Command<TArg> setOnExecuteListener(IOnExecuteListener<TArg> listener)
+    {
+        onExecuteListener = listener;
+        return this;
+    }
+
 	private boolean canExecute;
 	
 	@Override
@@ -64,23 +100,16 @@ implements IObservableCommand<TArg>
 		canExecute = b;
 		notifyListener("CanExecute");
 	}
-	
-	public Command()
-	{
-		setCanExecute(true);
-	}
-	
-	public Command(boolean initCanExecute)
-	{
-		setCanExecute(initCanExecute);
-	}
-	
-	
+
 	/**
 	 * Is fired when execute(TArg) is called and CanExecute() is true
 	 * @param arg : argument passed to execute method. Could very well be null.
 	 */
-	protected abstract void onExecuted(TArg arg);
+	protected void onExecuted(TArg arg)
+    {
+        if (onExecuteListener != null)
+            onExecuteListener.onExecuted(arg);
+    }
 
 	@Override
 	public void execute(TArg arg)

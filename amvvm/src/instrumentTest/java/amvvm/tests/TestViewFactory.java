@@ -2,27 +2,21 @@ package amvvm.tests;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
-import android.widget.LinearLayout;
 
 import junit.framework.TestCase;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
-import org.mockito.internal.stubbing.answers.CallsRealMethods;
 
 import amvvm.R;
-import amvvm.implementations.AttributeBridge;
+import amvvm.implementations.ViewBindingFactory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IViewBinding;
 
 import static org.mockito.Mockito.*;
@@ -37,34 +31,6 @@ public class TestViewFactory extends TestCase
     private Context stubContext = null;
     private AttributeSet stubAttributeSet = null;
 
-    public void testCanInflateNonBindingView()
-    {
-        //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        View mockLayout = mock(View.class);
-        ViewFactory vf = createViewFactory(bridge, mockLayout, viewClass);
-
-        TypedArray ta = mock(TypedArray.class);
-        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
-        mockTypedArrayBaseValues(ta,true, true, false, null);
-
-        //act
-        View v = vf.onCreateView(null, viewClass, stubContext, stubAttributeSet);
-
-        //assert
-        assertNotNull(v);
-        ArgumentCaptor<ViewFactory.ViewHolder> argument = ArgumentCaptor.forClass(ViewFactory.ViewHolder.class);
-        verify(v).setTag(eq(R.id.amvvm_viewholder), argument.capture());
-        ViewFactory.ViewHolder vh = argument.getValue();
-        assertNotNull(vh);
-        assertNotNull(vh.inventory);
-        assertNotNull(vh.viewBinding);
-        assertTrue(vh.isRoot);
-        assertFalse(vh.ignoreChildren);
-    }
-
-
     public void testCanIgnoreChildren()
     {
         //arrange
@@ -73,20 +39,18 @@ public class TestViewFactory extends TestCase
         View childLayout = mock(View.class);
 
         ViewFactory vf = createViewFactory(null, childLayout, viewClass);
-        ViewFactory.ViewHolder parentVH = new ViewFactory.ViewHolder();
-        parentVH.inventory = mock(BindingInventory.class);
-        parentVH.viewBinding = mock(IViewBinding.class);
-        parentVH.isRoot = false;
-        parentVH.ignoreChildren = true;
+        IViewBinding parentVB = mock(IViewBinding.class);
+        when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
+        when(parentVB.ignoreChildren()).thenReturn(true);
 
-        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVH);
+        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
 
         //act
         View v = vf.onCreateView(parentLayout, viewClass, stubContext, stubAttributeSet);
 
         //assert
         assertNotNull(v);
-        verify(v, never()).setTag(eq(R.id.amvvm_viewholder), any(ViewFactory.ViewHolder.class));
+        verify(v, never()).setTag(eq(R.id.amvvm_viewholder), any(IViewBinding.class));
     }
 
     public void testChildrenIgnoredWhenParentHasNoViewHolder()
@@ -104,7 +68,7 @@ public class TestViewFactory extends TestCase
 
         //assert
         assertNotNull(v);
-        verify(v, never()).setTag(eq(R.id.amvvm_viewholder), any(ViewFactory.ViewHolder.class));
+        verify(v, never()).setTag(eq(R.id.amvvm_viewholder), any(IViewBinding.class));
     }
 
     public void testFragmentsAreIgnored()
@@ -113,14 +77,11 @@ public class TestViewFactory extends TestCase
         String viewClass = "fragment";
         View parentLayout = mock(View.class);
 
-        ViewFactory vf = spy(new ViewFactory(null));
-        ViewFactory.ViewHolder parentVH = new ViewFactory.ViewHolder();
-        parentVH.inventory = mock(BindingInventory.class);
-        parentVH.viewBinding = mock(IViewBinding.class);
-        parentVH.isRoot = false;
-        parentVH.ignoreChildren = false;
+        ViewFactory vf = spy(new ViewFactory(null, null));
+        IViewBinding parentVB = mock(IViewBinding.class);
+        when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
 
-        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVH);
+        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
 
         //act
         View v = vf.onCreateView(parentLayout, viewClass, stubContext, stubAttributeSet);
@@ -134,8 +95,8 @@ public class TestViewFactory extends TestCase
     {
         //arrange
         String viewClass = "LinearLayout";
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        ViewFactory vf = spy(new ViewFactory(null));
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        ViewFactory vf = spy(new ViewFactory(null, null));
         when(vf.createAttributeBridge(null, null)).thenReturn(bridge);
         when(vf.inflateViewByClassName(anyString(),eq(stubAttributeSet)))
                 .thenReturn(null);
@@ -151,8 +112,8 @@ public class TestViewFactory extends TestCase
     {
         //arrange
         String viewClass = "View";
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        ViewFactory vf = spy(new ViewFactory(null));
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        ViewFactory vf = spy(new ViewFactory(null, null));
         when(vf.createAttributeBridge(null, null)).thenReturn(bridge);
         when(vf.inflateViewByClassName(anyString(),eq(stubAttributeSet)))
                 .thenReturn(null);
@@ -168,8 +129,8 @@ public class TestViewFactory extends TestCase
     {
         //arrange
         String viewClass = "fragmentstub";
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        ViewFactory vf = spy(new ViewFactory(null));
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        ViewFactory vf = spy(new ViewFactory(null, null));
         when(vf.createAttributeBridge(null, null)).thenReturn(bridge);
         when(vf.inflateViewByClassName(anyString(),eq(stubAttributeSet)))
                 .thenReturn(null);
@@ -188,58 +149,60 @@ public class TestViewFactory extends TestCase
         View parentLayout = mock(View.class);
         View childView = mock(View.class);
 
-        AttributeBridge bridge = mock(AttributeBridge.class);
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
         ViewFactory vf = createViewFactory(bridge,childView, viewClass);
 
-        TypedArray ta = mock(TypedArray.class);
-        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
-        mockTypedArrayBaseValues(ta, true, true, false, null);
+        IAttributeGroup ag = mock(IAttributeGroup.class);
+        when(bridge.getAttributes(R.styleable.View)).thenReturn(ag);
+        mockAtttributeGroupBaseValues(ag,true, false, null);
 
-        ViewFactory.ViewHolder parentVH = new ViewFactory.ViewHolder();
-        parentVH.inventory = mock(BindingInventory.class);
-        parentVH.viewBinding = mock(IViewBinding.class);
-        parentVH.isRoot = true;
-        parentVH.ignoreChildren = false;
-        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVH);
+        IViewBinding parentVB = mock(IViewBinding.class);
+        IViewBinding childVB = mock(IViewBinding.class);
+
+        when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
+        when(parentVB.isRoot()).thenReturn(true);
+        when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
+
+        doReturn(childVB).when(vf).createViewBinding(eq(childView), anyString());
 
         //act
         View v = vf.onCreateView(parentLayout, viewClass, stubContext, stubAttributeSet);
 
         //assert
         assertNotNull(v);
-        ArgumentCaptor<ViewFactory.ViewHolder> argument = ArgumentCaptor.forClass(ViewFactory.ViewHolder.class);
-        verify(v).setTag(eq(R.id.amvvm_viewholder), argument.capture());
-        ViewFactory.ViewHolder vh = argument.getValue();
+        ArgumentCaptor<BindingInventory> argument = ArgumentCaptor.forClass(BindingInventory.class);
 
-        assertNotSame(parentVH, vh);
-        assertNotSame(parentVH.inventory, vh.inventory);
-        assertNotNull(vh.inventory);
-        assertSame(parentVH.inventory, vh.inventory.getParentInventory());
+
+        verify(childVB).initialise(eq(childView), any(IAttributeBridge.class), any(UIHandler.class), argument.capture(),eq(true) ,eq(false));
+
+        BindingInventory inv = argument.getValue();
+
+        assertNotSame(parentVB.getBindingInventory(), inv);
+        assertNotNull(inv);
+        assertSame(parentVB.getBindingInventory(),inv.getParentInventory());
     }
 
-    public void testCanInitializeViewBinding()
+    public void testCanInitializeViewBinding() throws ClassNotFoundException
     {
         //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
+        String viewClass = View.class.getName();
         View childView = mock(View.class);
         IViewBinding viewBinding = mock(IViewBinding.class);
 
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        ViewFactory vf = createViewFactory(bridge,childView, viewClass);
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        ViewFactory vf = createViewFactory(bridge, childView, viewClass);
 
-        TypedArray ta = mock(TypedArray.class);
-        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
-        mockTypedArrayBaseValues(ta,true, true, false, null);
-
-        when(vf.getViewBinding(any(View.class), anyString())).thenReturn(viewBinding);
+        IAttributeGroup ag = mock(IAttributeGroup.class);
+        when(bridge.getAttributes(R.styleable.View)).thenReturn(ag);
+        doReturn(viewBinding).when(vf).createViewBinding(eq(childView), anyString());
+        mockAtttributeGroupBaseValues(ag, true, false, null);
 
         //act
         View v = vf.onCreateView(null, viewClass, stubContext, stubAttributeSet);
 
         //assert
         assertNotNull(v);
-        verify(viewBinding).initialise(eq(childView), eq(bridge), any(UIHandler.class), any(BindingInventory.class));
-
+        verify(viewBinding).initialise(eq(childView), eq(bridge), any(UIHandler.class), any(BindingInventory.class), eq(true), eq(false));
     }
 
     public void testCanInitializeCustomViewBinding()
@@ -250,7 +213,7 @@ public class TestViewFactory extends TestCase
         View childView = mock(View.class);
         IViewBinding viewBinding = mock(IViewBinding.class);
 
-        AttributeBridge bridge = mock(AttributeBridge.class);
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
         ViewFactory vf = mock(ViewFactory.class);
         when(vf.createAttributeBridge(null, null)).thenReturn(bridge);
         when(vf.inflateViewByClassName(viewClass, null))
@@ -258,27 +221,28 @@ public class TestViewFactory extends TestCase
         when(vf.onCreateView(any(View.class), anyString(), any(Context.class), any(AttributeSet.class)))
                 .thenCallRealMethod();
 
-        TypedArray ta = mock(TypedArray.class);
-        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
-        mockTypedArrayBaseValues(ta, true, true, false, viewbindingClass);
+        IAttributeGroup ag = mock(IAttributeGroup.class);
+        when(bridge.getAttributes(R.styleable.View)).thenReturn(ag);
+        mockAtttributeGroupBaseValues(ag,true, false, viewbindingClass);
+        when(vf.createViewBinding(any(View.class), eq(viewbindingClass))).thenReturn(viewBinding);
 
         //act
         vf.onCreateView(null, viewClass, stubContext, stubAttributeSet);
 
         //assert
-        verify(vf).getViewBinding(eq(childView), eq(viewbindingClass));
+        //verify(vf).getViewBinding(eq(childView), eq(viewbindingClass));
 
     }
 
     public void testCanGetDirectViewBindingMap()
     {
         //arrange
-        ViewFactory vf = new ViewFactory(null);
-        loadConfigs(vf);
+        ViewBindingFactory vbf = new ViewBindingFactory();
+        loadConfigs(vbf);
         View v = mock(A.class);
 
         //act
-        IViewBinding vb = vf.getViewBinding(v, null);
+        IViewBinding vb = vbf.createViewBinding(v, null);
 
         //assert
         assertNotNull(vb);
@@ -288,15 +252,15 @@ public class TestViewFactory extends TestCase
     public void testCanGetInheritedViewBindingMap()
     {
         //arrange
-        ViewFactory vf = new ViewFactory(null);
-        loadConfigs(vf);
+        ViewBindingFactory vbf = new ViewBindingFactory();
+        loadConfigs(vbf);
 
         //AAA is not mapped, but it inherits from AA, and that maps to vAA,
         //so we expect vAA to come back
         View v = mock(AAA.class);
 
         //act
-        IViewBinding vb = vf.getViewBinding(v, null);
+        IViewBinding vb = vbf.createViewBinding(v, null);
 
         //assert
         assertNotNull(vb);
@@ -306,82 +270,39 @@ public class TestViewFactory extends TestCase
     public void testCanGetCustomViewBindingMap()
     {
         //arrange
-        ViewFactory vf = new ViewFactory(null);
-        loadConfigs(vf);
+        ViewBindingFactory vbf = new ViewBindingFactory();
+        loadConfigs(vbf);
 
         //act
-        IViewBinding vb = vf.getViewBinding(null, customViewBinding.class.getName());
+        IViewBinding vb = vbf.createViewBinding(null, customViewBinding.class.getName());
 
         //assert
         assertNotNull(vb);
         assertTrue(vb instanceof customViewBinding);
     }
 
-    private void XXXtestGetParentInventoryFromFirstAncestorWithAViewHolder()
+    private void mockAtttributeGroupBaseValues(IAttributeGroup ag, boolean isRoot, boolean ignoreChildren, String bindingType)
     {
-        //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
-
-        View parentLayout = mock(View.class);
-        View childView = mock(View.class);
-        ViewGroup grandParentLayout = mock(ViewGroup.class);
-
-        when(parentLayout.getParent()).thenReturn(grandParentLayout);
-
-        AttributeBridge bridge = mock(AttributeBridge.class);
-        ViewFactory vf = createViewFactory(bridge,childView, viewClass);
-
-        TypedArray ta = mock(TypedArray.class);
-        when(bridge.getAttributes(R.styleable.View)).thenReturn(ta);
-        mockTypedArrayBaseValues(ta, true, true, false, null);
-
-        ViewFactory.ViewHolder ancestorVH = new ViewFactory.ViewHolder();
-        ancestorVH.inventory = mock(BindingInventory.class);
-        ancestorVH.viewBinding = mock(IViewBinding.class);
-        ancestorVH.isRoot = true;
-        ancestorVH.ignoreChildren = false;
-        when(grandParentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(ancestorVH);
-
-        //act
-        View v = vf.onCreateView(parentLayout, viewClass, stubContext, stubAttributeSet);
-
-        //assert
-        assertNotNull(v);
-        ArgumentCaptor<ViewFactory.ViewHolder> argument = ArgumentCaptor.forClass(ViewFactory.ViewHolder.class);
-        verify(v).setTag(eq(R.id.amvvm_viewholder), argument.capture());
-        ViewFactory.ViewHolder vh = argument.getValue();
-
-        assertNotSame(ancestorVH, vh);
-        assertNotSame(ancestorVH.inventory, vh.inventory);
-        assertNotNull(vh.inventory);
-        assertSame(ancestorVH.inventory, vh.inventory.getParentInventory());
+        when(ag.getBoolean(eq(R.styleable.View_IsRoot) , eq(false))).thenReturn(isRoot);
+        when(ag.getBoolean(eq(R.styleable.View_IgnoreChildren) , eq(false))).thenReturn(ignoreChildren);
+        when(ag.getString(R.styleable.View_BindingType)).thenReturn(bindingType);
     }
 
-    private void mockTypedArrayBaseValues(TypedArray ta,boolean isBindable, boolean isRoot, boolean ignoreChildren, String bindingType)
+    private ViewFactory createViewFactory(IAttributeBridge bridge, View view, String viewClass)
     {
-        when(ta.getBoolean(eq(R.styleable.View_IsRoot) , eq(false))).thenReturn(isRoot);
-        when(ta.getBoolean(eq(R.styleable.View_IgnoreChildren) , eq(false))).thenReturn(ignoreChildren);
-        when(ta.getString(R.styleable.View_BindingType)).thenReturn(bindingType);
-        when(ta.getBoolean(eq(R.styleable.View_IsBindable), eq(false))).thenReturn(isBindable);
-
-    }
-
-    private ViewFactory createViewFactory(AttributeBridge bridge, View view, String viewClass)
-    {
-        ViewFactory f = spy(new ViewFactory(null));
+        ViewFactory f = spy(new ViewFactory(null, null));
         when(f.createAttributeBridge(null, null)).thenReturn(bridge);
         when(f.inflateViewByClassName(viewClass, null))
                 .thenReturn(view);
         return f;
     }
 
-    private void loadConfigs(ViewFactory viewFactory)
+    private void loadConfigs(ViewBindingFactory viewBindingFactory)
     {
-        viewFactory.clearBindingConfig();
         try
         {
-            viewFactory.addBindingConfig(A.class.getName(), vA.class.getName());
-            viewFactory.addBindingConfig(AA.class.getName(), vAA.class.getName());
+            viewBindingFactory.addBindingConfig(A.class.getName(), vA.class.getName());
+            viewBindingFactory.addBindingConfig(AA.class.getName(), vAA.class.getName());
         }
         catch (ClassNotFoundException e)
         {
@@ -430,8 +351,10 @@ public class TestViewFactory extends TestCase
     }
 
     public static class vA implements IViewBinding{
+
         @Override
-        public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory) {
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        {
 
         }
 
@@ -442,12 +365,50 @@ public class TestViewFactory extends TestCase
 
         @Override
         public void detachBindings() {
+
+        }
+
+        @Override
+        public BindingInventory getBindingInventory()
+        {
+            return null;
+        }
+
+        @Override
+        public UIHandler getUIHandler()
+        {
+            return null;
+        }
+
+        @Override
+        public boolean isRoot()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean ignoreChildren()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isSynthetic()
+        {
+            return false;
+        }
+
+        @Override
+        public void markAsSynthetic()
+        {
 
         }
     }
     public static class vAA implements IViewBinding{
+
         @Override
-        public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory) {
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        {
 
         }
 
@@ -458,12 +419,50 @@ public class TestViewFactory extends TestCase
 
         @Override
         public void detachBindings() {
+
+        }
+
+        @Override
+        public BindingInventory getBindingInventory()
+        {
+            return null;
+        }
+
+        @Override
+        public UIHandler getUIHandler()
+        {
+            return null;
+        }
+
+        @Override
+        public boolean isRoot()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean ignoreChildren()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isSynthetic()
+        {
+            return false;
+        }
+
+        @Override
+        public void markAsSynthetic()
+        {
 
         }
     }
     public static class customViewBinding implements IViewBinding{
+
         @Override
-        public void initialise(View v, AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory) {
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        {
 
         }
 
@@ -474,6 +473,42 @@ public class TestViewFactory extends TestCase
 
         @Override
         public void detachBindings() {
+
+        }
+
+        @Override
+        public BindingInventory getBindingInventory()
+        {
+            return null;
+        }
+
+        @Override
+        public UIHandler getUIHandler()
+        {
+            return null;
+        }
+
+        @Override
+        public boolean isRoot()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean ignoreChildren()
+        {
+            return false;
+        }
+
+        @Override
+        public boolean isSynthetic()
+        {
+            return false;
+        }
+
+        @Override
+        public void markAsSynthetic()
+        {
 
         }
     }

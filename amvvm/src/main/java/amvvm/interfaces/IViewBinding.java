@@ -15,12 +15,9 @@
 
 package amvvm.interfaces;
 
-import amvvm.implementations.AttributeBridge;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 
 
@@ -41,7 +38,7 @@ public interface IViewBinding
 	 * @param uiHandler : a handler for accessing the ui thread
 	 * @param inventory : inventory to register ui elements and paths
 	 */
-	void initialise(View v,AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory);
+	void initialise(View v,IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren);
 		
 	/**
 	 * Not really implemented at this time
@@ -53,5 +50,39 @@ public interface IViewBinding
 	 * Here, you will want to unhook stuff, general clean up
 	 */
 	void detachBindings();
-	
+
+    /**
+     * returns the inventory passed in from the initialise method
+     * @return
+     */
+    BindingInventory getBindingInventory();
+
+    /**
+     * Gets a handler to run tasks on the UI thread; whatever was passed to initialise method
+     * @return
+     */
+    UIHandler getUIHandler();
+
+    /**
+     * if this bindingInventory is a child of a parent binding inventory.     *
+     * @return : true if the bindingInventory is different than it's grand parent binding inventory
+     */
+    boolean isRoot();
+
+    /**
+     * true if children views are ignored
+     * @return
+     */
+    boolean ignoreChildren();
+
+    /**
+     *
+     * @return
+     */
+    boolean isSynthetic();
+
+    /**
+     * marks view binding as synthetic. makes isSynthetic return true; ounce set, cannot be undone.
+     */
+    void markAsSynthetic();
 }

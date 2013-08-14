@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="calc.add" type="id" />
+    <item name="calc.subtract" type="id" />
+    <item name="calc.multiply" type="id" />
+    <item name="calc.divide" type="id" />
+    <item name="calc.equals" type="id" />
+</resources>

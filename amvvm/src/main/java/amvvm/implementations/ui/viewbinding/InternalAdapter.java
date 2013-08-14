@@ -16,10 +16,12 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.BindingInventory;
+import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
+import amvvm.interfaces.IViewBinding;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -38,9 +40,11 @@ public abstract class InternalAdapter<T extends IProxyObservableObject, S extend
 extends BaseAdapter
 {	
 	/**
-	 * This class follows a template patter, requiring access to a list and a resource id for the layout of the item
+	 * This class follows a template pattern, requiring access to a list and a resource id for the layout of the item
 	 */
-	
+
+    private ViewBindingFactory factory = new ViewBindingFactory();
+
 	/**
 	 * internal reference to the current list
 	 * @return
@@ -75,11 +79,9 @@ extends BaseAdapter
         //show up; the spinner and it's popup window. In the case the popup window (or some other
         //viewgroup) comes up, this will synthetically add a viewHolder with the proper objects
         //and register the list as the root context.
-        if (ViewFactory.getViewHolder(parent) == null)
+        if (ViewFactory.getViewBinding(parent) == null)
         {
-            ViewFactory.ViewHolder vh = ViewFactory.createViewHolderFor(parent,new BindingInventory(), new GenericViewBinding<View>(), new UIHandler());
-            vh.isRoot = true;
-            vh.ignoreChildren = false;
+            IViewBinding vb = factory.createSyntheticFor(parent,null);
             ViewFactory.RegisterContext(parent, getList());
         }
 
@@ -90,7 +92,7 @@ extends BaseAdapter
 		ViewFactory.RegisterContext(convertView, getList().get(position));
 
         //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'
-        if (ViewFactory.getViewHolder(parent).isSynthetic())
+        if (ViewFactory.getViewBinding(parent).isSynthetic())
             ViewFactory.DetachContext(parent);
 
 		return convertView;

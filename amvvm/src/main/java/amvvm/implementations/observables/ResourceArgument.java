@@ -13,28 +13,21 @@
    limitations under the License.
  */
 
-package amvvm.implementations;
-
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
+package amvvm.implementations.observables;
 
 /**
- * Wrapper for accessing attributes in the AttributeSet in such a way to make it easier to test
+ * Allows passing of a resource value from UI to view-model
  */
-public class AttributeBridge
+public class ResourceArgument
 {
-    private Context context;
-    private AttributeSet attrs;
-    public AttributeBridge(Context context, AttributeSet attrs)
+    private int resourceId;
+    public ResourceArgument(int resourceId)
     {
-        this.context = context;
-        this.attrs = attrs;
+        this.resourceId = resourceId;
     }
 
-    public TypedArray getAttributes(int[] styles)
+    public int getResourceId()
     {
-        return context.obtainStyledAttributes(attrs, styles);
+        return resourceId;
     }
-
 }

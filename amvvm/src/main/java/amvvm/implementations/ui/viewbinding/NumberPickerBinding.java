@@ -15,14 +15,12 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.AttributeBridge;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
-import android.content.Context;
+
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.widget.NumberPicker;
 import amvvm.R;
 
@@ -154,14 +152,14 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
+        super.initialise(attributeBridge);
 		getWidget().setOnValueChangedListener(this);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.NumberPicker);
-		MinValue.initialize(ta, inventory, uiHandler);
-		MaxValue.initialize(ta, inventory, uiHandler);
-		Value.initialize(ta, inventory, uiHandler);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.NumberPicker);
+		MinValue.initialize(ta);
+		MaxValue.initialize(ta);
+		Value.initialize(ta);
 		ta.recycle();
 	}
 	

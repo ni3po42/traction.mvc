@@ -8,7 +8,6 @@
           android:choiceMode="singleChoice"
 
           xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-          mvvm:IsBindable="true"
           mvvm:IsRoot="true"
           mvvm:Items="Entries"
           mvvm:ItemTemplate="@layout/swipeentry"

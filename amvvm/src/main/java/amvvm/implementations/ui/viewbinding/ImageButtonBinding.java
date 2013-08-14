@@ -15,18 +15,16 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
-import amvvm.implementations.AttributeBridge;
+import amvvm.implementations.observables.ResourceArgument;
+import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIBindedEvent;
-import amvvm.implementations.ui.UIHandler;
-import amvvm.implementations.BindingInventory;
 import amvvm.R;
+import amvvm.interfaces.IAttributeGroup;
 
 /**
  * Extends a imageview to handle button like events
@@ -43,21 +41,24 @@ implements OnClickListener, OnLongClickListener
 {
 	public UIBindedEvent<Object> OnClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnClick);
 	public UIBindedEvent<Object> OnLongClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnLongClick);
+
+    private int commandValueResourceId = -1;
+
 	public ImageButtonBinding()
 	{
 		super();
 	}
 
     @Override
-    protected void initialise(AttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
+    protected void initialise(IAttributeBridge attributeBridge)
     {
-        super.initialise(attributeBridge, uiHandler, inventory);
+        super.initialise(attributeBridge);
 		getWidget().setOnClickListener(this);
 		getWidget().setOnLongClickListener(this);
-		TypedArray ta = attributeBridge.getAttributes(R.styleable.Button);
-		
-		OnClick.initialize(ta, inventory, uiHandler);		
-		OnLongClick.initialize(ta, inventory, uiHandler);
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
+		OnClick.initialize(ta);
+		OnLongClick.initialize(ta);
+        commandValueResourceId = ta.getResourceId(R.styleable.Button_CommandValue, -1);
 		ta.recycle();
 	}
 
@@ -73,14 +74,20 @@ implements OnClickListener, OnLongClickListener
 	@Override
 	public void onClick(View arg0) 
 	{
-		OnClick.execute(null);
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+        OnClick.execute(arg);
 	}
 
 	@Override
 	public boolean onLongClick(View v) 
-	{		
-		OnLongClick.execute(null);
-		return true;
+	{
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(commandValueResourceId);
+        OnLongClick.execute(arg);
+        return true;
 	}
 	
 }
