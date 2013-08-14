@@ -12,7 +12,7 @@ In designing this library, I intended it to solve a couple of issues with genera
 
 No referencing android.view or android.widget (almost)
 
-There is (almost) no need to reference any view objects in the activity or fragment (here on referred to as the 'view-model'). This library is still alpha, and many more features are yet to be fully integrated. In the near future, a wiki will be set up to better explain current features and future features. But that aside, nothing would make me happier then to never have to use the 'findViewById' method every again (also the 'findFragmentById' also).
+There is (almost) no need to reference any view objects in the activity or fragment (here on referred to as the 'view-model'). In the near future, a wiki will be set up to better explain current features and future features. But that aside, nothing would make me happier then to never have to use the 'findViewById' method ever again (including the 'findFragmentById' method as well).
 
 No need to replace existing views in layouts!
 
