@@ -55,7 +55,6 @@ implements IObservableList<T>
 	/**
 	 * Constructor. Requires a backing list instance to be passed in
 	 * @param collection : backing list this class wraps, must be not null!
-	 * @param itemType : list's item type
 	 */
 	public ObservableList(List<T> collection)
 	{

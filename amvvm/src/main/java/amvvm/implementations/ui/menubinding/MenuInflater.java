@@ -27,13 +27,11 @@ import amvvm.interfaces.IProxyObservableObject;
 
 import org.xmlpull.v1.XmlPullParser;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.InflateException;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import amvvm.R;
 
@@ -42,7 +40,7 @@ import amvvm.R;
  * @author Tim Stratton
  *
  */
-public class MVVMMenuInflater extends MenuInflater
+public class MenuInflater extends android.view.MenuInflater
 {
 	private static final String androidRESNamespace = "http://schemas.android.com/apk/res/android";
 
@@ -51,7 +49,7 @@ public class MVVMMenuInflater extends MenuInflater
 	private BindingInventory inventory = new BindingInventory();
 	private IProxyObservableObject menuContext;
 	
-	public <S extends IObservableObject> MVVMMenuInflater(Context context, IProxyObservableObject menuContext)
+	public <S extends IObservableObject> MenuInflater(Context context, IProxyObservableObject menuContext)
 	{
 		super(context);
 		

@@ -21,7 +21,7 @@ package amvvm.interfaces;
  *
  * @param <TArg>
  */
-public interface IObservableCommand<TArg>
+public interface IObservableCommand<TArg extends ICommand.CommandArgument>
 extends ICommand<TArg>, IObservableObject
 {
 

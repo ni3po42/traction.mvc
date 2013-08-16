@@ -13,24 +13,12 @@
    limitations under the License.
  */
 
-package amvvm.implementations.ui;
-
-import amvvm.interfaces.IViewBinding;
-import amvvm.interfaces.IObservableList;
-import amvvm.interfaces.IProxyObservableObject;
+package amvvm.annotations;
 
 /**
- * Defines the UI end for a list. It's pretty much just a UIBindingProperty that uses an IObservableList as it's item type.
- * @author Tim Stratton
- *
- * @param <T> : the item type of the list
+ * Annotations to let public final fields that are IProxyObservableObjects to be ignored when
+ * auto registering
  */
-public class UIBindedList<T extends IProxyObservableObject> 
-extends UIBindedProperty<IObservableList<T>>
+public @interface IgnoreObservable
 {
-	public UIBindedList(IViewBinding viewBinding, int pathAttribute)
-	{
-		super(viewBinding, pathAttribute);
-	}	
-	
 }

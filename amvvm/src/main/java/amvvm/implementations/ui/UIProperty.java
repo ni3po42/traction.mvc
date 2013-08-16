@@ -23,15 +23,15 @@ import amvvm.implementations.BindingInventory;
 import amvvm.interfaces.IUIElement;
 
 /**
- * Defines the UI end point for model/view-model data. Along with the IUIUpdateListener, the UIBindedProperty can receive data updates
- * and transform them in a usable way that a view can consume. Updates from the view can be given to the UIBindedProperty that can be
+ * Defines the UI end point for model/view-model data. Along with the IUIUpdateListener, the UIProperty can receive data updates
+ * and transform them in a usable way that a view can consume. Updates from the view can be given to the UIProperty that can be
  * sent back to the model/view-model.
  * 
  * @author Tim Stratton
  *
  * @param <T> : data type of the property the element is bounded to
  */
-public class UIBindedProperty<T>
+public class UIProperty<T>
 implements IUIElement<T>
 {				
 	protected String path;
@@ -42,13 +42,13 @@ implements IUIElement<T>
 	private int pathAttribute;
 	private IViewBinding parentViewBinding;
 
-	public UIBindedProperty(IViewBinding viewBinding, int pathAttribute)
+	public UIProperty(IViewBinding viewBinding, int pathAttribute)
 	{
 		this.pathAttribute = pathAttribute;
         this.parentViewBinding = viewBinding;
 	}
 	
-	public UIBindedProperty(IViewBinding viewBinding)
+	public UIProperty(IViewBinding viewBinding)
 	{
 		this.pathAttribute = -1;
         this.parentViewBinding = viewBinding;
@@ -63,7 +63,7 @@ implements IUIElement<T>
 	}
 	
 	@SuppressWarnings("unused")
-	private UIBindedProperty(){}
+	private UIProperty(){}
 		
 	/**
 	 * When called, updates view with passed data.
@@ -77,7 +77,7 @@ implements IUIElement<T>
 		synchronized(this)
 		{	
 			//is true is 'disableRecieveUpdates' has been called before 'enablRecieveUpdates'
-			//This is also the case if UIBindedProperty has called the 'sendUpdate' method
+			//This is also the case if UIProperty has called the 'sendUpdate' method
 			if (isUpdating())
 				return;
 			
@@ -129,6 +129,18 @@ implements IUIElement<T>
 	{
 		return path;
 	}
+
+    @Override
+    public String getPropertyName()
+    {
+        if (getPath() == null)
+            return null;
+        if (getPath().equals("."))
+            return null;
+
+        int index = getPath().lastIndexOf(".");
+        return getPath().substring(index+1);
+    }
 
     @Override
     public void setPath(String path)

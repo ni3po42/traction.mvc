@@ -25,10 +25,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import amvvm.implementations.SyntheticAttributes.Builder;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.ui.viewbinding.ViewBindingHelper;
 import amvvm.interfaces.IAttributeGroup;
@@ -45,7 +45,7 @@ public class SwipeEntryView
 
     private final ViewBindingHelper helper = new ViewBindingHelper();
 
-    public UIBindedProperty<Boolean> Active = new UIBindedProperty<Boolean>(this, R.styleable.SwipeEntryView_Active);
+    public UIProperty<Boolean> Active = new UIProperty<Boolean>(this, R.styleable.SwipeEntryView_Active);
 
     public SwipeEntryView(Context context)
     {

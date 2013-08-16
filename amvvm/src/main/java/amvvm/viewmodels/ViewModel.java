@@ -69,7 +69,7 @@ implements IViewModel, IObservableObject
 			return ViewModel.this;
 		}
 	};
-	
+
 	@Override
 	public IObservableObject getProxyObservableObject()
 	{

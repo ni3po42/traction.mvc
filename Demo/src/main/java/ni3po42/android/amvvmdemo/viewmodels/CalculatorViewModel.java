@@ -20,6 +20,8 @@ import android.util.FloatMath;
 
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ResourceArgument;
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.R;
 
@@ -44,7 +46,7 @@ public class CalculatorViewModel extends ViewModel
         return String.valueOf(currentValue);
     }
 
-    public final Command<ResourceArgument> NumberUpdate = new Command<ResourceArgument>("NumberUpdate", this)
+    public final Command<ResourceArgument> NumberUpdate = new Command<ResourceArgument>()
                 .setOnExecuteListener(new Command.IOnExecuteListener<ResourceArgument>()
                 {
                     @Override
@@ -57,7 +59,6 @@ public class CalculatorViewModel extends ViewModel
 
     public final Command<ResourceArgument> Operation = new Command<ResourceArgument>()
     {
-        { registerAs("Operation", CalculatorViewModel.this);}
         @Override
         protected void onExecuted(ResourceArgument resourceArgument)
         {
@@ -65,21 +66,19 @@ public class CalculatorViewModel extends ViewModel
         }
     };
 
-    public final Command<Object> ClearDisplay = new Command<Object>()
+    public final SimpleCommand ClearDisplay = new SimpleCommand()
     {
-        { registerAs("ClearDisplay", CalculatorViewModel.this);}
         @Override
-        protected void onExecuted(Object arg)
+        protected void onExecuted(CommandArgument commandArgument)
         {
             doClearDisplay();
         }
     };
 
-    public final Command<Object> SwitchToDecimal = new Command<Object>()
+    public final SimpleCommand SwitchToDecimal = new SimpleCommand()
     {
-        { registerAs("SwitchToDecimal", CalculatorViewModel.this);}
         @Override
-        protected void onExecuted(Object o)
+        protected void onExecuted(CommandArgument commandArgument)
         {
             decimalPlace = 1;
         }

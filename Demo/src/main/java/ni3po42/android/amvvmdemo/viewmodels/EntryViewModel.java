@@ -28,8 +28,7 @@ public class EntryViewModel
     extends ViewModel
 {
     public final ObservableList<EntryItem> Entries =
-            new ObservableList<EntryItem>(new ArrayList<EntryItem>())
-            .registerAs("Entries", this);
+            new ObservableList<EntryItem>(new ArrayList<EntryItem>());
 
     @Override
     public void onCreate(Bundle savedInstanceState)

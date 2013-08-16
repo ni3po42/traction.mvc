@@ -16,11 +16,10 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.content.res.TypedArray;
 import android.text.format.Time;
 import android.widget.DatePicker;
 import amvvm.R;
@@ -39,9 +38,9 @@ public class DatePickerBinding
 extends GenericViewBinding<DatePicker>
 implements DatePicker.OnDateChangedListener
 {
-	public final UIBindedProperty<Time> SelectedDate = new UIBindedProperty<Time>(this, R.styleable.DatePicker_SelectedDate);
-	public final UIBindedProperty<Time> MinDate = new UIBindedProperty<Time>(this, R.styleable.DatePicker_MinDate);
-	public final UIBindedProperty<Time> MaxDate = new UIBindedProperty<Time>(this, R.styleable.DatePicker_MaxDate);
+	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, R.styleable.DatePicker_SelectedDate);
+	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, R.styleable.DatePicker_MinDate);
+	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, R.styleable.DatePicker_MaxDate);
 		
 	public DatePickerBinding()
 	{

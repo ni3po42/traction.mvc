@@ -17,6 +17,9 @@ package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
 import android.widget.Toast;
+
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.viewmodels.ViewModel;
@@ -83,15 +86,15 @@ public class UIWiring extends ViewModel
 		notifyListener("CurrentInteger");
 	}
 
-	public final Command<Object> MyEvent = new Command<Object>()
-	{	{registerAs("MyEvent", UIWiring.this);}		
-		@Override
-		protected void onExecuted(Object arg)
-		{
-			Toast
-				.makeText(getActivity(), "MainFlag is " + (isMainFlagOn() ? "on" : "off"), Toast.LENGTH_SHORT)
-				.show();
-		}
-	};
+	public final SimpleCommand MyEvent = new SimpleCommand()
+	{
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            Toast
+                    .makeText(getActivity(), "MainFlag is " + (isMainFlagOn() ? "on" : "off"), Toast.LENGTH_SHORT)
+                    .show();
+        }
+    };
 	
 }

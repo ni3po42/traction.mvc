@@ -16,12 +16,11 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -42,7 +41,7 @@ extends GenericViewBinding<ImageView>
 implements IViewBinding
 {
 	//To handle different types of image data, the ui element is holding a generic Object.
-	public final UIBindedProperty<Object> Image = new UIBindedProperty<Object>(this, R.styleable.ImageView_Image);
+	public final UIProperty<Object> Image = new UIProperty<Object>(this, R.styleable.ImageView_Image);
 		
 	public ImageViewBinding()
 	{

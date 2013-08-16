@@ -18,31 +18,9 @@ package amvvm.implementations.observables;
 import amvvm.interfaces.ICommand;
 
 /**
- * GenericArgument - used with GenericEvents, represents the arguments passed to whatever proxy listener was generated.
- * 
- * @author Tim Stratton
- *
+ * Command that only takes a CommandArgument as it's argument
  */
-public class GenericArgument extends ICommand.CommandArgument
+public abstract class SimpleCommand extends Command<ICommand.CommandArgument>
 {
-	public GenericArgument(String propertyName, String name, Object[] args)
-	{
-        super(propertyName);
-		this.name = name;
-		this.arguments = args;
-	}
-		
-	public final Object[] arguments;
-	public final String name;
-	private Object returnObj;	
-	
-	public Object getReturnObj()
-	{
-		return returnObj;
-	}
-	
-	public void setReturnObject(Object obj)
-	{
-		returnObj = obj;
-	}
+
 }

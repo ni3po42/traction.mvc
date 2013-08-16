@@ -20,7 +20,7 @@ import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
-import amvvm.implementations.ui.menubinding.MVVMMenuInflater;
+import amvvm.implementations.ui.menubinding.MenuInflater;
 import amvvm.interfaces.IViewBinding;
 import amvvm.interfaces.IViewModel;
 import amvvm.interfaces.IAccessibleFragmentManager;
@@ -31,10 +31,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -58,7 +56,7 @@ implements IAccessibleFragmentManager
 	/**
 	 * menu inflator
 	 */
-	private MVVMMenuInflater menuInflater;
+	private MenuInflater menuInflater;
 	
 	/**
 	 * menu layout id
@@ -199,10 +197,10 @@ implements IAccessibleFragmentManager
 		return store;
 	}
 	
-	public MenuInflater getMenuInflater()
+	public android.view.MenuInflater getMenuInflater()
 	{
 		if (menuInflater == null)
-			menuInflater = new MVVMMenuInflater(getActivity(),this);
+			menuInflater = new MenuInflater(getActivity(),this);
 		return menuInflater;
 	}
 	

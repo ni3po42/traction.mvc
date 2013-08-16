@@ -18,6 +18,9 @@ package ni3po42.android.amvvmdemo.viewmodels;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
@@ -29,8 +32,7 @@ public class MultiSelectViewModel extends ViewModel
 {
 	
 	public final ObservableList<SelectableItem> Items = 
-			new ObservableList<SelectableItem>(new ArrayList<SelectableItem>())
-			.registerAs("Items", this);
+			new ObservableList<SelectableItem>(new ArrayList<SelectableItem>());
 
 	public MultiSelectViewModel()
 	{
@@ -63,15 +65,14 @@ public class MultiSelectViewModel extends ViewModel
 		}
 	};
 	
-	public final Command<Object> CountSelected = new Command<Object>()
+	public final SimpleCommand CountSelected = new SimpleCommand()
 	{
-		{registerAs("CountSelected", MultiSelectViewModel.this);}
-		@Override
-		protected void onExecuted(Object arg)
-		{			
-			Toast.makeText(getActivity(), "There are "+getSelectedCount()+" item(s) selected.", Toast.LENGTH_SHORT).show();
-		}
-	};
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            Toast.makeText(getActivity(), "There are "+getSelectedCount()+" item(s) selected.", Toast.LENGTH_SHORT).show();
+        }
+    };
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)

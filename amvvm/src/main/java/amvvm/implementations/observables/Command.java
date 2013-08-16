@@ -17,6 +17,7 @@ package amvvm.implementations.observables;
 
 import android.util.Property;
 
+import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableCommand;
 import amvvm.interfaces.IProxyObservableObject;
 
@@ -27,7 +28,7 @@ import amvvm.interfaces.IProxyObservableObject;
  *
  * @param <TArg> : argument type for the command
  */
-public class Command<TArg>
+public class Command<TArg extends ICommand.CommandArgument>
 extends ObservableObject
 implements IObservableCommand<TArg>
 {
@@ -40,18 +41,6 @@ implements IObservableCommand<TArg>
 
     public Command(boolean initCanExecute)
     {
-        setCanExecute(initCanExecute);
-    }
-
-    public Command(String name, IProxyObservableObject parent)
-    {
-        registerAs(name, parent);
-        setCanExecute(true);
-    }
-
-    public Command(String name, IProxyObservableObject parent, boolean initCanExecute)
-    {
-        registerAs(name, parent);
         setCanExecute(initCanExecute);
     }
 
@@ -116,17 +105,8 @@ implements IObservableCommand<TArg>
 	{
 		if (!getCanExecute())
 			return;
-		
-		TArg newArg = null;
-		try
-		{
-			newArg = (TArg)arg;
-		}
-		catch(Exception ex)
-		{
-			//catch if arg cannot be casted into TArg.
-		}		
-		onExecuted(newArg);
+
+		onExecuted(arg);
 	}
 
 }

@@ -22,10 +22,10 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import amvvm.implementations.ui.UIEvent;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.observables.PropertyStore;
-import amvvm.implementations.ui.UIBindedEvent;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
@@ -33,7 +33,6 @@ import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.GenericArgument;
 
-import android.content.res.TypedArray;
 import android.util.Property;
 import android.view.View;
 import amvvm.R;
@@ -53,7 +52,7 @@ implements IViewBinding
 {	
 	protected ArrayList<GenericUIBindedEvent> genericBindedEvents = new ArrayList<GenericUIBindedEvent>();
 	
-	public final UIBindedProperty<Boolean> IsVisible = new UIBindedProperty<Boolean>(this, R.styleable.View_IsVisible);
+	public final UIProperty<Boolean> IsVisible = new UIProperty<Boolean>(this, R.styleable.View_IsVisible);
 	
 	private WeakReference<V> widget;
 
@@ -132,7 +131,7 @@ implements IViewBinding
 	 *
 	 */
 	public class GenericUIBindedProperty 
-	extends UIBindedProperty<Object>
+	extends UIProperty<Object>
 	{
 		private final Pattern split = Pattern.compile("=");		
 		private String connection;
@@ -194,7 +193,7 @@ implements IViewBinding
 	 *
 	 */
 	class GenericUIBindedEvent
-	extends UIBindedEvent<Object>
+	extends UIEvent<GenericArgument>
 	{
 		private final Pattern split = Pattern.compile("\\+=");
 		private String connection;
@@ -261,7 +260,7 @@ implements IViewBinding
 							throws Throwable
 					{
 						//create generic argument with name of method call and arguments
-						GenericArgument arg = new GenericArgument(method.getName(), args);
+						GenericArgument arg = new GenericArgument(GenericUIBindedEvent.this.getPropertyName(),method.getName(), args);
 						
 						GenericUIBindedEvent.this.execute(arg);
 						

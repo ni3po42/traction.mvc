@@ -15,8 +15,12 @@
 
 package amvvm.implementations.observables;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import amvvm.annotations.IgnoreObservable;
 import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IObservableObject;
 import amvvm.interfaces.IProxyObservableObject;
@@ -57,7 +61,9 @@ implements IObservableObject
 			return null;
 		}
 	};
-	
+
+    private boolean hasAutoRegisteredFields = false;
+
 	//map relating a listener to a source by name
 	protected HashMap<IObjectListener, ArrayList<String>> tracableListeners = new HashMap<IObjectListener, ArrayList<String>>();
 	
@@ -227,7 +233,13 @@ implements IObservableObject
 				if (tracableListeners.get(listener) == null)
 					tracableListeners.put(listener, new ArrayList<String>());
 				
-				tracableListeners.get(listener).add(sourceName);
+				boolean added = tracableListeners.get(listener).add(sourceName);
+
+                if (added && !hasAutoRegisteredFields)
+                {
+                    autoFieldRegistration();
+                }
+
 			}
 			return (T)this;
 		}		
@@ -257,5 +269,40 @@ implements IObservableObject
 		
 		return (Property<Object, Object>) store.getProperty(getSource().getClass(), name);
 	}
-	
+
+    /**
+     * scans the current source and auto-registers public final fields that implement IProxyObservableObject
+      */
+    public void autoFieldRegistration()
+    {
+        if (getSource() == null)
+            return;
+        Field[] fields = getSource().getClass().getFields();
+
+        for(int i=0;i<fields.length;i++)
+        {
+            Field field = fields[i];
+
+            boolean isFinal = Modifier.isFinal(field.getModifiers());
+            boolean isStatic = Modifier.isStatic(field.getModifiers());
+            boolean ignoreField = field.isAnnotationPresent(IgnoreObservable.class);
+            boolean isIProxy = IProxyObservableObject.class.isAssignableFrom(field.getType());
+
+            if (!isFinal || isStatic || ignoreField || !isIProxy)
+                continue;
+
+            try
+            {
+                IProxyObservableObject obj = (IProxyObservableObject)field.get(getSource());
+                String fieldName = field.getName();
+                obj.getProxyObservableObject().registerAs(fieldName, this);
+            }
+            catch (IllegalAccessException e)
+            {
+            }
+
+        }
+        hasAutoRegisteredFields = true;
+    }
+
 }

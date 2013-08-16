@@ -16,21 +16,24 @@
 package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
+
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.viewmodels.ViewModel;
 
 public class DemoADialogViewModel extends ViewModel
 {
-	public final Command<Object> OpenDialog = new Command<Object>()
-	{	
-		@Override
-		protected void onExecuted(Object arg)
-		{
-			ActualDialogViewModel dialog = new ActualDialogViewModel();
-			dialog.show(getFragmentManager(), "dialog");
-		}
-	};
+	public final SimpleCommand OpenDialog = new SimpleCommand()
+	{
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            ActualDialogViewModel dialog = new ActualDialogViewModel();
+            dialog.show(getFragmentManager(), "dialog");
+        }
+    };
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 

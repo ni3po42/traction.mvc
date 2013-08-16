@@ -18,6 +18,9 @@ package ni3po42.android.amvvmdemo.viewmodels;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Window;
+
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.viewmodels.DialogViewModel;
@@ -36,14 +39,14 @@ public class ActualDialogViewModel extends DialogViewModel
 		notifyListener("SomeText");
 	}
 	
-	public final Command<Object> Close = new Command<Object>()
-	{		
-		@Override
-		protected void onExecuted(Object arg)
-		{			
-			dismiss();
-		}
-	};
+	public final SimpleCommand Close = new SimpleCommand()
+	{
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            dismiss();
+        }
+    };
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 

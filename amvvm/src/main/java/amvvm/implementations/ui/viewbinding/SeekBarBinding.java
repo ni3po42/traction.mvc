@@ -16,13 +16,13 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedEvent;
+import amvvm.implementations.ui.UIEvent;
 
-import android.content.res.TypedArray;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import amvvm.R;
 import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.ICommand;
 
 /**
  * Defines ui elements for a SeekBar. This extends the ProgressBarBinding class and add hooks to get drag start and end events
@@ -38,8 +38,8 @@ extends ProgressBarBinding
 implements OnSeekBarChangeListener
 {	
 	
-	public final UIBindedEvent<Object> OnDragStart = new UIBindedEvent<Object>(this, R.styleable.SeekBar_OnDragStart);
-	public final UIBindedEvent<Object> OnDragEnd = new UIBindedEvent<Object>(this, R.styleable.SeekBar_OnDragEnd);
+	public final UIEvent<ICommand.CommandArgument> OnDragStart = new UIEvent<ICommand.CommandArgument>(this, R.styleable.SeekBar_OnDragStart);
+	public final UIEvent<ICommand.CommandArgument> OnDragEnd = new UIEvent<ICommand.CommandArgument>(this, R.styleable.SeekBar_OnDragEnd);
 
 
     @Override

@@ -17,6 +17,8 @@ package amvvm.tests;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
+
+import amvvm.annotations.IgnoreObservable;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.IObjectListener;
@@ -86,7 +88,34 @@ public class TestObservableObject extends TestCase
 		verify(listen).onEvent(argument.capture());
         assertSame(newSource, argument.getValue().getSource());
 	}
-	
+
+    public void testCanAutoRegisterFinalFields()
+    {
+        //once an object starts listening at any point above the final field, this will cause a
+        //chain reaction that will register all final fields
+
+        //arrange
+        OOTEST obj = new OOTEST();
+
+        //act
+        obj.registerListener("anything", mock(IObjectListener.class));
+
+        //assert
+        verify(obj.MyFinalField).registerAs("MyFinalField", obj);
+    }
+
+    public void testCanIgnoreAutoRegisterFinalField()
+    {
+        //arrange
+        OOTEST obj = new OOTEST();
+
+        //act
+        obj.registerListener("anything", mock(IObjectListener.class));
+
+        //assert
+        verify(obj.IgnoredField).registerAs(anyString(), eq(obj));
+    }
+
 	private ObservableObject createObj()
 	{
 		return new OOTEST();
@@ -99,11 +128,28 @@ public class TestObservableObject extends TestCase
 		public int prop;
 		
 		protected final PropertyStore store = new PropertyStore();
-		
+
+        public final ForFinalFieldsObj MyFinalField = spy(new ForFinalFieldsObj());
+
+        @IgnoreObservable
+        public final ForFinalFieldsObj IgnoredField = spy(new ForFinalFieldsObj());
+
 		@Override
 		public PropertyStore getPropertyStore()
 		{
 			return store;
 		}
 	};
+
+    public static class ForFinalFieldsObj
+        extends ObservableObject
+    {
+
+        protected  final PropertyStore store = new PropertyStore();
+        @Override
+        public PropertyStore getPropertyStore()
+        {
+            return store;
+        }
+    }
 }

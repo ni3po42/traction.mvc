@@ -53,8 +53,9 @@ implements IViewModel, IObservableObject
 			return ActivityViewModel.this;
 		}			
 	};
-	
-	@Override
+
+
+    @Override
 	public IObservableObject getProxyObservableObject() 
 	{
 		return helper;

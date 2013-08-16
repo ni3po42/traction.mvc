@@ -16,10 +16,9 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.observables.ResourceArgument;
+import amvvm.implementations.ui.UIEvent;
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedEvent;
 
-import android.content.res.TypedArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -41,15 +40,10 @@ public class ButtonBinding<V extends Button>
 extends GenericViewBinding<V>
 implements OnClickListener, OnLongClickListener
 {
-	public UIBindedEvent<Object> OnClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnClick);
-	public UIBindedEvent<Object> OnLongClick = new UIBindedEvent<Object>(this, R.styleable.Button_OnLongClick);
+	public UIEvent<ResourceArgument> OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnClick);
+	public UIEvent<ResourceArgument> OnLongClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnLongClick);
 
     private int commandValueResourceId = -1;
-
-	public ButtonBinding()
-	{
-		super();
-	}
 
     @Override
     protected void initialise(IAttributeBridge attributeBridge)
@@ -78,7 +72,7 @@ implements OnClickListener, OnLongClickListener
 	{
         ResourceArgument arg = null;
         if (commandValueResourceId > 0)
-            arg = new ResourceArgument(commandValueResourceId);
+            arg = new ResourceArgument(OnClick.getPropertyName(), commandValueResourceId);
 		OnClick.execute(arg);
 	}
 
@@ -89,9 +83,8 @@ implements OnClickListener, OnLongClickListener
 		//return true or false, so it always returns true, for now...
         ResourceArgument arg = null;
         if (commandValueResourceId > 0)
-            arg = new ResourceArgument(commandValueResourceId);
-		OnLongClick.execute(arg);
-		return true;
+            arg = new ResourceArgument(OnLongClick.getPropertyName(), commandValueResourceId);
+		return OnLongClick.execute(arg);
 	}
 
 }

@@ -68,7 +68,7 @@ implements IViewModel, IObservableObject
 			return DialogViewModel.this;
 		};
 	};
-	
+
 	@Override
 	public IObservableObject getProxyObservableObject()
 	{

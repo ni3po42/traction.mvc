@@ -35,6 +35,12 @@ public interface IUIElement<T>
 	public String getPath();
 
     /**
+     * returns the last chain of the property path to model/view-model data
+     * @return
+     */
+    public String getPropertyName();
+
+    /**
      * set path to model/view-model data
      * @param path
      */

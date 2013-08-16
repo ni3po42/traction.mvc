@@ -17,13 +17,13 @@ package amvvm.implementations.ui.menubinding;
 
 import java.lang.ref.WeakReference;
 
-import android.content.res.TypedArray;
 import android.view.MenuItem;
 import android.view.View;
 
+import amvvm.implementations.observables.ResourceArgument;
+import amvvm.implementations.ui.UIEvent;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedEvent;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
@@ -37,11 +37,13 @@ import amvvm.R;
  *
  */
 public class MenuBinding 
-implements MenuItem.OnMenuItemClickListener, IViewBinding
+implements MenuItem.OnMenuItemClickListener, MenuItem.OnActionExpandListener, IViewBinding
 {
-	public final UIBindedProperty<Boolean> IsVisible = new UIBindedProperty<Boolean>(this, R.styleable.Menu_IsVisible);
-	public final UIBindedEvent<Object> OnClick = new UIBindedEvent<Object>(this, R.styleable.Menu_OnClick);
-	
+	public final UIProperty<Boolean> IsVisible = new UIProperty<Boolean>(this, R.styleable.Menu_IsVisible);
+	public final UIEvent<ResourceArgument> OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Menu_OnClick);
+
+    private int commandValueResourceId = -1;
+
 	private final WeakReference<MenuItem> menuItem;
 	private final WeakReference<BindingInventory> inventoryReference;
 	
@@ -53,7 +55,9 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 		
 		OnClick.initialize(attrs);
 		IsVisible.initialize(attrs);
-		
+
+        commandValueResourceId = attrs.getResourceId(R.styleable.Button_CommandValue, -1);
+
 		IsVisible.setUIUpdateListener(new IUIElement.IUIUpdateListener<Boolean>()
 		{			
 			@Override
@@ -71,9 +75,27 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
 	{
 		if (inventoryReference.get() == null)
 			return false;
-		OnClick.execute(null);
-		return true;
+
+        ResourceArgument arg = null;
+        if (commandValueResourceId > 0)
+            arg = new ResourceArgument(OnClick.getPropertyName(), commandValueResourceId);
+
+		return OnClick.execute(arg);
 	}
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem menuItem)
+    {
+        //nothing yet
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem menuItem)
+    {
+        //nothing yet...
+        return false;
+    }
 
     @Override
     public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
@@ -141,6 +163,5 @@ implements MenuItem.OnMenuItemClickListener, IViewBinding
     {
 
     }
-
 
 }

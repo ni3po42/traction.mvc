@@ -18,13 +18,12 @@ package amvvm.implementations.ui.viewbinding;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 import amvvm.interfaces.IViewBinding;
 
-import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -44,8 +43,8 @@ public class TextViewBinding
 extends GenericViewBinding<TextView>
 implements IViewBinding, TextWatcher
 {	
-	public final UIBindedProperty<Object> Text = new UIBindedProperty<Object>(this, R.styleable.TextView_Text);
-	public final UIBindedProperty<Object> Format = new UIBindedProperty<Object>(this, R.styleable.TextView_Format);
+	public final UIProperty<Object> Text = new UIProperty<Object>(this, R.styleable.TextView_Text);
+	public final UIProperty<Object> Format = new UIProperty<Object>(this, R.styleable.TextView_Format);
 	
 	private boolean initFormatSet = false;
 	private Object currentFormat; 	

@@ -19,9 +19,9 @@ import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.observables.ResourceArgument;
 import amvvm.interfaces.IUIElement;
-import amvvm.interfaces.IUIElement.IUIUpdateListener;
+
 import junit.framework.TestCase;
 
 import static org.mockito.Matchers.eq;
@@ -109,8 +109,8 @@ public class TestBindingInventory extends TestCase
 		//act
 		inv.track(uiprop);
 		inv.setContextObject(context);
-		
-		inv.fireCommand(path, 3141);
+		ResourceArgument arg = new ResourceArgument(path, 3141);
+		inv.fireCommand(path, arg);
 		
 		//assert
 		verify(uiprop).recieveUpdate(eq(3141));		
@@ -130,8 +130,8 @@ public class TestBindingInventory extends TestCase
 		//act
 		inv.track(uiprop);
 		inv.setContextObject(context);
-		
-		inv.fireCommand(path, 3141);
+        ResourceArgument arg = new ResourceArgument(path, 3141);
+		inv.fireCommand(path, arg);
 		
 		//assert
 		verify(uiprop, never()).recieveUpdate(eq(3141));		
@@ -141,8 +141,8 @@ public class TestBindingInventory extends TestCase
 //	{
 //		//arrange
 //		String simplePath = "I";
-//		UIBindedProperty<Integer> uiprop1 = new UIBindedProperty<Integer>();
-//		UIBindedProperty<Integer> uiprop2 = new UIBindedProperty<Integer>();
+//		UIProperty<Integer> uiprop1 = new UIProperty<Integer>();
+//		UIProperty<Integer> uiprop2 = new UIProperty<Integer>();
 //		uiprop1.setPath(simplePath);
 //		uiprop2.setPath(simplePath);
 //		
@@ -323,13 +323,13 @@ public class TestBindingInventory extends TestCase
 			notifyListener("Obj", obj, obj = o);			
 		}
 		
-		public final Command<Integer> myCommand = new Command<Integer>()
+		public final Command<ResourceArgument> myCommand = new Command<ResourceArgument>()
 		{
 			@Override
-			protected void onExecuted(Integer arg)
+			protected void onExecuted(ResourceArgument arg)
 			{
 				if (arg != null)
-					setI(arg);
+					setI(arg.getResourceId());
 			}
 		};
 	}

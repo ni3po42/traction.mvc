@@ -16,14 +16,13 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedList;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.ui.UIList;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.content.res.TypedArray;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -46,8 +45,8 @@ import amvvm.R;
 public class AdapterViewBinding<T extends IProxyObservableObject, V extends AdapterView<Q>, Q extends Adapter>
 extends GenericViewBinding<V>
 {	
-	public final UIBindedList<T> Items = new UIBindedList<T>(this, R.styleable.AdapterView_Items);
-	public final UIBindedProperty<T> SelectedItem = new UIBindedProperty<T>(this, R.styleable.AdapterView_SelectedItem);
+	public final UIList<T> Items = new UIList<T>(this, R.styleable.AdapterView_Items);
+	public final UIProperty<T> SelectedItem = new UIProperty<T>(this, R.styleable.AdapterView_SelectedItem);
 	
 	//layout to use for child views
 	private int itemTemplateId = -1;

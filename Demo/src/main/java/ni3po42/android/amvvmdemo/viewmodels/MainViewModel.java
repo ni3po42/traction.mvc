@@ -25,8 +25,7 @@ import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
 public class MainViewModel extends ViewModel
 {
 	public final ObservableList<DemoViewModelChoice> ViewModelChoices = 
-			new ObservableList<DemoViewModelChoice>(new ArrayList<DemoViewModelChoice>())
-			.registerAs("ViewModelChoices", this);
+			new ObservableList<DemoViewModelChoice>(new ArrayList<DemoViewModelChoice>());
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)

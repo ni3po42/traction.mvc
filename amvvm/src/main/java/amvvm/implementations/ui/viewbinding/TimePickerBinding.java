@@ -16,14 +16,13 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.implementations.BindingInventory;
 
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
-import android.content.res.TypedArray;
 import android.text.format.Time;
 import amvvm.R;
 
@@ -38,7 +37,7 @@ public class TimePickerBinding
 extends GenericViewBinding<TimePicker> 
 implements OnTimeChangedListener
 {
-	public final UIBindedProperty<Time> SelectedTime = new UIBindedProperty<Time>(this, R.styleable.TimePicker_SelectedTime);
+	public final UIProperty<Time> SelectedTime = new UIProperty<Time>(this, R.styleable.TimePicker_SelectedTime);
 	
 	public TimePickerBinding()
 	{

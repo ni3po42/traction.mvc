@@ -15,14 +15,17 @@
 
 package amvvm.implementations.observables;
 
+import amvvm.interfaces.ICommand;
+
 /**
  * Allows passing of a resource value from UI to view-model
  */
-public class ResourceArgument
+public class ResourceArgument extends ICommand.CommandArgument
 {
     private int resourceId;
-    public ResourceArgument(int resourceId)
+    public ResourceArgument(String commandName, int resourceId)
     {
+        super(commandName);
         this.resourceId = resourceId;
     }
 

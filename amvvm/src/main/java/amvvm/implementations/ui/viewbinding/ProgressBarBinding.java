@@ -15,12 +15,11 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.content.res.TypedArray;
 import android.widget.ProgressBar;
 import amvvm.R;
 
@@ -37,9 +36,9 @@ import amvvm.R;
 public class ProgressBarBinding 
 extends GenericViewBinding<ProgressBar>
 {
-	public final UIBindedProperty<Integer> MaxValue = new UIBindedProperty<Integer>(this, R.styleable.ProgressView_MaxValue);
-	public final UIBindedProperty<Integer> Value = new UIBindedProperty<Integer>(this, R.styleable.ProgressView_Value);
-	public final UIBindedProperty<Boolean> IsIndeterminate = new UIBindedProperty<Boolean>(this, R.styleable.ProgressView_IsIndeterminate);
+	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, R.styleable.ProgressView_MaxValue);
+	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, R.styleable.ProgressView_Value);
+	public final UIProperty<Boolean> IsIndeterminate = new UIProperty<Boolean>(this, R.styleable.ProgressView_IsIndeterminate);
 		
 	public ProgressBarBinding()
 	{

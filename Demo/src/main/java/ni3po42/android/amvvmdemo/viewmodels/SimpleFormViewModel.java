@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.ICommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
@@ -31,8 +34,7 @@ public class SimpleFormViewModel extends ViewModel
 	private static String prefName = "ni3po42.android.amvvmdemo.userinfo";
 	
 	public final ObservableList<Gender> Genders = 
-			new ObservableList<Gender>(new ArrayList<Gender>())
-			.registerAs("Genders", this);
+			new ObservableList<Gender>(new ArrayList<Gender>());
 	
 	public SimpleFormViewModel()
 	{
@@ -41,27 +43,27 @@ public class SimpleFormViewModel extends ViewModel
 		Genders.add(Gender.getFemale());
 	}
 	
-	public final UserInfo CurrentUserInfo = new UserInfo().registerAs("CurrentUserInfo", this);
+	public final UserInfo CurrentUserInfo = new UserInfo();
 	
-	public final Command<Object> Save = new Command<Object>()
-	{	{registerAs("Save", SimpleFormViewModel.this);}
-		@Override
-		protected void onExecuted(Object arg)
-		{
-			SharedPreferences preference = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
-			CurrentUserInfo.storeInPreference(preference);
-			getActivity().getFragmentManager().popBackStackImmediate();
-		}
-	};
+	public final SimpleCommand Save = new SimpleCommand()
+	{
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            SharedPreferences preference = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
+            CurrentUserInfo.storeInPreference(preference);
+            getActivity().getFragmentManager().popBackStackImmediate();
+        }
+    };
 	
-	public final Command<Object> Cancel = new Command<Object>()
-	{	{registerAs("Cancel", SimpleFormViewModel.this);}	
-		@Override
-		protected void onExecuted(Object arg)
-		{
-			getActivity().getFragmentManager().popBackStackImmediate();
-		}
-	};
+	public final SimpleCommand Cancel = new SimpleCommand()
+	{
+        @Override
+        protected void onExecuted(CommandArgument commandArgument)
+        {
+            getActivity().getFragmentManager().popBackStackImmediate();
+        }
+    };
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)

@@ -16,28 +16,21 @@
 package amvvm.implementations.ui;
 
 import amvvm.interfaces.IViewBinding;
+import amvvm.interfaces.IObservableList;
+import amvvm.interfaces.IProxyObservableObject;
 
 /**
- * Defines the UI end for an event. This can be user interaction with the UI or a system initiated event the 
- * element is listening to
+ * Defines the UI end for a list. It's pretty much just a UIBindingProperty that uses an IObservableList as it's item type.
  * @author Tim Stratton
  *
- * @param <TArg> : type of argument the ui event can pass a command
+ * @param <T> : the item type of the list
  */
-public class UIBindedEvent<TArg>
-extends UIBindedProperty<Object>
-{	
-	public UIBindedEvent(IViewBinding viewBinding, int pathAttribute)
+public class UIList<T extends IProxyObservableObject>
+extends UIProperty<IObservableList<T>>
+{
+	public UIList(IViewBinding viewBinding, int pathAttribute)
 	{
 		super(viewBinding, pathAttribute);
-	}
-
-	/**
-	 * Lets a UIBindedEvent signal a bounded command
-	 * @param arg
-	 */
-	public void execute(TArg arg)
-	{
-		getBindingInventory().fireCommand(getPath(), arg);
-	}			
+	}	
+	
 }

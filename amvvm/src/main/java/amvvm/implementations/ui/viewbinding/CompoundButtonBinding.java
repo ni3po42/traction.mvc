@@ -16,11 +16,10 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.content.res.TypedArray;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import amvvm.R;
@@ -38,7 +37,7 @@ public class CompoundButtonBinding
 extends ButtonBinding<CompoundButton>
 implements OnCheckedChangeListener
 {	
-	public UIBindedProperty<Boolean> IsChecked = new UIBindedProperty<Boolean>(this, R.styleable.Toggle_IsChecked);
+	public UIProperty<Boolean> IsChecked = new UIProperty<Boolean>(this, R.styleable.Toggle_IsChecked);
 		
 	public CompoundButtonBinding()
 	{

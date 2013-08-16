@@ -15,12 +15,11 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIBindedProperty;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.content.res.TypedArray;
 import android.widget.NumberPicker;
 import amvvm.R;
 
@@ -39,9 +38,9 @@ extends GenericViewBinding<NumberPicker>
 implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.OnValueChangeListener
 {		
 	//expose the min, max and current value
-	public final UIBindedProperty<Integer> MinValue = new UIBindedProperty<Integer>(this,R.styleable.NumberPicker_MinValue);
-	public final UIBindedProperty<Integer> MaxValue = new UIBindedProperty<Integer>(this, R.styleable.NumberPicker_MaxValue);
-	public final UIBindedProperty<Integer> Value = new UIBindedProperty<Integer>(this, R.styleable.NumberPicker_Value);
+	public final UIProperty<Integer> MinValue = new UIProperty<Integer>(this,R.styleable.NumberPicker_MinValue);
+	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, R.styleable.NumberPicker_MaxValue);
+	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, R.styleable.NumberPicker_Value);
 	
 	//temp cache for the value
 	private Integer tempValue;

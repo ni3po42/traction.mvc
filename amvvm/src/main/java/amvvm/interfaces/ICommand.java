@@ -21,7 +21,7 @@ package amvvm.interfaces;
  * @author Tim Stratton
  * @param <TArg> : Type of command argument to pass when commands are executed
  */
-public interface ICommand<TArg> 
+public interface ICommand<TArg extends ICommand.CommandArgument>
 {		
 	/**
 	 * call to execute command
@@ -40,4 +40,36 @@ public interface ICommand<TArg>
 	 * @param b
 	 */
 	void setCanExecute(boolean b);
+
+    /**
+     * class for passing arguments to commands
+     */
+    public class CommandArgument
+    {
+        private String commandName;
+
+        private boolean eventCancelled;
+
+        public boolean isEventCancelled()
+        {
+            return eventCancelled;
+        }
+
+        public void setEventCancelled(boolean isCancelled)
+        {
+            eventCancelled = isCancelled;
+        }
+
+        public CommandArgument(String commandName)
+        {
+            this.commandName = commandName;
+            this.eventCancelled = false;
+        }
+
+        public String getCommandName()
+        {
+            return commandName;
+        }
+    }
+
 }

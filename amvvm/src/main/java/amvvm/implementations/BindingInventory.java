@@ -147,9 +147,8 @@ public class BindingInventory
 		return parentInventory;
 	}
 
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void  fireCommand(String commandPath, Object commandArg)
+	public void  fireCommand(String commandPath, ICommand.CommandArgument commandArg)
 	{
 		Object command = dereferenceValue(commandPath);
 		if (command instanceof ICommand)
@@ -157,6 +156,10 @@ public class BindingInventory
 			ICommand c = (ICommand)command;
 			c.execute(commandArg);
 		}
+        else
+        {
+            commandArg.setEventCancelled(true);
+        }
 	}
 	
 	public void setParentInventory(BindingInventory parentInventory)
