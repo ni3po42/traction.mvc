@@ -24,6 +24,6 @@ There is (almost) no need to reference any view objects in the activity or fragm
 No need to replace existing views in layouts!
 </h2>
 
-This framework 'extends' the capabilities of existing view by creating objects that work beside the views; this means you can continue using all the views you have; android core views/widgets and your own. The framework will identify the bases view/widgets used and apply particular elements to it to communicate back to the view-model.
+This framework 'extends' the capabilities of existing view by creating objects that work beside the views; this means you can continue using all the views you have; android core views/widgets and your own. The framework will identify the bases view/widgets used and apply particular elements to it to communicate back to the view-model. If the framework doesn't natively support your custom view, you can easily extend your view to handle the binding, or create a seperate binding object to use (especially useful if you can't extend the custom views).
 
-I don't have detailed documentation compiled yet, but a Demo application was included in the interim until the wiki is up; this will assist developers for now on how to use the code.
+Basic design documents have been created and I expect to have more detailed documentation in the coming weeks. Until then, a Demo application was included in the interim until the wiki is fully up; this will assist developers for now on how to use the code.
