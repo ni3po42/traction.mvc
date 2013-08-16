@@ -1,4 +1,4 @@
-<h1>amvvm, v BETA 0.3.0</h1>
+<h1>amvvm, v BETA 0.3.1</h1>
 
 <h2>
 INTRODUCTION
