@@ -29,10 +29,10 @@ import amvvm.interfaces.IViewBinding;
 public abstract class ProxyAdapter<T>
     extends ObservableObject
 {
-    protected static class ProxyAdapterArgument
+    public static class ProxyAdapterArgument
     {
         private Context context;
-        private int layoutId;
+        private int layoutId = -1;
         private ISelectionHandler selectionHandler;
         private BindingInventory inventory;
 

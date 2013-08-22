@@ -27,26 +27,38 @@ import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IIndexable;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewBinding;
 
 public class CursorAdapter
-    extends ResourceCursorAdapter
+    extends android.widget.CursorAdapter
 {
-    public CursorAdapter(ProxyAdapter.ProxyAdapterArgument argument, Cursor cursor)
+    public <T extends IPropertyStore & Cursor> CursorAdapter(ProxyAdapter.ProxyAdapterArgument argument, T cursor)
     {
-        super(argument.getContext(), argument.getLayoutId(), cursor, android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        super(argument.getContext(), cursor, android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         this.templateId = argument.getLayoutId();
         this.parentInventory = argument.getInventory();
         this.selectionHandler = argument.getSelectionHandler();
     }
 
-    private final ProxyAdapter.ISelectionHandler selectionHandler;
+    public void updateArguments(ProxyAdapter.ProxyAdapterArgument argument)
+    {
+        this.templateId = argument.getLayoutId();
+        this.parentInventory = argument.getInventory();
+        this.selectionHandler = argument.getSelectionHandler();
+    }
+
+    public boolean isCursorAdapterValid()
+    {
+        return this.templateId > 0 && this.parentInventory != null && this.selectionHandler != null;
+    }
+
+    private ProxyAdapter.ISelectionHandler selectionHandler;
     private BindingInventory parentInventory;
     private ViewBindingFactory factory = new ViewBindingFactory();
     private LayoutInflater inflater;
-    private final int templateId;
-
+    private int templateId;
 
     protected LayoutInflater getLayoutInflater(View parentView)
     {

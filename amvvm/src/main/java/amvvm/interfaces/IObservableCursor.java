@@ -15,14 +15,19 @@
 
 package amvvm.interfaces;
 
+import android.content.Loader;
 import android.database.Cursor;
+import android.os.Bundle;
 
 /**
  * Defines methods for an observable cursor
  */
 public interface IObservableCursor
 {
-    void updateCursor(Cursor cursor);
+    public interface ICursorLoader
+    {
+        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
+    }
 
     void setCalculatedPropertiesHandler(ICalculatedPropertiesHandler<Cursor> handler);
 

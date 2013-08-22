@@ -18,11 +18,13 @@ package ni3po42.android.amvvmdemo.viewmodels;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 
 import amvvm.implementations.observables.ObservableCursor;
 import amvvm.interfaces.ICalculatedPropertiesHandler;
+import amvvm.interfaces.IObservableCursor;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.R;
 import ni3po42.android.amvvmdemo.providers.DemoProvider;
@@ -32,15 +34,22 @@ import ni3po42.android.amvvmdemo.providers.DemoProvider;
  */
 public class BridgeOfDeathViewModel
     extends ViewModel
-    implements ICalculatedPropertiesHandler<Cursor>,
-               LoaderManager.LoaderCallbacks<Cursor>
-
+    implements ICalculatedPropertiesHandler<Cursor>
 {
     public final ObservableCursor Answers = new ObservableCursor();
 
     public BridgeOfDeathViewModel()
     {
-        Answers.setCalculatedPropertiesHandler(this);
+        Answers
+                .setCursorLoader(new IObservableCursor.ICursorLoader()
+                {
+                    @Override
+                    public Loader<Cursor> onCreateLoader(Bundle arg)
+                    {
+                        return new CursorLoader(getActivity(), DemoProvider.CONTENT_URI, null, null, null, null);
+                    }
+                })
+                .setCalculatedPropertiesHandler(this);
     }
 
     @Override
@@ -50,51 +59,34 @@ public class BridgeOfDeathViewModel
 
         setContentView(R.layout.bridgeofdeathlist);
 
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, null, Answers);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+
+        setContentView(R.layout.bridgeofdeathlist);
+
+        getLoaderManager().restartLoader(0,null, Answers);
     }
 
     @Override
     public Class<?> getCalculatedPropertyType(String propertyName, Cursor obj)
     {
-        if (obj.isClosed())
+        if (obj.isClosed() || !propertyName.equals("ShowColor"))
             return null;
-
-        if (propertyName.equals("ShowColor"))
-        {
-            return boolean.class;
-        }
-        return null;
+        return boolean.class;
     }
 
     @Override
     public Object getCalculatedProperty(String propertyName, Cursor obj)
     {
-        if (obj.isClosed())
+        if (obj.isClosed() || !propertyName.equals("ShowColor"))
             return null;
 
-        if (propertyName.equals("ShowColor"))
-        {
-            int index = obj.getColumnIndex(DemoProvider.Columns.OtherAnswer);
-            return obj.isNull(index);
-        }
-        return null;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
-    {
-        return new CursorLoader(getActivity(), DemoProvider.CONTENT_URI, null, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
-    {
-        Answers.updateCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader)
-    {
-        Answers.updateCursor(null);
+        int index = obj.getColumnIndex(DemoProvider.Columns.OtherAnswer);
+        return obj.isNull(index);
     }
 }

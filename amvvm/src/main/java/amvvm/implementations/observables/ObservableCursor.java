@@ -15,9 +15,12 @@
 
 package amvvm.implementations.observables;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.os.Bundle;
 import android.util.Property;
 import android.util.SparseArray;
 import android.view.View;
@@ -39,20 +42,17 @@ import amvvm.interfaces.IProxyObservableObject;
  */
 public class ObservableCursor
     extends ProxyAdapter<Cursor>
-    implements IObservableCursor
+    implements IObservableCursor,LoaderManager.LoaderCallbacks<Cursor>
 {
     private ICalculatedPropertiesHandler<Cursor> calculatedPropertiesHandler;
-    private internalCursorWrapper internalCursor;
     private CursorAdapter internalCursorAdapter;
 
-    @Override
-    public void updateCursor(Cursor cursor)
+    private ICursorLoader cursorLoader;
+
+    public <T extends ObservableCursor> T setCursorLoader(ICursorLoader cursorLoader)
     {
-        if (internalCursor != cursor)
-        {
-            internalCursor = new internalCursorWrapper(cursor);
-            notifyListener();
-        }
+        this.cursorLoader = cursorLoader;
+        return (T)this;
     }
 
     @Override
@@ -62,23 +62,19 @@ public class ObservableCursor
     }
 
     @Override
-    public IPropertyStore getPropertyStore()
+    protected int indexOf(Cursor value)
     {
-        return internalCursor;
-    }
-
-    @Override
-    protected int indexOf(Cursor notUsed)
-    {
-        return internalCursor.getPosition();
+        if (value == null)
+            return -1;
+        return value.getPosition();
     }
 
     @Override
     protected BaseAdapter getProxyAdapter(ProxyAdapterArgument arg)
     {
-        if (arg != null && internalCursorAdapter == null && internalCursor != null && arg.getContext() != null && internalCursor.getWrappedCursor() != null)
+        if (internalCursorAdapter != null && !internalCursorAdapter.isCursorAdapterValid())
         {
-            internalCursorAdapter = new CursorAdapter(arg, internalCursor);
+            internalCursorAdapter.updateArguments(arg);
         }
         return internalCursorAdapter;
     }
@@ -87,8 +83,47 @@ public class ObservableCursor
     protected void clearProxyAdapter()
     {
         if (internalCursorAdapter != null)
-            internalCursorAdapter.changeCursor(null);
+            internalCursorAdapter.swapCursor(null);
         internalCursorAdapter = null;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+    {
+        if (cursorLoader == null)
+            return null;
+        return cursorLoader.onCreateLoader(bundle);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+    {
+        internalCursorWrapper wrappedCursor = new internalCursorWrapper(cursor);
+        if (internalCursorAdapter == null)
+        {
+            ProxyAdapterArgument arg = new ProxyAdapterArgument()
+                                        .setContext(cursorLoader.getContext());
+
+            internalCursorAdapter = new CursorAdapter(arg, wrappedCursor);
+            notifyListener();
+        }
+        else
+            internalCursorAdapter.swapCursor(wrappedCursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader)
+    {
+        if (internalCursorAdapter != null)
+            internalCursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public IPropertyStore getPropertyStore()
+    {
+        if (internalCursorAdapter == null || !(internalCursorAdapter.getCursor() instanceof internalCursorWrapper))
+            return null;
+        return (internalCursorWrapper)internalCursorAdapter.getCursor();
     }
 
     class cursorPropAccessor extends Property<Object, Object>
@@ -108,10 +143,12 @@ public class ObservableCursor
         }
 
         @Override
-        public Object get(Object notUsed)
+        public Object get(Object obj)
         {
-            if (internalCursor == null)
+            if (!(obj instanceof Cursor))
                 return null;
+
+            Cursor internalCursor = (Cursor)obj;
 
             Class<Object> c = cursorPropAccessor.this.getType();
             if (c.equals(float.class))
@@ -141,11 +178,11 @@ public class ObservableCursor
         }
 
         @Override
-        public Object get(Object notUsed)
+        public Object get(Object cursor)
         {
-            if (calculatedPropertiesHandler == null)
+            if (calculatedPropertiesHandler == null || !(cursor instanceof Cursor))
                 return null;
-            return calculatedPropertiesHandler.getCalculatedProperty(this.getName(), internalCursor);
+            return calculatedPropertiesHandler.getCalculatedProperty(this.getName(), (Cursor)cursor);
         }
 
         @Override
@@ -164,16 +201,17 @@ public class ObservableCursor
         @Override
         public Property<?, ?> getProperty(Class<?> hostClass, String name)
         {
-            if (internalCursor == null || internalCursor.isClosed())
+            if (internalCursorAdapter == null || internalCursorAdapter.getCursor() == null || internalCursorAdapter.getCursor().isClosed())
                 return null;
 
-            int index = internalCursor.getColumnIndex(name);
+            Cursor c = internalCursorAdapter.getCursor();
+            int index = c.getColumnIndex(name);
 
             if (index < 0 && calculatedPropertiesHandler != null)
             {
                 if (!calculatedStore.containsKey(name))
                 {
-                    calculatedStore.put(name, new calculatedPropertyAccessor(calculatedPropertiesHandler.getCalculatedPropertyType(name, internalCursor), name));
+                    calculatedStore.put(name, new calculatedPropertyAccessor(calculatedPropertiesHandler.getCalculatedPropertyType(name, c), name));
                 }
                 return calculatedStore.get(name);
             }
@@ -182,7 +220,7 @@ public class ObservableCursor
 
             Class<?> type = null;
 
-            switch (internalCursor.getType(index))
+            switch (c.getType(index))
             {
                 case Cursor.FIELD_TYPE_INTEGER:
                     type = int.class;break;
