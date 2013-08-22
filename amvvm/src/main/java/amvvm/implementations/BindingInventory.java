@@ -28,6 +28,7 @@ import android.util.Property;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableList;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IAccessibleFragmentManager;
@@ -55,7 +56,8 @@ public class BindingInventory
 	
 	//current context object, may be the view model or model
 	private IProxyObservableObject context;
-	
+	private Object nonObservableContext;
+
 	//there may be many levels of inventories, this points to the parent inventory. will be nul if it is the root
 	private BindingInventory parentInventory;
 	
@@ -69,7 +71,7 @@ public class BindingInventory
 			if (arg ==  null)
 				return;
 			
-			onContextSignaled(arg);
+			onContextSignaled(arg.generateNextPropagationId());
 		}
 	};
 	
@@ -84,13 +86,11 @@ public class BindingInventory
 	}
 		
 	private String[] tempStringArray = new String[0];
-	
-	protected void onContextSignaled(EventArg arg)
-	{			
-		String path = null;
+
+	protected void onContextSignaled(String path)
+	{
 		Object value = null;
 
-        path = arg.generateNextPropagationId();
         if (path != null && map.containsKey(path))
             value = dereferenceValue(path);
 
@@ -123,13 +123,16 @@ public class BindingInventory
 				elements.get(i).recieveUpdate(value);
 			}
 		}
-			
-		if (getContextObject() != null && 
-				getContextObject().getProxyObservableObject() != null && 
-				getContextObject().getSource() instanceof IAccessibleFragmentManager)
-		{
-			((IAccessibleFragmentManager)getContextObject().getSource()).linkFragments(this);
-		}
+
+        if (getContextObject() instanceof IProxyObservableObject)
+        {
+            IProxyObservableObject proxyObj = (IProxyObservableObject)getContextObject();
+            if (proxyObj.getProxyObservableObject() != null &&
+                    proxyObj.getSource() instanceof IAccessibleFragmentManager)
+            {
+                ((IAccessibleFragmentManager)proxyObj.getSource()).linkFragments(this);
+            }
+        }
 	}
 	
 	public BindingInventory()
@@ -190,20 +193,35 @@ public class BindingInventory
 		return parentInventory;
 	}
 	
-	public void setContextObject(IProxyObservableObject object)
+	public void setContextObject(Object object)
 	{
 		if (context != null && context.getProxyObservableObject() != null)
 			context.getProxyObservableObject().unregisterListener("", contextListener);
-		context = object;
+        if (object instanceof IProxyObservableObject)
+		    context = (IProxyObservableObject)object;
+        else
+            nonObservableContext = object;
+
 		if (context != null && context.getProxyObservableObject() != null)
 			context.getProxyObservableObject().registerListener("", contextListener);
 	}
 	
-	public IProxyObservableObject getContextObject()
+	public Object getContextObject()
 	{
-		return context;
+        if (context != null)
+            return context;
+        else
+            return nonObservableContext;
 	}
-	
+
+    private Object extractSource()
+    {
+        if (nonObservableContext != null)
+            return nonObservableContext;
+        else
+            return context.getSource();
+    }
+
 	public void track (IUIElement<?> element)
 	{
 		if (element.getPath() == null)
@@ -238,7 +256,8 @@ public class BindingInventory
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
 				
-		Object currentContext = currentInventory.getContextObject().getSource();				
+		Object currentContext = currentInventory.extractSource();
+
 		String[] chains = split.split(matches.group(2));
 		
 		Property<Object,Object> prop = null;
@@ -299,9 +318,9 @@ public class BindingInventory
 			prop.set(host, value);
 		else
 		{
-			int index = Integer.parseInt(indexStr);
-			Object listObj = prop.get(host);
-			((IObservableList<Object>)listObj).set(index, value);
+//			int index = Integer.parseInt(indexStr);
+//			Object listObj = prop.get(host);
+//			((IObservableList<Object>)listObj).set(index, value);
 		}
 	}
 	
@@ -329,11 +348,16 @@ public class BindingInventory
 	@SuppressWarnings("unchecked")
 	public Object dereferenceValue(String path)
 	{		
-		if (path == null || context == null || context.getSource() == null)
+		if (path == null)
 			return null;
 		
 		if (path.equals("."))
-			return context;
+        {
+            if (context == null)
+                return nonObservableContext;
+            else
+                return context;
+        }
 		
 		Matcher matches = pathPattern.matcher(path);
 		
@@ -342,7 +366,7 @@ public class BindingInventory
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
 			
-		Object currentContext = currentInventory.getContextObject().getSource();
+		Object currentContext = currentInventory.extractSource();
 			
 		String[] chains = split.split(matches.group(2));
 			
@@ -352,10 +376,18 @@ public class BindingInventory
 				 return null;
 			 Matcher m = splitIndex.matcher(chains[i]);
 			 if (!m.find())
-				 throw new RuntimeException("Not a valid membeer: " + chains[i]);
+				 throw new RuntimeException("Not a valid member: " + chains[i]);
 			 
 			 String member = m.group(1);				
-			 Property<Object,Object> prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
+			 Property<Object,Object> prop = null;
+             if (currentContext instanceof IPropertyStore)
+                 prop = (Property<Object, Object>)((IPropertyStore)currentContext).getProperty(currentContext.getClass(), member);
+             else
+                 prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
+
+             if (prop == null)
+                 return null;
+
 			 currentContext = extractByProxy(prop.get(currentContext));	
 						 
 			 String indexStr = m.group(3);
@@ -398,7 +430,8 @@ public class BindingInventory
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
 				
-		Object currentContext = currentInventory.getContextObject().getSource();				
+		Object currentContext = currentInventory.extractSource();
+
 		String[] chains = split.split(matches.group(2));
 		
 		Property<Object,Object> prop = null;

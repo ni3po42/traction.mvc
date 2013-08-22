@@ -84,5 +84,5 @@ public interface IViewBinding
     /**
      * marks view binding as synthetic. makes isSynthetic return true; ounce set, cannot be undone.
      */
-    void markAsSynthetic();
+    void markAsSynthetic(BindingInventory inventory);
 }

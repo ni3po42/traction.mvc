@@ -201,9 +201,9 @@ implements Factory2
 	 * @param view : view to Register (bind) to
 	 * @param context : root object to bind against
 	 */
-	public static void RegisterContext(final View view,final IProxyObservableObject context)
+	public static void RegisterContext(final View view,Object context)
 	{
-		if (context == null || view == null || context.getProxyObservableObject() == null)
+		if (context == null || view == null)
 			return;
 		
 		IViewBinding vb = getViewBinding(view);
@@ -213,8 +213,12 @@ implements Factory2
 		BindingInventory inventory = vb.getBindingInventory();
 		if (inventory != null)
 		{
-			inventory.setContextObject(context);			
-			context.getProxyObservableObject().notifyListener();
+			inventory.setContextObject(context);
+
+            if (context instanceof IProxyObservableObject && ((IProxyObservableObject)context).getProxyObservableObject() != null)
+                ((IProxyObservableObject)context).getProxyObservableObject().notifyListener();
+            else
+                inventory.onContextSignaled(null);
 		}		
 	}
 				
@@ -245,5 +249,9 @@ implements Factory2
 		}
 		view.setTag(R.id.amvvm_viewholder, null);
 	}
-	
+
+    public static void removeViewBinding(View view)
+    {
+        view.setTag(R.id.amvvm_viewholder, null);
+    }
 }

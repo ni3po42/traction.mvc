@@ -42,7 +42,6 @@ public class UserInfo extends ObservableObject
 	}
 	
 	public static class Gender
-	extends ObservableObject
 	{
 		public static Gender getMale()
 		{ return new Gender("Male");}
@@ -97,11 +96,6 @@ public class UserInfo extends ObservableObject
 		{
 			return type.hashCode();
 		}
-		@Override
-		public PropertyStore getPropertyStore()
-		{
-			return null;
-		}
 	}
 		
 	public Gender getUserGender()
@@ -110,8 +104,9 @@ public class UserInfo extends ObservableObject
 	}
 	
 	public void setUserGender(Gender gender)
-	{		
-		notifyListener("UserGender", userGender, userGender = gender);
+	{
+        userGender = gender;
+		notifyListener("UserGender");
 	}
 	
 	public void retrieveUserInfo(SharedPreferences preference)

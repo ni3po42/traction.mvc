@@ -31,7 +31,7 @@ extends IObjectListener, IProxyObservableObject
 	 * Allows IObservableObject a cache of properties.
 	 * @return
 	 */
-	PropertyStore getPropertyStore();
+    IPropertyStore getPropertyStore();
 	
 	/**
 	 * Access property from property store.

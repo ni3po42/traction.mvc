@@ -23,6 +23,7 @@ import java.util.HashMap;
 import amvvm.annotations.IgnoreObservable;
 import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IObservableObject;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.util.ObjectPool;
 
@@ -262,8 +263,8 @@ implements IObservableObject
 	{
 		if (getSource() == null)
 			return null;
-		
-		PropertyStore store = getPropertyStore();
+
+        IPropertyStore store = getPropertyStore();
 		if (store == null)
 			return null;
 		

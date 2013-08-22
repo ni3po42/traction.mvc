@@ -24,7 +24,7 @@ import java.util.List;
  * @param <T> : type of item the list is composed of
  */
 public interface IObservableList<T>
-extends IObservableObject, List<T>
+extends List<T>, IIndexable<T>
 {	
 	/**
 	 * A read-only property 'Count'. Should return the number of elements in the list

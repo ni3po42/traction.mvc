@@ -19,6 +19,7 @@ import android.util.Property;
 
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableCommand;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 
 /**
@@ -58,7 +59,7 @@ implements IObservableCommand<TArg>
 	private boolean canExecute;
 	
 	@Override
-	public PropertyStore getPropertyStore()
+	public IPropertyStore getPropertyStore()
 	{
 		//getProperty was overridden, this is not used.
 		return null;

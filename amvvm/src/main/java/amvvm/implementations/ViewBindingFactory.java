@@ -73,10 +73,11 @@ public class ViewBindingFactory
      * @param view
      * @return : the newly injected viewHolder
      */
-    public IViewBinding createSyntheticFor(final View view, String viewBindingType)
+    public IViewBinding createSyntheticFor(final View view, String viewBindingType, BindingInventory inventory)
     {
         IViewBinding viewBinding = createViewBinding(view, viewBindingType);
-        viewBinding.markAsSynthetic();
+        viewBinding.markAsSynthetic(inventory);
+
         view.setTag(R.id.amvvm_viewholder, viewBinding);
         return viewBinding;
     }

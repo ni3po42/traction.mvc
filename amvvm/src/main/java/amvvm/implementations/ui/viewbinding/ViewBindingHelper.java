@@ -21,9 +21,9 @@ public class ViewBindingHelper
     private boolean ignoreChildren;
     private boolean synthetic;
 
-    public IViewBinding createSyntheticFor(View view, String bindingType)
+    public IViewBinding createSyntheticFor(View view, String bindingType, BindingInventory inventory)
     {
-        return factory.createSyntheticFor(view, bindingType);
+        return factory.createSyntheticFor(view, bindingType, inventory);
     }
 
     public BindingInventory getBindingInventory()
@@ -56,10 +56,12 @@ public class ViewBindingHelper
         return synthetic;
     }
 
-    public void markAsSynthetic()
+    public void markAsSynthetic(BindingInventory inventory)
     {
         synthetic = true;
         root = true;
+        setBindingInventory(inventory);
+        uiHandler = new UIHandler();
     }
 
     public void setIgnoreChildren(boolean ignoreChildren)

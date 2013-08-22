@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:mvvm="http://schemas.android.com/apk/res-auto"
+              mvvm:IsRoot="true"
+        >
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            mvvm:Text="name"
+            />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            mvvm:Text="quest"
+            />
+
+    <ni3po42.android.amvvmdemo.views.ColorView
+            android:layout_width="match_parent"
+            android:layout_height="50dip"
+            mvvm:GenericBindings="Color=favoritecolor"
+            mvvm:IsVisible="ShowColor"
+            />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            mvvm:Text="otheranswer"
+            />
+
+</LinearLayout>

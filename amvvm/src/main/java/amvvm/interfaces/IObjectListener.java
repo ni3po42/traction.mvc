@@ -16,6 +16,8 @@
 package amvvm.interfaces;
 
 
+import java.util.EventObject;
+
 /**
  * Defined a handler for IObservableObject object to signal
  * @author Tim Stratton

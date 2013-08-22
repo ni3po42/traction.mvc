@@ -46,8 +46,9 @@ public class MainActivity extends ActivityViewModel
 	}
 
 	public void setCurrentChoice(DemoViewModelChoice currentChoice)
-	{			
-		notifyListener("CurrentChoice", this.currentChoice, this.currentChoice = currentChoice);
+	{
+        this.currentChoice = currentChoice;
+		notifyListener("CurrentChoice");
 		showNewChoice(currentChoice);
 		this.currentChoice = null;
 	}
@@ -70,8 +71,7 @@ public class MainActivity extends ActivityViewModel
 			getFragmentManager()
 				.beginTransaction()
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-				.replace(R.id.main_view_id, getMainViewModel())										
-				.addToBackStack(null)
+				.replace(R.id.main_view_id, getMainViewModel())
 				.commit();
 		}
 	}
@@ -105,10 +105,9 @@ public class MainActivity extends ActivityViewModel
 	
 	@Override
 	public void onBackPressed()
-	{	
+	{
 		super.onBackPressed();
-		getFragmentManager().popBackStack();
-		setCurrentChoice(null);
+        setCurrentChoice(null);
 	}
 	
 }

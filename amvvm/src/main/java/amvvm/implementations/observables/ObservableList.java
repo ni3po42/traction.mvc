@@ -20,9 +20,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import amvvm.implementations.BindingInventory;
+import amvvm.implementations.ui.viewbinding.ListAdapter;
+import amvvm.implementations.ui.viewbinding.ProxyAdapter;
+import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
+import amvvm.interfaces.IPropertyStore;
+import amvvm.interfaces.IProxyObservableObject;
 
+import android.content.Context;
 import android.util.Property;
+import android.widget.BaseAdapter;
 
 /**
  * A concrete class of IObservableList. This allows a list to be a container of this oberservable list
@@ -30,13 +38,15 @@ import android.util.Property;
  *
  * @param <T> : item type of list
  */
-public class ObservableList<T> 
-extends ObservableObject
-implements IObservableList<T>
+public class ObservableList<T>
+extends ProxyAdapter<T>
+implements IObservableList<T>,IIndexable<T>
 {
 	//internal list to store
 	protected List<T> internalImp;	
-	
+
+    private BaseAdapter internalAdapter;
+
 	/**
 	 * Observable readonly property that exposes the list's size
 	 */
@@ -83,7 +93,6 @@ implements IObservableList<T>
 	{
 		if(getInternalCollection().add(arg0))
 		{
-			
 			notifyListener();
 			notifyListener("Count");
 			return true;
@@ -297,7 +306,7 @@ implements IObservableList<T>
 	}
 
 	@Override
-	public PropertyStore getPropertyStore()
+	public IPropertyStore getPropertyStore()
 	{
 		return null;
 	}
@@ -311,6 +320,35 @@ implements IObservableList<T>
 			return (Property<Object, Object>) Property.of(getSource().getClass(), c, name);
 		return null;
 	}
-	
 
+    @Override
+    protected BaseAdapter getProxyAdapter(ProxyAdapterArgument arg)
+    {
+        if (internalAdapter == null)
+        {
+            final ISelectionHandler sh = arg.getSelectionHandler();
+            final BindingInventory inv = arg.getInventory();
+            internalAdapter = new ListAdapter<T, ObservableList<T>>(inv)
+            {
+                @Override
+                protected ObservableList<T> getList()
+                {
+                    return ObservableList.this;
+                }
+
+                @Override
+                public boolean isEnabled(int position)
+                {
+                    return sh.isEnabledAt(position);
+                }
+            };
+        }
+        return internalAdapter;
+    }
+
+    @Override
+    protected void clearProxyAdapter()
+    {
+        internalAdapter = null;
+    }
 }

@@ -21,6 +21,7 @@ import amvvm.implementations.ViewFactory;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.menubinding.MenuInflater;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IViewBinding;
 import amvvm.interfaces.IViewModel;
 import amvvm.interfaces.IAccessibleFragmentManager;
@@ -51,7 +52,7 @@ implements IAccessibleFragmentManager
 	/**
 	 * property cache
 	 */
-	private PropertyStore store = new PropertyStore();
+	private IPropertyStore store = new PropertyStore();
 	
 	/**
 	 * menu inflator
@@ -192,7 +193,7 @@ implements IAccessibleFragmentManager
     }
 
     @Override
-	public PropertyStore getPropertyStore()
+	public IPropertyStore getPropertyStore()
 	{
 		return store;
 	}

@@ -23,7 +23,9 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
     </activity>
-        
+
+    <provider android:authorities="ni3po42.android.amvvmdemo" android:grantUriPermissions="true" android:name=".providers.DemoProvider"></provider>
+
     </application>
 
 </manifest>

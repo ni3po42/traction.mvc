@@ -13,24 +13,15 @@
    limitations under the License.
  */
 
-package amvvm.implementations.ui;
-
-import amvvm.interfaces.IViewBinding;
-import amvvm.interfaces.IObservableList;
-import amvvm.interfaces.IProxyObservableObject;
+package amvvm.interfaces;
 
 /**
- * Defines the UI end for a list. It's pretty much just a UIBindingProperty that uses an IObservableList as it's item type.
- * @author Tim Stratton
- *
- * @param <T> : the item type of the list
+ * can get an item by position
  */
-public class UIList<T extends IProxyObservableObject>
-extends UIProperty<IObservableList<T>>
+public interface IIndexable<T>
+    extends IObservableObject
 {
-	public UIList(IViewBinding viewBinding, int pathAttribute)
-	{
-		super(viewBinding, pathAttribute);
-	}	
-	
+    T get(int position);
+    int size();
+    int indexOf(Object obj);
 }

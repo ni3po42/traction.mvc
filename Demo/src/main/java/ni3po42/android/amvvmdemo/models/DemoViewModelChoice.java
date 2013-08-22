@@ -20,9 +20,8 @@ import amvvm.implementations.observables.PropertyStore;
 import amvvm.viewmodels.ViewModel;
 
 
-public class DemoViewModelChoice extends ObservableObject
+public class DemoViewModelChoice
 {
-	private static PropertyStore store = new PropertyStore();
 	private Class<? extends ViewModel> viewModelType;
 	private String name;
 	private String description;
@@ -33,12 +32,6 @@ public class DemoViewModelChoice extends ObservableObject
 		this.name = name;
 		this.description = description;
 	}
-	
-	@Override
-	public PropertyStore getPropertyStore()
-	{
-		return store;
-	}
 
 	public Class<? extends ViewModel> getViewModelType()
 	{
@@ -47,7 +40,6 @@ public class DemoViewModelChoice extends ObservableObject
 	public void setViewModelType(Class<? extends ViewModel> viewModelType)
 	{
 		this.viewModelType = viewModelType;
-		notifyListener("ViewModelType");
 	}
 	
 	public String getName()
@@ -58,7 +50,6 @@ public class DemoViewModelChoice extends ObservableObject
 	public void setName(String name)
 	{
 		this.name = name;
-		notifyListener("Name");
 	}
 
 	public String getDescription()
@@ -69,7 +60,6 @@ public class DemoViewModelChoice extends ObservableObject
 	public void setDescription(String description)
 	{
 		this.description = description;
-		notifyListener("Description");
 	}
 	
 }

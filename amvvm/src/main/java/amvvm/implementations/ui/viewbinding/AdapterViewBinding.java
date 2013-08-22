@@ -16,16 +16,16 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ui.UIList;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
-import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
-import android.widget.Adapter;
+import android.content.Context;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+
+
 import amvvm.R;
 
 /**
@@ -39,108 +39,91 @@ import amvvm.R;
  * @author Tim Stratton
  *
  * @param <T> : item type
- * @param <V> : subtype of AdapterView<Q>
- * @param <Q> : subtype of Adapter
  */
-public class AdapterViewBinding<T extends IProxyObservableObject, V extends AdapterView<Q>, Q extends Adapter>
-extends GenericViewBinding<V>
+public class AdapterViewBinding<T>
+extends GenericViewBinding<AdapterView<BaseAdapter>>
 {	
-	public final UIList<T> Items = new UIList<T>(this, R.styleable.AdapterView_Items);
+	public final UIProperty<ProxyAdapter<T>> Items = new UIProperty<ProxyAdapter<T>>(this, R.styleable.AdapterView_Items);
 	public final UIProperty<T> SelectedItem = new UIProperty<T>(this, R.styleable.AdapterView_SelectedItem);
 	
 	//layout to use for child views
 	private int itemTemplateId = -1;
 	private BaseAdapter internalAdapter;
-	
-	//local reference to this bounded list
-	private IObservableList<T> currentList;
-	
+
 	//local reference to the selected item
 	private T currentSelection;
 	private int currentIndex=-1;
 
+    private ProxyAdapter<T> adapterCache;
 
-	/**
-	 * get adapter for the adapterview
-	 * @return
-	 */
-	protected BaseAdapter getInternalAdapter()
-	{
-		if (internalAdapter == null)
-			internalAdapter = new InternalAdapter<T, IObservableList<T>>()
-			{
-				@Override protected IObservableList<T> getList()
-				{
-					return currentList;
-				}
-
-				@Override
-				protected int getItemTemplateId()
-				{
-					return itemTemplateId;
-				}
-
-                @Override
-                public boolean isEnabled(int position)
-                {
-                    return isSelectionEnabledAt(position);
-                }
-            };
-		return internalAdapter;
-	}
-
-	//not used yet
+		//not used yet
 	@Override
 	public String getBasePath()
 	{
 		return Items.getPath();
 	}
 
-    protected boolean isSelectionEnabledAt(int position)
+    protected ProxyAdapter.ISelectionHandler getSelectionHandler()
     {
-        return true;
+        return ProxyAdapter.defaultSelectionHandler;
     }
 
-	/**
-	 * gets type safe adapter
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private Q getAdapter()
-	{
-		return (Q)getInternalAdapter();
-	}
-	
 	public AdapterViewBinding()
 	{
-		Items.setUIUpdateListener(new IUIUpdateListener<IObservableList<T>>()
+		Items.setUIUpdateListener(new IUIUpdateListener<ProxyAdapter<T>>()
 		{
 			@Override
-			public void onUpdate(IObservableList<T> value)
+			public void onUpdate(ProxyAdapter<T> value)
 			{
-				//disable events that might cause an infinite loop...
-				SelectedItem.disableRecieveUpdates();
-				disableListeners();
-				
-				boolean callSetChanged = currentList != value;
-				currentList = value;
-				
-				if (callSetChanged)
-				{			
-					//find index of new selection
-					currentIndex = currentList.indexOf(currentSelection);
-					if (currentIndex >= 0)
-					{	
-						getWidget().setSelection(currentIndex);
-					}
-					getInternalAdapter().notifyDataSetChanged();
-				}
-				
-				//re-enable events
-				enableListeners();
-				SelectedItem.enableRecieveUpdates();
-				//else
-					//getInternalAdapter().notifyDataSetInvalidated();
+
+                if (getWidget() == null)
+                    return;
+
+                BaseAdapter adapter = null;
+                if (value != null)
+                {
+                    ProxyAdapter.ProxyAdapterArgument arg =
+                        new ProxyAdapter.ProxyAdapterArgument()
+                        .setContext(getWidget().getContext())
+                        .setLayoutId(itemTemplateId)
+                        .setSelectionHandler(getSelectionHandler())
+                        .setInventory(getBindingInventory());
+                    adapter = value.getProxyAdapter(arg);
+                }
+
+
+                boolean callSetChanged = getWidget().getAdapter() != adapter;
+
+                if (!callSetChanged)
+                    return;
+
+                if (adapterCache != null)
+                    adapterCache.clearProxyAdapter();
+                adapterCache = value;
+
+                if (adapter instanceof ProxyAdapter.IAdapterLayout)
+                    ((ProxyAdapter.IAdapterLayout)adapter).setLayoutId(itemTemplateId);
+
+                if ( isSelectionEnabled())
+                    SelectedItem.disableRecieveUpdates();
+
+                getWidget().setAdapter(adapter);
+
+                if (isSelectionEnabled())
+                {
+                    //find index of new selection
+                    if (value == null)
+                        currentIndex = -1;
+                    else
+                        currentIndex = value.indexOf(currentSelection);
+                    if (currentIndex >= 0)
+                    {
+                        setSelection(currentIndex);
+                    }
+                    if (adapter != null)
+                        adapter.notifyDataSetChanged();
+                    SelectedItem.enableRecieveUpdates();
+                }
 			}
 			
 		});
@@ -150,7 +133,7 @@ extends GenericViewBinding<V>
 			@Override
 			public void onUpdate(T value)
 			{
-				if (getWidget() == null || currentList == null)
+				if (getWidget() == null || adapterCache == null)
 				{
 					//even if the current view or list is not bound yet, keep track of current
 					//item, so when the list and view are available, it will know what item is 
@@ -158,43 +141,29 @@ extends GenericViewBinding<V>
 					currentSelection = value;					
 					return;
 				}
-				
-				//disable to avoid infinite loops
-				Items.disableRecieveUpdates();
-				disableListeners();
-				
-				final V w = getWidget();				
-				currentIndex = currentList.indexOf(value);
-				currentSelection = value;
-				if (currentIndex >= 0)
-				{	
-					w.setSelection(currentIndex);
-				}
-				
-				//re-enable
-				enableListeners();
-				Items.enableRecieveUpdates();
+
+                if (!isSelectionEnabled())
+                    return;
+
+                Items.disableRecieveUpdates();
+                currentIndex = adapterCache.indexOf(value);
+                currentSelection = value;
+                if (currentIndex >= 0)
+                {
+                    setSelection(currentIndex);
+                }
+                Items.enableRecieveUpdates();
+
 			}
 		});
 	
 	}
-	
-	/**
-	 * This are stubbed out incase a subclass of view binding has extra things to disable
-	 */
-	protected void disableListeners()
-	{
-		
-	}
-	
-	/**
-	 * analogous to the above method
-	 */
-	protected void enableListeners()
-	{
-		
-	}
-	
+
+    protected void setSelection(int index)
+    {
+        getWidget().setSelection(currentIndex);
+    }
+
 	/**
 	 * sub classes can override this to control what it means for selection to be enabled
 	 * @return : true if the SelectItems ui element is active
@@ -208,16 +177,14 @@ extends GenericViewBinding<V>
 	protected void initialise(IAttributeBridge attributeBridge)
 	{	
 		super.initialise(attributeBridge);
-		
-		//sets the internal adapter
-		getWidget().setAdapter(getAdapter());
 
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.AdapterView);
 		
 		//sets the item template
 		itemTemplateId = ta.getResourceId(R.styleable.AdapterView_ItemTemplate, -1);
-		
-		Items.initialize(ta);
+
+        Items.initialize(ta);
+
 		if (isSelectionEnabled())
 			SelectedItem.initialize(ta);
 		ta.recycle();
@@ -228,7 +195,10 @@ extends GenericViewBinding<V>
 	public void detachBindings()
 	{
 		super.detachBindings();
-		getWidget().setAdapter(null);
+        if (getWidget() != null)
+		    getWidget().setAdapter(null);
+        if (adapterCache != null)
+            adapterCache.clearProxyAdapter();
 	}
 
 }

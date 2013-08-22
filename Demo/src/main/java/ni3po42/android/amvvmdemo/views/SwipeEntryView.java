@@ -99,8 +99,8 @@ public class SwipeEntryView
         Active.initialize(ta);
         ta.recycle();
 
-        IViewBinding contentBinding = helper.createSyntheticFor(content, null);
-        IViewBinding idBinding = helper.createSyntheticFor(id, null);
+        IViewBinding contentBinding = helper.createSyntheticFor(content, null, inventory);
+        IViewBinding idBinding = helper.createSyntheticFor(id, null, inventory);
 
         IAttributeBridge contentBridge = Builder
             .begin()
@@ -159,9 +159,9 @@ public class SwipeEntryView
     }
 
     @Override
-    public void markAsSynthetic()
+    public void markAsSynthetic(BindingInventory inventory)
     {
-        helper.markAsSynthetic();
+        helper.markAsSynthetic(inventory);
     }
 
     @Override
@@ -170,8 +170,8 @@ public class SwipeEntryView
         Boolean value = Active.dereferenceValue();
         if (value != null)
         {
-             Active.sendUpdate(!(Boolean)value);
-            performAnimation(!(Boolean)value);
+             Active.sendUpdate(!value);
+            performAnimation(!value);
         }
     }
 

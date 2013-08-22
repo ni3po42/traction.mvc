@@ -22,10 +22,14 @@ import amvvm.interfaces.IProxyObservableObject;
 
 import android.content.res.TypedArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+
 import amvvm.R;
 import amvvm.interfaces.IViewBinding;
 
@@ -40,8 +44,8 @@ import amvvm.interfaces.IViewBinding;
  * Exposes the following properties:
  * Selected - Path to the child items's boolean property to hold it's selection state
  */
-public class ListViewBinding<T extends IProxyObservableObject>
-extends AdapterViewBinding<T, AbsListView, ListAdapter>
+public class ListViewBinding<T>
+extends AdapterViewBinding<T>
 implements OnItemClickListener
 {	
 	//stores the path to the property that denotes if the item is selected.
@@ -49,20 +53,17 @@ implements OnItemClickListener
 	private String enabledPath;
     private Boolean enabledOverride;
 
-	public ListViewBinding()
-	{
-		
-	}
-
     @Override
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
 
+        AbsListView lv = (AbsListView)(ViewGroup)getWidget();
+
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ListView);
 		//this selected attribute is only valid if the choice mode is not single or none, only multiple.
-		if (getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
-				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
+		if (lv.getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
+                lv.getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
 		{
 			selectionPath = ta.getString(R.styleable.ListView_Selected);
 		}
@@ -84,33 +85,48 @@ implements OnItemClickListener
 	
 	@Override
 	protected boolean isSelectionEnabled()
-	{	
+	{
+        AbsListView lv = (AbsListView)(ViewGroup)getWidget();
+
 		//this effectively disables the 'SelectedItem' element and allows the binding to instead react to changes in multiple items
 		//instead of just one.
-		return getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_SINGLE ||
-				getWidget().getChoiceMode() == AbsListView.CHOICE_MODE_NONE;
+		return lv.getChoiceMode() == AbsListView.CHOICE_MODE_SINGLE ||
+                lv.getChoiceMode() == AbsListView.CHOICE_MODE_NONE;
 	}
 
-    @Override
-    protected boolean isSelectionEnabledAt(int position)
+    private final ProxyAdapter.ISelectionHandler selectionHandler = new ProxyAdapter.ISelectionHandler()
     {
-        if (enabledPath == null && enabledOverride != null)
-            return enabledOverride;
-        else if (enabledPath != null)
+        @Override
+        public boolean isEnabledAt(int position)
         {
-            View view = getWidget().getChildAt(position);
-            IViewBinding vb = ViewFactory.getViewBinding(view);
-            Object value = vb.getBindingInventory().dereferenceValue(enabledPath);
-            if (value instanceof Boolean)
-                return (Boolean)value;
+            if (enabledPath == null && enabledOverride != null)
+                return enabledOverride;
+            else if (enabledPath != null)
+            {
+                if (getWidget() == null)
+                    return false;
+
+                View view = getWidget().getChildAt(position);
+                IViewBinding vb = ViewFactory.getViewBinding(view);
+                Object value = vb.getBindingInventory().dereferenceValue(enabledPath);
+                if (value instanceof Boolean)
+                    return (Boolean)value;
+            }
+            return true;
         }
-        return super.isSelectionEnabledAt(position);
+    };
+
+    @Override
+    protected ProxyAdapter.ISelectionHandler getSelectionHandler()
+    {
+        return selectionHandler;
     }
 
     @Override
 	public void detachBindings()
 	{
-		getWidget().setOnItemClickListener(null);
+        if (getWidget() != null)
+		    getWidget().setOnItemClickListener(null);
 		super.detachBindings();
 	}
 

@@ -19,6 +19,7 @@ import amvvm.interfaces.IObservableObject;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.IObjectListener;
+import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewModel;
 import android.annotation.SuppressLint;
@@ -121,7 +122,7 @@ implements IViewModel, IObservableObject
 	}
 
 	@Override
-	public PropertyStore getPropertyStore()
+	public IPropertyStore getPropertyStore()
 	{
 		return helper.getPropertyStore();
 	}

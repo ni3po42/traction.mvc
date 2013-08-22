@@ -18,12 +18,11 @@ package amvvm.implementations.ui.viewbinding;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.ui.UIHandler;
+import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewBinding;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,27 +35,29 @@ import android.widget.BaseAdapter;
  * @param <T> : item type of list
  * @param <S> : type of list 
  */
-public abstract class InternalAdapter<T extends IProxyObservableObject, S extends IObservableList<T>> 
+public abstract class ListAdapter<T, S extends IObservableList<T>>
 extends BaseAdapter
-{	
-	/**
-	 * This class follows a template pattern, requiring access to a list and a resource id for the layout of the item
-	 */
+    implements ProxyAdapter.IAdapterLayout
+{
+
+    private int templateId = -1;
+
+    private final BindingInventory parentInventory;
+
+    public ListAdapter(BindingInventory parentInventory)
+    {
+        this.parentInventory = parentInventory;
+    }
+
+    protected abstract S getList();
+
+    @Override
+    public void setLayoutId(int layoutId)
+    {
+        this.templateId = layoutId;
+    }
 
     private ViewBindingFactory factory = new ViewBindingFactory();
-
-	/**
-	 * internal reference to the current list
-	 * @return
-	 */
-	protected abstract S getList();
-	
-	/**
-	 * reference to a resource id for a layout
-	 * @return
-	 */
-	protected abstract int getItemTemplateId();
-		
 	private LayoutInflater inflater;
 	
 	protected LayoutInflater getLayoutInflater(View parentView)
@@ -79,21 +80,22 @@ extends BaseAdapter
         //show up; the spinner and it's popup window. In the case the popup window (or some other
         //viewgroup) comes up, this will synthetically add a viewHolder with the proper objects
         //and register the list as the root context.
+
         if (ViewFactory.getViewBinding(parent) == null)
         {
-            IViewBinding vb = factory.createSyntheticFor(parent,null);
-            ViewFactory.RegisterContext(parent, getList());
+            factory.createSyntheticFor(parent,null, parentInventory);
+            //ViewFactory.RegisterContext(parent, c);
         }
 
 		if (convertView == null)
 		{	
-			convertView = getLayoutInflater(parent).inflate(getItemTemplateId(), parent ,false);
+			convertView = getLayoutInflater(parent).inflate(templateId, parent ,false);
 		}	
 		ViewFactory.RegisterContext(convertView, getList().get(position));
 
         //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'
         if (ViewFactory.getViewBinding(parent).isSynthetic())
-            ViewFactory.DetachContext(parent);
+            ViewFactory.removeViewBinding(parent);
 
 		return convertView;
 	}
@@ -101,9 +103,10 @@ extends BaseAdapter
     @Override
 	public int getCount()
 	{
-		if (getList() == null)
+        S c = getList();
+		if (c == null)
 			return 0;
-		return getList().size();
+		return c.size();
 	}
 	
 	@Override

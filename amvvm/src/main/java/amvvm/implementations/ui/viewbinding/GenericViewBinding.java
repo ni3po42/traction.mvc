@@ -89,9 +89,9 @@ implements IViewBinding
     }
 
     @Override
-    public void markAsSynthetic()
+    public void markAsSynthetic(BindingInventory inventory)
     {
-       helper.markAsSynthetic();
+       helper.markAsSynthetic(inventory);
     }
 
     /**
@@ -165,7 +165,9 @@ implements IViewBinding
 				{
 					if (viewProperty == null || viewProperty.isReadOnly() || getWidget() == null)
 						return;
-						
+                    if (viewProperty.getType().isPrimitive() && value == null)
+                        return;
+
 					viewProperty.set(getWidget(), value);
 				}
 			});

@@ -20,12 +20,15 @@ import java.lang.reflect.Method;
 import java.util.Hashtable;
 import android.util.Property;
 
+import amvvm.interfaces.IPropertyStore;
+
 /**
  * A utility class for searching properties on an object and cache them
  * @author Tim Stratton
  *
  */
 public class PropertyStore
+    implements IPropertyStore
 {
 	//prefixes to test against
 	private static final String[] prefixes = new String[]{"get","is"};
@@ -36,6 +39,7 @@ public class PropertyStore
 	/**
 	 * get property form store
 	 */
+    @Override
 	public Property<?,?> getProperty(Class<?> hostClass, String name)
 	{
 		if (!properties.containsKey(name))

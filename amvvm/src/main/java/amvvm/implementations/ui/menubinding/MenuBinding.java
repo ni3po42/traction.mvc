@@ -159,7 +159,7 @@ implements MenuItem.OnMenuItemClickListener, MenuItem.OnActionExpandListener, IV
     }
 
     @Override
-    public void markAsSynthetic()
+    public void markAsSynthetic(BindingInventory inventory)
     {
 
     }

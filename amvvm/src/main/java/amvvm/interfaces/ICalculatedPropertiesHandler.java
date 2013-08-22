@@ -1,4 +1,4 @@
-<!-- Copyright 2013 Tim Stratton
+/* Copyright 2013 Tim Stratton
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -11,14 +11,15 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="amvvm"
-          android:versionCode="2"
-          android:versionName="BETA 0.4.0" >
+ */
 
-    <uses-sdk android:minSdkVersion="16"
-              android:targetSdkVersion="16" />
+package amvvm.interfaces;
 
-    <application android:label="AMVVM" />
-</manifest>
+/**
+ * Handler for calculated properties
+ */
+public interface ICalculatedPropertiesHandler<T>
+{
+    Class<?> getCalculatedPropertyType(String propertyName, T obj);
+    Object getCalculatedProperty(String propertyName, T obj);
+}
