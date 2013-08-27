@@ -1,5 +1,12 @@
 <h1>amvvm, v BETA 0.4.1</h1>
 
+<ul>
+<li><a href="https://github.com/ni3po42/amvvm/wiki/How-does-it-work%3F">How's it work</a></li>
+<li><a href="https://github.com/ni3po42/amvvm/wiki/Getting-Started">Geting started</a></li>
+<li><a href="https://github.com/ni3po42/amvvm/wiki/How-to-Contribute">How to contribute</a></li>
+<li><a href="https://github.com/ni3po42/amvvm/wiki/Upcoming-features">Future Features</a></li>
+</ul>
+
 <h2>
 INTRODUCTION
 </h2>
