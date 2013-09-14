@@ -17,6 +17,11 @@ package ni3po42.android.amvvmdemo.activities;
 
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+
+import amvvm.implementations.observables.Command;
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.implementations.observables.SimpleCommand;
+import amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvmdemo.R;
 import ni3po42.android.amvvmdemo.viewmodels.MainViewModel;
 import amvvm.viewmodels.ActivityViewModel;
@@ -27,9 +32,6 @@ import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
 
 public class MainActivity extends ActivityViewModel
 {
-	private DemoViewModelChoice currentChoice;
-	private boolean multiViewModelSupport = false;
-		
 	public ViewModel getMainViewModel()
 	{
 		return getViewModel("MainViewModel");
@@ -40,19 +42,6 @@ public class MainActivity extends ActivityViewModel
 		setViewModel("MainViewModel", mainViewModel);
 	}
 
-	public DemoViewModelChoice getCurrentChoice()
-	{
-		return currentChoice;
-	}
-
-	public void setCurrentChoice(DemoViewModelChoice currentChoice)
-	{
-        this.currentChoice = currentChoice;
-		notifyListener("CurrentChoice");
-		showNewChoice(currentChoice);
-		this.currentChoice = null;
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{	
@@ -63,11 +52,16 @@ public class MainActivity extends ActivityViewModel
 		if (savedInstanceState != null)
 			return;
 		
-		multiViewModelSupport =  getMainViewModel() != null;
+		boolean multiViewModelSupport =  getMainViewModel() != null;
 			
 		if (!multiViewModelSupport)
 		{
-			setMainViewModel(new MainViewModel());		
+			setMainViewModel(new MainViewModel());
+
+            Bundle args = new Bundle();
+            args.putBoolean(MainViewModel.NoMultiViewModelSupport, true);
+            getMainViewModel().setArguments(args);
+
 			getFragmentManager()
 				.beginTransaction()
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -75,39 +69,4 @@ public class MainActivity extends ActivityViewModel
 				.commit();
 		}
 	}
-	
-	private void showNewChoice(DemoViewModelChoice currentChoice)
-	{
-		if (getCurrentChoice() == null)
-			return;
-		
-		ViewModel viewModel = null;
-		try
-		{
-			viewModel = getCurrentChoice().getViewModelType().newInstance();
-		}
-		catch (InstantiationException e)
-		{
-		}
-		catch (IllegalAccessException e)
-		{
-		}
-		if (viewModel == null)
-			throw new RuntimeException("Cannot find View Model : " + getCurrentChoice().getViewModelType().getName());
-		
-		FragmentTransaction trans = getFragmentManager().beginTransaction()
-		.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-		.replace(R.id.main_view_id, viewModel);
-        if (!multiViewModelSupport)
-		    trans.addToBackStack(null);
-		trans.commit();
-	}
-	
-	@Override
-	public void onBackPressed()
-	{
-		super.onBackPressed();
-        setCurrentChoice(null);
-	}
-	
 }

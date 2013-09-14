@@ -26,7 +26,7 @@ import amvvm.interfaces.IViewBinding;
  * @param <TArg> : type of argument the ui event can pass a command
  */
 public class UIEvent<TArg extends ICommand.CommandArgument>
-extends UIProperty<Object>
+extends UIProperty<TArg>
 {	
 	public UIEvent(IViewBinding viewBinding, int pathAttribute)
 	{

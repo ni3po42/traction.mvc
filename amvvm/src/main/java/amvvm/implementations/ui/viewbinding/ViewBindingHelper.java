@@ -17,8 +17,8 @@ public class ViewBindingHelper
 
     private ViewBindingFactory factory = new ViewBindingFactory();
 
-    private boolean root;
-    private boolean ignoreChildren;
+    private int bindingFlags = IViewBinding.Flags.NO_FLAGS;
+
     private boolean synthetic;
 
     public IViewBinding createSyntheticFor(View view, String bindingType, BindingInventory inventory)
@@ -36,20 +36,6 @@ public class ViewBindingHelper
         return uiHandler;
     }
 
-    public boolean isRoot()
-    {
-        return this.root;
-    }
-
-    public void setRoot(boolean b)
-    {
-        this.root = b;
-    }
-
-    public boolean ignoreChildren()
-    {
-        return this.ignoreChildren;
-    }
 
     public boolean isSynthetic()
     {
@@ -59,14 +45,9 @@ public class ViewBindingHelper
     public void markAsSynthetic(BindingInventory inventory)
     {
         synthetic = true;
-        root = true;
+        bindingFlags |= IViewBinding.Flags.IS_ROOT;
         setBindingInventory(inventory);
         uiHandler = new UIHandler();
-    }
-
-    public void setIgnoreChildren(boolean ignoreChildren)
-    {
-        this.ignoreChildren = ignoreChildren;
     }
 
     public void setUiHandler(UIHandler uiHandler)
@@ -77,5 +58,13 @@ public class ViewBindingHelper
     public void setBindingInventory(BindingInventory bindingInventory)
     {
         this.bindingInventory = bindingInventory;
+    }
+
+    public int getBindingFlags() {
+        return bindingFlags;
+    }
+
+    public void setBindingFlags(int bindingFlags) {
+        this.bindingFlags = bindingFlags;
     }
 }

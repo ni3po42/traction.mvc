@@ -13,21 +13,24 @@
    limitations under the License.
  */
 
-package amvvm.interfaces;
+package amvvm.implementations.ui;
 
-import android.content.Loader;
-import android.database.Cursor;
-import android.os.Bundle;
+import amvvm.implementations.BindingInventory;
+import amvvm.interfaces.IViewBinding;
 
-/**
- * Defines methods for an observable cursor
- */
-public interface IObservableCursor
+public class UIRelativeContext
+    extends UIProperty<Object>
 {
-    public interface ICursorLoader
-    {
-        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
+    public UIRelativeContext(IViewBinding viewBinding, int pathAttribute) {
+        super(viewBinding, pathAttribute);
     }
 
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
+    public UIRelativeContext(IViewBinding viewBinding) {
+        super(viewBinding);
+    }
+
+    @Override
+    public BindingInventory getBindingInventory() {
+        return super.getBindingInventory().getParentInventory();
+    }
 }

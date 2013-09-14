@@ -15,6 +15,8 @@
 
 package amvvm.tests;
 
+import android.test.InstrumentationTestCase;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 
@@ -31,11 +33,18 @@ import junit.framework.TestCase;
 
 import static org.mockito.Mockito.*;
 
-public class TestObservableObject extends TestCase
+public class TestObservableObject extends InstrumentationTestCase
 {
     public TestObservableObject()
     {
 
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+
+        super.setUp();
+        System.setProperty( "dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath() );
     }
 
 	public void testCanCreateObservableObject()

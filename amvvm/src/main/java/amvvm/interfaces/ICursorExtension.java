@@ -15,19 +15,10 @@
 
 package amvvm.interfaces;
 
-import android.content.Loader;
 import android.database.Cursor;
-import android.os.Bundle;
 
-/**
- * Defines methods for an observable cursor
- */
-public interface IObservableCursor
+public interface ICursorExtension
 {
-    public interface ICursorLoader
-    {
-        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
-    }
-
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
+    Object getCursorExtendedProperty(Cursor c, String propertyName);
+    void setCursorExtendedProperty(Cursor c, String propertyName, Object value);
 }

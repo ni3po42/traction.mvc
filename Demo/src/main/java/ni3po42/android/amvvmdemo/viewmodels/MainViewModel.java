@@ -16,17 +16,38 @@
 package ni3po42.android.amvvmdemo.viewmodels;
 
 import java.util.ArrayList;
+
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import ni3po42.android.amvvmdemo.R;
+
+import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.interfaces.IObjectListener;
+import ni3po42.android.amvvmdemo.R;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
 
 public class MainViewModel extends ViewModel
 {
-	public final ObservableList<DemoViewModelChoice> ViewModelChoices = 
+    public final static String NoMultiViewModelSupport = "multiViewModelSupport";
+
+	public final ObservableList<DemoViewModelChoice> ViewModelChoices =
 			new ObservableList<DemoViewModelChoice>(new ArrayList<DemoViewModelChoice>());
-	
+
+    public MainViewModel()
+    {
+    }
+
+    public final Command<SelectedArgument> Choice = new Command<SelectedArgument>()
+    {
+        @Override
+        protected void onExecuted(SelectedArgument selectedArgument) {
+            showNewChoice(selectedArgument.getPosition());
+        }
+    };
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{	
@@ -43,7 +64,44 @@ public class MainViewModel extends ViewModel
         ViewModelChoices.add(new DemoViewModelChoice(CalculatorViewModel.class, "Calculator", "A simple calculator. Lots of buttons; simple view model."));
 
         ViewModelChoices.add(new DemoViewModelChoice(BridgeOfDeathViewModel.class, "The Bridge of Death", "STOP! Who would cross the Bridge of Death must answer me these questions three; Ere the other side he see. Cursors and Generic Bindings!"));
+        ViewModelChoices.add(new DemoViewModelChoice(RelativeContextViewModel.class, "Relative Context", "Shows how relative context works."));
 		
 		setContentView(R.layout.mainviewmodel);
 	}
+
+    private void showNewChoice(int index)
+    {
+        if (index < 0)
+            return;
+
+        DemoViewModelChoice currentChoice = ViewModelChoices.get(index);
+
+        ViewModel viewModel = null;
+        try
+        {
+            viewModel = currentChoice.getViewModelType().newInstance();
+        }
+        catch (java.lang.InstantiationException e)
+        {
+        }
+        catch (IllegalAccessException e)
+        {
+        }
+        if (viewModel == null)
+            throw new RuntimeException("Cannot find View Model : " + currentChoice.getViewModelType().getName());
+
+        FragmentTransaction trans = getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.main_view_id, viewModel);
+        if (!hasMultiViewModelSupport())
+            trans.addToBackStack(null);
+        trans.commit();
+    }
+
+    private boolean hasMultiViewModelSupport()
+    {
+        if (getArguments() != null && getArguments().containsKey(NoMultiViewModelSupport))
+            return getArguments().getBoolean(NoMultiViewModelSupport, true);
+        return true;
+    }
 }

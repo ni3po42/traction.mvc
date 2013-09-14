@@ -16,24 +16,18 @@
 package amvvm.implementations.observables;
 
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.os.Bundle;
 import android.util.Property;
 import android.util.SparseArray;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
-import java.util.HashMap;
 
 import amvvm.implementations.ui.viewbinding.CursorAdapter;
 import amvvm.implementations.ui.viewbinding.ProxyAdapter;
-import amvvm.interfaces.ICalculatedPropertiesHandler;
+import amvvm.interfaces.ICursorExtension;
 import amvvm.interfaces.IObservableCursor;
-import amvvm.interfaces.IObservableObject;
 import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 
@@ -44,7 +38,36 @@ public class ObservableCursor
     extends ProxyAdapter<Cursor>
     implements IObservableCursor,LoaderManager.LoaderCallbacks<Cursor>
 {
-    private ICalculatedPropertiesHandler<Cursor> calculatedPropertiesHandler;
+    private final SparseArray<Object> extensionObjects = new SparseArray<Object>();
+    private final Class<?> extensionClass;
+    private ICursorExtension cursorExtension;
+
+    public ObservableCursor()
+    {
+        extensionClass = null;
+        cursorExtension = null;
+    }
+
+    public void setCursorExtension(ICursorExtension extension)
+    {
+        this.cursorExtension = extension;
+    }
+
+    @Override
+    public Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject)
+    {
+        if (internalCursorAdapter == null || !internalCursorAdapter.isCursorAdapterValid())
+            return null;
+
+        int index = extensionObjects.indexOfValue(extensionObject);
+        if (index < 0)
+            return null;
+
+        Cursor c = internalCursorAdapter.getCursor();
+        c.moveToPosition(index);
+        return c;
+    }
+
     private CursorAdapter internalCursorAdapter;
 
     private ICursorLoader cursorLoader;
@@ -53,12 +76,6 @@ public class ObservableCursor
     {
         this.cursorLoader = cursorLoader;
         return (T)this;
-    }
-
-    @Override
-    public void setCalculatedPropertiesHandler(ICalculatedPropertiesHandler<Cursor> handler)
-    {
-        this.calculatedPropertiesHandler = handler;
     }
 
     @Override
@@ -77,14 +94,6 @@ public class ObservableCursor
             internalCursorAdapter.updateArguments(arg);
         }
         return internalCursorAdapter;
-    }
-
-    @Override
-    protected void clearProxyAdapter()
-    {
-        if (internalCursorAdapter != null)
-            internalCursorAdapter.swapCursor(null);
-        internalCursorAdapter = null;
     }
 
     @Override
@@ -136,10 +145,24 @@ public class ObservableCursor
             this.index = index;
         }
 
-        @Override
-        public void set(Object object, Object value)
+        public cursorPropAccessor(String name)
         {
-            //not used
+            super(Object.class, name);
+            this.index = -1;
+        }
+
+        @Override
+        public void set(Object obj, Object value)
+        {
+           if (!(obj instanceof Cursor))
+               return;
+
+            Cursor c = (Cursor)obj;
+
+            if (index < 0 && cursorExtension != null)
+            {
+                cursorExtension.setCursorExtendedProperty(c, getName(), value);
+            }
         }
 
         @Override
@@ -149,6 +172,13 @@ public class ObservableCursor
                 return null;
 
             Cursor internalCursor = (Cursor)obj;
+
+            if (index == -1)
+            {
+                if (cursorExtension == null)
+                    return null;
+                return cursorExtension.getCursorExtendedProperty(internalCursor, getName());
+            }
 
             Class<Object> c = cursorPropAccessor.this.getType();
             if (c.equals(float.class))
@@ -170,33 +200,10 @@ public class ObservableCursor
         }
     };
 
-    class calculatedPropertyAccessor extends Property<Object, Object>
-    {
-        public calculatedPropertyAccessor(Class<?> type, String name)
-        {
-            super((Class<Object>)type, name);
-        }
-
-        @Override
-        public Object get(Object cursor)
-        {
-            if (calculatedPropertiesHandler == null || !(cursor instanceof Cursor))
-                return null;
-            return calculatedPropertiesHandler.getCalculatedProperty(this.getName(), (Cursor)cursor);
-        }
-
-        @Override
-        public void set(Object object, Object value)
-        {
-            //not used
-        }
-    }
-
     class internalCursorWrapper extends CursorWrapper
         implements IPropertyStore
     {
         private SparseArray<Property<Object, Object>> store = new SparseArray<Property<Object, Object>>();
-        private HashMap<String, Property<Object, Object>> calculatedStore = new HashMap<String, Property<Object, Object>>();
 
         @Override
         public Property<?, ?> getProperty(Class<?> hostClass, String name)
@@ -207,16 +214,10 @@ public class ObservableCursor
             Cursor c = internalCursorAdapter.getCursor();
             int index = c.getColumnIndex(name);
 
-            if (index < 0 && calculatedPropertiesHandler != null)
+            if (index < 0)
             {
-                if (!calculatedStore.containsKey(name))
-                {
-                    calculatedStore.put(name, new calculatedPropertyAccessor(calculatedPropertiesHandler.getCalculatedPropertyType(name, c), name));
-                }
-                return calculatedStore.get(name);
+               return new cursorPropAccessor(name);
             }
-            else if (index < 0)
-                return null;
 
             Class<?> type = null;
 
@@ -242,6 +243,12 @@ public class ObservableCursor
                 store.put(index, new cursorPropAccessor((Class<Object>)type, index));
             }
             return store.get(index);
+        }
+
+        @Override
+        public void close() {
+            super.close();
+            extensionObjects.clear();
         }
 
         public internalCursorWrapper(Cursor cursor)

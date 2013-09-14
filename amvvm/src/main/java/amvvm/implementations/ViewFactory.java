@@ -122,8 +122,8 @@ implements Factory2
         //should we go on?
         IViewBinding parentViewBinding = parent == null ? null : getViewBinding(parent);
 
-        //if either there is no View Binding for a non null parent or that parent's View Binding says to ignore chilrend..
-        if ((parent != null && parentViewBinding == null) || (parentViewBinding != null && parentViewBinding.ignoreChildren()))
+        //if either there is no View Binding for a non null parent or that parent's View Binding says to ignore children..
+        if ((parent != null && parentViewBinding == null) || (parentViewBinding != null && IViewBinding.Flags.hasFlags(parentViewBinding.getBindingFlags(), IViewBinding.Flags.IGNORE_CHILDREN)))
             //then stop here and return the view, no binding steps needed now.
             return view;
 
@@ -132,9 +132,16 @@ implements Factory2
          
        //pull base attributes
  		IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
- 		boolean ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);
- 		boolean isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
- 		//grab custom binding type, if available
+        boolean isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
+        boolean ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);
+        boolean hasRelativeContext = ta.hasValue(R.styleable.View_RelativeContext);
+
+        int flags = IViewBinding.Flags.NO_FLAGS;
+        flags |= ignoreChildren ? IViewBinding.Flags.IGNORE_CHILDREN : IViewBinding.Flags.NO_FLAGS;
+        flags |= isRoot ? IViewBinding.Flags.IS_ROOT : IViewBinding.Flags.NO_FLAGS;
+        flags |= hasRelativeContext ? (IViewBinding.Flags.HAS_RELATIVE_CONTEXT | IViewBinding.Flags.IS_ROOT): IViewBinding.Flags.NO_FLAGS;
+
+        //grab custom binding type, if available
          String bindingType = ta.getString(R.styleable.View_BindingType);
          
  		ta.recycle();
@@ -162,7 +169,7 @@ implements Factory2
             if (inv != null)
             {
                 view.setTag(R.id.amvvm_viewholder, newViewBinding);
-                newViewBinding.initialise(view, attributeBridge, handler, inv, isRoot, ignoreChildren);
+                newViewBinding.initialise(view, attributeBridge, handler, inv, flags);
             }
          }
          

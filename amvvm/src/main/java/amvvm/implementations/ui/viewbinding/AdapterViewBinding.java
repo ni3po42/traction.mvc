@@ -15,6 +15,8 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.implementations.ui.UIEvent;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
@@ -44,8 +46,8 @@ public class AdapterViewBinding<T>
 extends GenericViewBinding<AdapterView<BaseAdapter>>
 {	
 	public final UIProperty<ProxyAdapter<T>> Items = new UIProperty<ProxyAdapter<T>>(this, R.styleable.AdapterView_Items);
-	public final UIProperty<T> SelectedItem = new UIProperty<T>(this, R.styleable.AdapterView_SelectedItem);
-	
+	//public final UIProperty<T> SelectedItem = new UIProperty<T>(this, R.styleable.AdapterView_SelectedItem);
+
 	//layout to use for child views
 	private int itemTemplateId = -1;
 	private BaseAdapter internalAdapter;
@@ -55,18 +57,6 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
 	private int currentIndex=-1;
 
     private ProxyAdapter<T> adapterCache;
-
-		//not used yet
-	@Override
-	public String getBasePath()
-	{
-		return Items.getPath();
-	}
-
-    protected ProxyAdapter.ISelectionHandler getSelectionHandler()
-    {
-        return ProxyAdapter.defaultSelectionHandler;
-    }
 
 	public AdapterViewBinding()
 	{
@@ -86,7 +76,6 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
                         new ProxyAdapter.ProxyAdapterArgument()
                         .setContext(getWidget().getContext())
                         .setLayoutId(itemTemplateId)
-                        .setSelectionHandler(getSelectionHandler())
                         .setInventory(getBindingInventory());
                     adapter = value.getProxyAdapter(arg);
                 }
@@ -97,82 +86,26 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
                 if (!callSetChanged)
                     return;
 
-                if (adapterCache != null)
-                    adapterCache.clearProxyAdapter();
+                //if (adapterCache != null)
+                //   adapterCache.clearProxyAdapter();
                 adapterCache = value;
 
                 if (adapter instanceof ProxyAdapter.IAdapterLayout)
                     ((ProxyAdapter.IAdapterLayout)adapter).setLayoutId(itemTemplateId);
 
-                if ( isSelectionEnabled())
-                    SelectedItem.disableRecieveUpdates();
-
                 getWidget().setAdapter(adapter);
+                onAdapterChanged();
 
-                if (isSelectionEnabled())
-                {
-                    //find index of new selection
-                    if (value == null)
-                        currentIndex = -1;
-                    else
-                        currentIndex = value.indexOf(currentSelection);
-                    if (currentIndex >= 0)
-                    {
-                        setSelection(currentIndex);
-                    }
-                    if (adapter != null)
-                        adapter.notifyDataSetChanged();
-                    SelectedItem.enableRecieveUpdates();
-                }
 			}
 			
 		});
-		
-		SelectedItem.setUIUpdateListener(new IUIUpdateListener<T>()
-		{
-			@Override
-			public void onUpdate(T value)
-			{
-				if (getWidget() == null || adapterCache == null)
-				{
-					//even if the current view or list is not bound yet, keep track of current
-					//item, so when the list and view are available, it will know what item is 
-					//selected
-					currentSelection = value;					
-					return;
-				}
-
-                if (!isSelectionEnabled())
-                    return;
-
-                Items.disableRecieveUpdates();
-                currentIndex = adapterCache.indexOf(value);
-                currentSelection = value;
-                if (currentIndex >= 0)
-                {
-                    setSelection(currentIndex);
-                }
-                Items.enableRecieveUpdates();
-
-			}
-		});
-	
 	}
 
-    protected void setSelection(int index)
+    protected void onAdapterChanged()
     {
-        getWidget().setSelection(currentIndex);
+
     }
 
-	/**
-	 * sub classes can override this to control what it means for selection to be enabled
-	 * @return : true if the SelectItems ui element is active
-	 */
-	protected boolean isSelectionEnabled()
-	{
-		return true;
-	}
-	
 	@Override
 	protected void initialise(IAttributeBridge attributeBridge)
 	{	
@@ -184,9 +117,6 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
 		itemTemplateId = ta.getResourceId(R.styleable.AdapterView_ItemTemplate, -1);
 
         Items.initialize(ta);
-
-		if (isSelectionEnabled())
-			SelectedItem.initialize(ta);
 		ta.recycle();
 	}
 	
@@ -197,8 +127,6 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
 		super.detachBindings();
         if (getWidget() != null)
 		    getWidget().setAdapter(null);
-        if (adapterCache != null)
-            adapterCache.clearProxyAdapter();
 	}
 
 }

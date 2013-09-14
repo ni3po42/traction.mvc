@@ -87,8 +87,7 @@ extends IObjectListener, IProxyObservableObject
 	
 	/**
 	 * Registers a listener to the IObservable
-	 * @param sourceName : name of source property to track changes and bubble up to inventory 
-	 * @param obj : obj to track
+	 * @param sourceName : name of source property to track changes and bubble up to inventory
 	 * @return : 'this' typed as <T>
 	 */
 	<T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener);
@@ -98,4 +97,10 @@ extends IObjectListener, IProxyObservableObject
 	 * @param listener : listener to unregister from IObservable
 	 */
 	void unregisterListener(String sourceName, IObjectListener listener);
+
+    /**
+     * Returns source object that is being extended with the IObservableObject properties
+     * @return
+     */
+    Object getSource();
 }

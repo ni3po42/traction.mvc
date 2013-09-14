@@ -60,7 +60,7 @@ public class BindingInventory
 
 	//there may be many levels of inventories, this points to the parent inventory. will be nul if it is the root
 	private BindingInventory parentInventory;
-	
+
 	private final TreeMap<String, PathBinding> map = new TreeMap<String, PathBinding>();
 
 	private IObjectListener contextListener = new IObjectListener()
@@ -128,19 +128,19 @@ public class BindingInventory
         {
             IProxyObservableObject proxyObj = (IProxyObservableObject)getContextObject();
             if (proxyObj.getProxyObservableObject() != null &&
-                    proxyObj.getSource() instanceof IAccessibleFragmentManager)
+                    proxyObj.getProxyObservableObject().getSource() instanceof IAccessibleFragmentManager)
             {
-                ((IAccessibleFragmentManager)proxyObj.getSource()).linkFragments(this);
+                ((IAccessibleFragmentManager)proxyObj.getProxyObservableObject().getSource()).linkFragments(this);
             }
         }
 	}
-	
+
 	public BindingInventory()
 	{
-		
+
 	}
 	
-	public BindingInventory(BindingInventory parentInventory)	
+	public BindingInventory(BindingInventory parentInventory)
 	{
 		setParentInventory(parentInventory);
 	}
@@ -161,9 +161,18 @@ public class BindingInventory
 		}
         else
         {
-            commandArg.setEventCancelled(true);
+            if (commandArg != null)
+                commandArg.setEventCancelled(true);
         }
 	}
+
+    public boolean isCommand(String path)
+    {
+        Class<?> c = dereferencePropertyType(path);
+        if (c == null)
+            return false;
+        return ICommand.class.isAssignableFrom(c);
+    }
 	
 	public void setParentInventory(BindingInventory parentInventory)
 	{
@@ -219,7 +228,7 @@ public class BindingInventory
         if (nonObservableContext != null)
             return nonObservableContext;
         else
-            return context.getSource();
+            return context.getProxyObservableObject().getSource();
     }
 
 	public void track (IUIElement<?> element)
@@ -234,20 +243,11 @@ public class BindingInventory
 		PathBinding p = map.get(element.getPath());
 		p.addUIElement(element);
 	}
-	
-	@Deprecated
-	public void trackFragmentX(int id, String path)
-	{
-		//will be used later...
-		//fragmentMap newMap =new fragmentMap(id,path);
-		//if (!fragmentMapping.contains(newMap))
-		//	fragmentMapping.add(newMap);
-	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void sendUpdate(String path, Object value)
 	{		
-		if (path != null && path.equals("."))
+		if (path == null || path.equals("."))
 			return;
 		
 		Matcher matches = pathPattern.matcher(path);
@@ -273,8 +273,16 @@ public class BindingInventory
 			 
 			 String member = m.group(1);
 			indexStr = m.group(3);
-			
-			prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
+
+             if (currentContext instanceof IPropertyStore)
+             {
+                 prop = (Property<Object, Object>)((IPropertyStore)currentContext).getProperty(currentContext.getClass(), member);
+             }
+             else
+             {
+			    prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
+             }
+
 			if (i + 1 < chains.length)
 			{
 				currentContext = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
@@ -410,7 +418,7 @@ public class BindingInventory
 	private Object extractByProxy(Object obj)
 	{
 		if (obj instanceof IProxyObservableObject)
-			 return((IProxyObservableObject)obj).getSource();
+			 return((IProxyObservableObject)obj).getProxyObservableObject().getSource();
 		return obj;
 	}
 	
@@ -422,7 +430,7 @@ public class BindingInventory
             return null;
 
 		if (path != null && path.equals("."))
-			return context.getSource() == null ? null : context.getSource().getClass();
+			return context.getProxyObservableObject().getSource() == null ? null : context.getProxyObservableObject().getSource().getClass();
 		
 		Matcher matches = pathPattern.matcher(path);
 		if (!matches.find())

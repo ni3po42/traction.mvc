@@ -28,11 +28,5 @@ public interface IProxyObservableObject
 	 * @return
 	 */
 	IObservableObject getProxyObservableObject();
-	
-	/**
-	 * Returns source object that is being extended with the IObservableObject properties
-	 * @return
-	 */
-	Object getSource();
-	
+
 }

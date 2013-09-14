@@ -39,22 +39,19 @@ public class CursorAdapter
         super(argument.getContext(), cursor, android.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         this.templateId = argument.getLayoutId();
         this.parentInventory = argument.getInventory();
-        this.selectionHandler = argument.getSelectionHandler();
     }
 
     public void updateArguments(ProxyAdapter.ProxyAdapterArgument argument)
     {
         this.templateId = argument.getLayoutId();
         this.parentInventory = argument.getInventory();
-        this.selectionHandler = argument.getSelectionHandler();
     }
 
     public boolean isCursorAdapterValid()
     {
-        return this.templateId > 0 && this.parentInventory != null && this.selectionHandler != null;
+        return this.templateId > 0 && this.parentInventory != null;
     }
 
-    private ProxyAdapter.ISelectionHandler selectionHandler;
     private BindingInventory parentInventory;
     private ViewBindingFactory factory = new ViewBindingFactory();
     private LayoutInflater inflater;
@@ -89,17 +86,15 @@ public class CursorAdapter
 
         View view = getLayoutInflater(parent).inflate(templateId, parent ,false);
 
+        if (ViewFactory.getViewBinding(parent).equals(ViewFactory.getViewBinding(view)))
+        {
+            throw new IllegalStateException("Possible child view not marked 'IsRoot'. Templates of AdapterViews must be marked 'IsRoot' = true.");
+        }
+
         //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'
         if (ViewFactory.getViewBinding(parent).isSynthetic())
             ViewFactory.removeViewBinding(parent);
 
         return view;
-    }
-
-    public boolean isEnabled(int position)
-    {
-        if (selectionHandler != null)
-            return selectionHandler.isEnabledAt(position);
-        return ProxyAdapter.defaultSelectionHandler.isEnabledAt(position);
     }
 }

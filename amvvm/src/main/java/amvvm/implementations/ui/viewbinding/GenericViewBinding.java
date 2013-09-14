@@ -22,8 +22,10 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIProperty;
+import amvvm.implementations.ui.UIRelativeContext;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.UIHandler;
@@ -53,7 +55,8 @@ implements IViewBinding
 	protected ArrayList<GenericUIBindedEvent> genericBindedEvents = new ArrayList<GenericUIBindedEvent>();
 	
 	public final UIProperty<Boolean> IsVisible = new UIProperty<Boolean>(this, R.styleable.View_IsVisible);
-	
+	public final UIRelativeContext RelativeContext = new UIRelativeContext(this, R.styleable.View_RelativeContext);
+
 	private WeakReference<V> widget;
 
     private final ViewBindingHelper helper = new ViewBindingHelper();
@@ -71,15 +74,8 @@ implements IViewBinding
     }
 
     @Override
-    public boolean isRoot()
-    {
-        return helper.isRoot();
-    }
-
-    @Override
-    public boolean ignoreChildren()
-    {
-        return helper.ignoreChildren();
+    public int getBindingFlags() {
+        return helper.getBindingFlags();
     }
 
     @Override
@@ -121,6 +117,15 @@ implements IViewBinding
 					getWidget().setVisibility(value ? View.VISIBLE : View.INVISIBLE);
 			}
 		});
+
+        RelativeContext.setUIUpdateListener(new IUIElement.IUIUpdateListener<Object>()
+        {
+            @Override
+            public void onUpdate(Object value)
+            {
+                ViewFactory.RegisterContext(getWidget(), value);
+            }
+        });
 	}
 	
 	/**
@@ -307,8 +312,11 @@ implements IViewBinding
         if (ta == null)
             return;
 
+        if (Flags.hasFlags(getBindingFlags(), Flags.HAS_RELATIVE_CONTEXT))
+            RelativeContext.initialize(ta);
+
 		IsVisible.initialize(ta);
-		
+
 		//get semi-colon delimited properties
 		String bindings = ta.getString(R.styleable.View_GenericBindings);		
 		ta.recycle();
@@ -334,25 +342,17 @@ implements IViewBinding
 	}
 
     @Override
-    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int flags)
     {
         widget = new WeakReference<V>((V)v);
         if (attributeBridge == null)
             return;
-        helper.setRoot(isRoot);
-        helper.setIgnoreChildren(ignoreChildren);
+        helper.setBindingFlags(flags);
         helper.setBindingInventory(inventory);
         helper.setUiHandler(uiHandler);
         initialise(attributeBridge);
     }
 
-    //not implemented yet
-	@Override
-	public String getBasePath()
-	{
-		return null;
-	}
-	
 	/**
 	 * does general cleanup
 	 */

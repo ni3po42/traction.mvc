@@ -19,7 +19,7 @@
     android:stretchMode="columnWidth"
     android:gravity="center"
     mvvm:Items="Items"
-    mvvm:Selected="Selected"
+    mvvm:OnSelected="Items.Selected"
     mvvm:ItemTemplate="@layout/selectable"
 
     >
@@ -27,6 +27,6 @@
 <TextView 
         android:layout_width="match_parent"
     android:layout_height="match_parent"
-    mvvm:Text="SelectedCount"
+    mvvm:Text="Items.SelectionCount"
     />
 </LinearLayout>

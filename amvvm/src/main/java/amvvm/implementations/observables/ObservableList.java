@@ -326,7 +326,6 @@ implements IObservableList<T>,IIndexable<T>
     {
         if (internalAdapter == null)
         {
-            final ISelectionHandler sh = arg.getSelectionHandler();
             final BindingInventory inv = arg.getInventory();
             internalAdapter = new ListAdapter<T, ObservableList<T>>(inv)
             {
@@ -335,20 +334,9 @@ implements IObservableList<T>,IIndexable<T>
                 {
                     return ObservableList.this;
                 }
-
-                @Override
-                public boolean isEnabled(int position)
-                {
-                    return sh.isEnabledAt(position);
-                }
             };
         }
         return internalAdapter;
     }
 
-    @Override
-    protected void clearProxyAdapter()
-    {
-        internalAdapter = null;
-    }
 }

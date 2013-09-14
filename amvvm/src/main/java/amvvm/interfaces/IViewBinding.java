@@ -38,14 +38,23 @@ public interface IViewBinding
 	 * @param uiHandler : a handler for accessing the ui thread
 	 * @param inventory : inventory to register ui elements and paths
 	 */
-	void initialise(View v,IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren);
-		
-	/**
-	 * Not really implemented at this time
-	 * @return
-	 */
-	String getBasePath();
-		
+	void initialise(View v,IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags);
+
+    public static class Flags
+    {
+        private Flags(){}
+
+        public static int NO_FLAGS = 0;
+        public static int IS_ROOT = 1;
+        public static int IGNORE_CHILDREN = 2;
+        public static int HAS_RELATIVE_CONTEXT = 4;
+
+        public static boolean hasFlags(int flags, int flagsToTest)
+        {
+            return (flags & flagsToTest) == flagsToTest;
+        }
+    }
+
 	/**
 	 * Here, you will want to unhook stuff, general clean up
 	 */
@@ -64,16 +73,10 @@ public interface IViewBinding
     UIHandler getUIHandler();
 
     /**
-     * if this bindingInventory is a child of a parent binding inventory.     *
-     * @return : true if the bindingInventory is different than it's grand parent binding inventory
-     */
-    boolean isRoot();
-
-    /**
-     * true if children views are ignored
+     * Gets flags
      * @return
      */
-    boolean ignoreChildren();
+    int getBindingFlags();
 
     /**
      *

@@ -20,11 +20,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import amvvm.implementations.observables.SimpleCommand;
-import amvvm.interfaces.ICommand;
-import ni3po42.android.amvvmdemo.R;
-import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
+import amvvm.implementations.observables.PropertyListener;
+import amvvm.implementations.observables.SimpleCommand;
+import ni3po42.android.amvvmdemo.R;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.UserInfo;
 import ni3po42.android.amvvmdemo.models.UserInfo.Gender;
@@ -33,14 +32,27 @@ public class SimpleFormViewModel extends ViewModel
 {
 	private static String prefName = "ni3po42.android.amvvmdemo.userinfo";
 	
-	public final ObservableList<Gender> Genders = 
+	public final ObservableList<Gender> Genders =
 			new ObservableList<Gender>(new ArrayList<Gender>());
-	
+
+    public int getGenderIndex()
+    {
+        return Genders.indexOf(CurrentUserInfo.getUserGender());
+    }
+
+    public void setGenderIndex(int index)
+    {
+        CurrentUserInfo.setUserGender(Genders.get(index));
+        //don't notify, the reaction will do the notify for us
+    }
+
 	public SimpleFormViewModel()
 	{
 		Genders.clear();
 		Genders.add(Gender.getMale());
 		Genders.add(Gender.getFemale());
+
+        addReaction("GenderIndex", "CurrentUserInfo.UserGender");
 	}
 	
 	public final UserInfo CurrentUserInfo = new UserInfo();
@@ -72,7 +84,7 @@ public class SimpleFormViewModel extends ViewModel
 		
 		SharedPreferences preference = getActivity().getSharedPreferences(prefName, Context.MODE_PRIVATE);
 		CurrentUserInfo.retrieveUserInfo(preference);	
-		
+
 		setContentView(R.layout.userinfo);
 	}
 	

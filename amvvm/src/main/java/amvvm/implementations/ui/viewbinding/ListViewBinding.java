@@ -15,6 +15,9 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.implementations.ui.UIEvent;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ViewFactory;
 import amvvm.interfaces.IAttributeGroup;
@@ -49,9 +52,13 @@ extends AdapterViewBinding<T>
 implements OnItemClickListener
 {	
 	//stores the path to the property that denotes if the item is selected.
-	private String selectionPath;
 	private String enabledPath;
     private Boolean enabledOverride;
+
+    public final UIEvent<SelectedArgument> OnSelected_event = new UIEvent<SelectedArgument>(this, R.styleable.ListView_OnSelected);
+    public final UIProperty<Integer> OnSelected_property = new UIProperty<Integer>(this, R.styleable.ListView_OnSelected);
+
+    private Boolean isEvent = null;
 
     @Override
     protected void initialise(IAttributeBridge attributeBridge)
@@ -61,12 +68,9 @@ implements OnItemClickListener
         AbsListView lv = (AbsListView)(ViewGroup)getWidget();
 
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ListView);
-		//this selected attribute is only valid if the choice mode is not single or none, only multiple.
-		if (lv.getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE ||
-                lv.getChoiceMode() == AbsListView.CHOICE_MODE_MULTIPLE)
-		{
-			selectionPath = ta.getString(R.styleable.ListView_Selected);
-		}
+
+        OnSelected_event.initialize(ta);
+        OnSelected_property.initialize(ta);
 
         if (ta.hasValue(R.styleable.ListView_SelectionEnabled))
         {
@@ -82,45 +86,6 @@ implements OnItemClickListener
         ta.recycle();
 		getWidget().setOnItemClickListener(this);
 	}
-	
-	@Override
-	protected boolean isSelectionEnabled()
-	{
-        AbsListView lv = (AbsListView)(ViewGroup)getWidget();
-
-		//this effectively disables the 'SelectedItem' element and allows the binding to instead react to changes in multiple items
-		//instead of just one.
-		return lv.getChoiceMode() == AbsListView.CHOICE_MODE_SINGLE ||
-                lv.getChoiceMode() == AbsListView.CHOICE_MODE_NONE;
-	}
-
-    private final ProxyAdapter.ISelectionHandler selectionHandler = new ProxyAdapter.ISelectionHandler()
-    {
-        @Override
-        public boolean isEnabledAt(int position)
-        {
-            if (enabledPath == null && enabledOverride != null)
-                return enabledOverride;
-            else if (enabledPath != null)
-            {
-                if (getWidget() == null)
-                    return false;
-
-                View view = getWidget().getChildAt(position);
-                IViewBinding vb = ViewFactory.getViewBinding(view);
-                Object value = vb.getBindingInventory().dereferenceValue(enabledPath);
-                if (value instanceof Boolean)
-                    return (Boolean)value;
-            }
-            return true;
-        }
-    };
-
-    @Override
-    protected ProxyAdapter.ISelectionHandler getSelectionHandler()
-    {
-        return selectionHandler;
-    }
 
     @Override
 	public void detachBindings()
@@ -132,35 +97,21 @@ implements OnItemClickListener
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onItemClick(final AdapterView<?> view, final View childView, final int position, final long arg3)
+	public void onItemClick(final AdapterView<?> view, final View childView, final int position, final long key)
 	{
-		Object obj = view.getItemAtPosition(position);
-		
-		//if SelectedItem is not active...
-		if (!isSelectionEnabled())
-		{
-			//get the binding inventory for the child item..
-			IViewBinding vb = ViewFactory.getViewBinding(childView);
-			if (vb != null)
-			{
-				//look up the current value for that property
-				Object b = vb.getBindingInventory().dereferenceValue(selectionPath);
-				
-				//confirm it's a boolean property..
-				if (b != null && (b instanceof Boolean || b.getClass().equals(boolean.class)))
-				{
-					//..flip it's state
-					Boolean bb = (Boolean)b;
-                    vb.getBindingInventory().sendUpdate(selectionPath, !bb);
-				}
-			}
-		}
-		//..however is SelectedItem is active...
-		else
-		{		
-			//..just do your normal thing.
-			SelectedItem.sendUpdate((T)obj);
-		}
+        if (isEvent == null)
+        {
+            isEvent = getBindingInventory().isCommand(OnSelected_event.getPath());
+        }
+        if (isEvent)
+        {
+            SelectedArgument arg = new SelectedArgument(OnSelected_event.getPropertyName(), position);
+            OnSelected_event.execute(arg);
+        }
+        else
+        {
+            OnSelected_property.sendUpdate(position);
+        }
 	}
 
 }

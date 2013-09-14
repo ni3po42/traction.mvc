@@ -98,17 +98,11 @@ implements MenuItem.OnMenuItemClickListener, MenuItem.OnActionExpandListener, IV
     }
 
     @Override
-    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int flags)
     {
         //not used
     }
 
-    @Override
-	public String getBasePath()
-	{
-		return null;
-	}
-	
 	@Override
 	public void detachBindings() 
 	{
@@ -141,15 +135,8 @@ implements MenuItem.OnMenuItemClickListener, MenuItem.OnActionExpandListener, IV
     }
 
     @Override
-    public boolean isRoot()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean ignoreChildren()
-    {
-        return false;
+    public int getBindingFlags() {
+        return Flags.NO_FLAGS;
     }
 
     @Override

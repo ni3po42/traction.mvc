@@ -20,7 +20,8 @@ import amvvm.interfaces.ICommand;
 /**
  * Allows passing of a resource value from UI to view-model
  */
-public class ResourceArgument extends ICommand.CommandArgument
+public class ResourceArgument
+        extends ICommand.CommandArgument
 {
     private int resourceId;
     public ResourceArgument(String commandName, int resourceId)

@@ -15,9 +15,12 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.R;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.implementations.ui.UIEvent;
 import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IProxyObservableObject;
@@ -90,7 +93,13 @@ extends BaseAdapter
 		if (convertView == null)
 		{	
 			convertView = getLayoutInflater(parent).inflate(templateId, parent ,false);
-		}	
+		}
+
+        if (ViewFactory.getViewBinding(parent).equals(ViewFactory.getViewBinding(convertView)))
+        {
+            throw new IllegalStateException("Possible child view not marked 'IsRoot'. Templates of AdapterViews must be marked 'IsRoot' = true.");
+        }
+
 		ViewFactory.RegisterContext(convertView, getList().get(position));
 
         //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'

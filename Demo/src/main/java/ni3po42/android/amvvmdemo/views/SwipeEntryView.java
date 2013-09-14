@@ -88,7 +88,7 @@ public class SwipeEntryView
     }
 
     @Override
-    public void initialise(View notUsed, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+    public void initialise(View notUsed, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
     {
         helper.setBindingInventory(inventory);
         helper.setUiHandler(uiHandler);
@@ -112,13 +112,8 @@ public class SwipeEntryView
             .addAttribute(R.styleable.TextView, R.styleable.TextView_Text, "Id", Builder.TYPE_STRING)
             .build();
 
-        contentBinding.initialise(content, contentBridge, uiHandler, inventory, false, false);
-        idBinding.initialise(id, idBridge, uiHandler, inventory, false, false);
-    }
-
-    @Override
-    public String getBasePath() {
-        return null;
+        contentBinding.initialise(content, contentBridge, uiHandler, inventory, Flags.NO_FLAGS);
+        idBinding.initialise(id, idBridge, uiHandler, inventory, Flags.NO_FLAGS);
     }
 
     @Override
@@ -141,15 +136,8 @@ public class SwipeEntryView
     }
 
     @Override
-    public boolean isRoot()
-    {
-        return helper.isRoot();
-    }
-
-    @Override
-    public boolean ignoreChildren()
-    {
-        return helper.ignoreChildren();
+    public int getBindingFlags() {
+        return helper.getBindingFlags();
     }
 
     @Override

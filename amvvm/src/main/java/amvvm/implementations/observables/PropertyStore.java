@@ -16,6 +16,7 @@
 package amvvm.implementations.observables;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import android.util.Property;
@@ -89,10 +90,60 @@ public class PropertyStore
 		}
 		
 		if (valueType == null)
+        {
+            //try setter only
+            try
+            {
+                Method[] ms = hostClass.getMethods();
+                for(int ii=0;ii<ms.length;ii++)
+                {
+                    if (ms[ii].getName().equals("set"+name) && ms[ii].getParameterTypes() != null && ms[ii].getParameterTypes().length == 1)
+                    {
+                        return new setterPropertyOnly(ms[ii], name);
+                    }
+                }
+            }
+            catch(Exception ex){}
+
 			throw new RuntimeException("Cannot find property '"+name+"' in type '"+hostClass.getName()+"'.");
+        }
 		
 		//we have th host class, the value class and the name, now we can get the property
 		return Property.of(hostClass, valueType, name);
 	}
-	
+
+    static class setterPropertyOnly
+        extends Property<Object, Object>
+    {
+        Method m;
+        public setterPropertyOnly(Method setter, String name) {
+            super((Class<Object>)setter.getParameterTypes()[0], name);
+            m = setter;
+        }
+
+        @Override
+        public Object get(Object o)
+        {
+            throw new UnsupportedOperationException("'get' or 'is' method not available for: "+getName());
+        }
+
+        @Override
+        public boolean isReadOnly()
+        {
+            return false;
+        }
+
+        @Override
+        public void set(Object object, Object value)
+        {
+            try {
+                m.invoke(object, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

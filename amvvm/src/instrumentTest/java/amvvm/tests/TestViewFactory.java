@@ -2,6 +2,7 @@ package amvvm.tests;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.test.InstrumentationTestCase;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +22,25 @@ import amvvm.interfaces.IViewBinding;
 
 import static org.mockito.Mockito.*;
 
-public class TestViewFactory extends TestCase
+public class TestViewFactory extends InstrumentationTestCase
 {
     public TestViewFactory()
     {
 
     }
 
+    @Override
+    protected void setUp() throws Exception {
+
+        super.setUp();
+        System.setProperty( "dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath() );
+    }
+
     private Context stubContext = null;
     private AttributeSet stubAttributeSet = null;
+
+    int ignoreChildren = IViewBinding.Flags.IGNORE_CHILDREN;
+    int isRoot = IViewBinding.Flags.IS_ROOT;
 
     public void testCanIgnoreChildren()
     {
@@ -41,7 +52,7 @@ public class TestViewFactory extends TestCase
         ViewFactory vf = createViewFactory(null, childLayout, viewClass);
         IViewBinding parentVB = mock(IViewBinding.class);
         when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
-        when(parentVB.ignoreChildren()).thenReturn(true);
+        when(parentVB.getBindingFlags()).thenReturn(ignoreChildren);
 
         when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
 
@@ -160,7 +171,7 @@ public class TestViewFactory extends TestCase
         IViewBinding childVB = mock(IViewBinding.class);
 
         when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
-        when(parentVB.isRoot()).thenReturn(true);
+        when(parentVB.getBindingFlags()).thenReturn(isRoot);
         when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
 
         doReturn(childVB).when(vf).createViewBinding(eq(childView), anyString());
@@ -173,7 +184,7 @@ public class TestViewFactory extends TestCase
         ArgumentCaptor<BindingInventory> argument = ArgumentCaptor.forClass(BindingInventory.class);
 
 
-        verify(childVB).initialise(eq(childView), any(IAttributeBridge.class), any(UIHandler.class), argument.capture(),eq(true) ,eq(false));
+        verify(childVB).initialise(eq(childView), any(IAttributeBridge.class), any(UIHandler.class), argument.capture(),eq(isRoot));
 
         BindingInventory inv = argument.getValue();
 
@@ -202,7 +213,7 @@ public class TestViewFactory extends TestCase
 
         //assert
         assertNotNull(v);
-        verify(viewBinding).initialise(eq(childView), eq(bridge), any(UIHandler.class), any(BindingInventory.class), eq(true), eq(false));
+        verify(viewBinding).initialise(eq(childView), eq(bridge), any(UIHandler.class), any(BindingInventory.class), eq(isRoot));
     }
 
     public void testCanInitializeCustomViewBinding()
@@ -353,14 +364,9 @@ public class TestViewFactory extends TestCase
     public static class vA implements IViewBinding{
 
         @Override
-        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int flags)
         {
 
-        }
-
-        @Override
-        public String getBasePath() {
-            return null;
         }
 
         @Override
@@ -381,15 +387,8 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public boolean isRoot()
-        {
-            return false;
-        }
-
-        @Override
-        public boolean ignoreChildren()
-        {
-            return false;
+        public int getBindingFlags() {
+            return 0;
         }
 
         @Override
@@ -399,22 +398,17 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public void markAsSynthetic()
-        {
+        public void markAsSynthetic(BindingInventory inventory) {
 
         }
+
     }
     public static class vAA implements IViewBinding{
 
         @Override
-        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int flags)
         {
 
-        }
-
-        @Override
-        public String getBasePath() {
-            return null;
         }
 
         @Override
@@ -435,15 +429,8 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public boolean isRoot()
-        {
-            return false;
-        }
-
-        @Override
-        public boolean ignoreChildren()
-        {
-            return false;
+        public int getBindingFlags() {
+            return 0;
         }
 
         @Override
@@ -453,22 +440,17 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public void markAsSynthetic()
-        {
+        public void markAsSynthetic(BindingInventory inventory) {
 
         }
+
     }
     public static class customViewBinding implements IViewBinding{
 
         @Override
-        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, boolean isRoot, boolean ignoreChildren)
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory,int flags)
         {
 
-        }
-
-        @Override
-        public String getBasePath() {
-            return null;
         }
 
         @Override
@@ -489,15 +471,8 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public boolean isRoot()
-        {
-            return false;
-        }
-
-        @Override
-        public boolean ignoreChildren()
-        {
-            return false;
+        public int getBindingFlags() {
+            return 0;
         }
 
         @Override
@@ -507,8 +482,7 @@ public class TestViewFactory extends TestCase
         }
 
         @Override
-        public void markAsSynthetic()
-        {
+        public void markAsSynthetic(BindingInventory inventory) {
 
         }
     }

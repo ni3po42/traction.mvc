@@ -13,21 +13,22 @@
    limitations under the License.
  */
 
-package amvvm.interfaces;
+package amvvm.implementations.observables;
 
-import android.content.Loader;
-import android.database.Cursor;
-import android.os.Bundle;
+import amvvm.interfaces.ICommand;
 
-/**
- * Defines methods for an observable cursor
- */
-public interface IObservableCursor
+public class SelectedArgument
+        extends ICommand.CommandArgument
 {
-    public interface ICursorLoader
+    private int position;
+    public SelectedArgument(String commandName, int position)
     {
-        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
+        super(commandName);
+        this.position  =position;
     }
 
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
+    public int getPosition()
+    {
+        return position;
+    }
 }

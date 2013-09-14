@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import amvvm.implementations.observables.MultiSelectionList;
 import amvvm.implementations.observables.SimpleCommand;
 import amvvm.interfaces.ICommand;
+import amvvm.interfaces.IMultiSelection;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
@@ -31,46 +33,29 @@ import ni3po42.android.amvvmdemo.models.SelectableItem;
 public class MultiSelectViewModel extends ViewModel
 {
 	
-	public final ObservableList<SelectableItem> Items = 
-			new ObservableList<SelectableItem>(new ArrayList<SelectableItem>());
+	public final MultiSelectionList<SelectableItem> Items =
+			new MultiSelectionList<SelectableItem>(new ArrayList<SelectableItem>());
 
 	public MultiSelectViewModel()
 	{
 		Items.clear();
-		for (int i=0;i<12;i++)
-		{
-			SelectableItem s = new SelectableItem();
-			s.registerListener("SubItem", selectectCountListener);
-			Items.add(s);
-		}
+        for(int i=0;i<12;i++)
+            Items.add(new SelectableItem());
+
+		Items.setSelectionHandler(new IMultiSelection.ISelection() {
+            @Override
+            public void onSelection(int arg, boolean selected) {
+                Items.get(arg).setSelected(selected);
+            }
+        });
 	}
-	
-	public int getSelectedCount()
-	{
-		int count = 0;
-		for(int i=0;i<Items.getCount();i++)
-		{
-			if (Items.get(i).isSelected())
-				count++;
-		}
-		return count;
-	}
-	
-	final IObjectListener selectectCountListener = new IObjectListener()
-	{				
-		@Override
-		public void onEvent(EventArg arg)
-		{
-			notifyListener("SelectedCount");
-		}
-	};
-	
+
 	public final SimpleCommand CountSelected = new SimpleCommand()
 	{
         @Override
         protected void onExecuted(CommandArgument commandArgument)
         {
-            Toast.makeText(getActivity(), "There are "+getSelectedCount()+" item(s) selected.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "There are "+ Items.getSelectionCount()+" item(s) selected.", Toast.LENGTH_SHORT).show();
         }
     };
 	

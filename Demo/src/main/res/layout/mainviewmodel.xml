@@ -14,7 +14,7 @@
     xmlns:mvvm="http://schemas.android.com/apk/res-auto"
   	mvvm:IsRoot="true"
     mvvm:Items="ViewModelChoices"
-    mvvm:SelectedItem="\\CurrentChoice"
+    mvvm:OnSelected="Choice"
     mvvm:ItemTemplate="@layout/viewmodelchoice"    
     >
 </ListView>

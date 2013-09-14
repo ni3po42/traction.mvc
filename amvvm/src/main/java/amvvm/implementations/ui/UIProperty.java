@@ -111,7 +111,7 @@ implements IUIElement<T>
 			return;
 		
 		disableRecieveUpdates();
-        parentViewBinding.getBindingInventory().sendUpdateFromUIElement(this, value);
+        getBindingInventory().sendUpdateFromUIElement(this, value);
 		enableRecieveUpdates();		
 	}
 
@@ -183,7 +183,7 @@ implements IUIElement<T>
 	{
 		if (pathAttribute >= 0 && attributeGroup != null)
 			path = attributeGroup.getString(pathAttribute);
-        parentViewBinding.getBindingInventory().track(this);
+        getBindingInventory().track(this);
 	}
 
 	@Override

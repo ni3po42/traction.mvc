@@ -13,21 +13,26 @@
    limitations under the License.
  */
 
-package amvvm.interfaces;
+package ni3po42.android.amvvmdemo.models;
 
-import android.content.Loader;
-import android.database.Cursor;
-import android.os.Bundle;
-
-/**
- * Defines methods for an observable cursor
- */
-public interface IObservableCursor
+public class RelativeContextModel
 {
-    public interface ICursorLoader
-    {
-        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
+    private int value;
+    private String string;
+
+    public int getValue() {
+        return value;
     }
 
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
+    }
 }

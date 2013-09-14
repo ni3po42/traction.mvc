@@ -33,7 +33,6 @@ public abstract class ProxyAdapter<T>
     {
         private Context context;
         private int layoutId = -1;
-        private ISelectionHandler selectionHandler;
         private BindingInventory inventory;
 
         public Context getContext()
@@ -58,17 +57,6 @@ public abstract class ProxyAdapter<T>
             return this;
         }
 
-        public ISelectionHandler getSelectionHandler()
-        {
-            return selectionHandler;
-        }
-
-        public ProxyAdapterArgument setSelectionHandler(ISelectionHandler selectionHandler)
-        {
-            this.selectionHandler = selectionHandler;
-            return this;
-        }
-
         public BindingInventory getInventory()
         {
             return inventory;
@@ -85,25 +73,10 @@ public abstract class ProxyAdapter<T>
 
     protected abstract BaseAdapter getProxyAdapter(ProxyAdapterArgument arg);
 
-    protected abstract void clearProxyAdapter();
+    //protected abstract void clearProxyAdapter();
 
     public interface IAdapterLayout
     {
         void setLayoutId(int layoutId);
     }
-
-    public interface ISelectionHandler
-    {
-        boolean isEnabledAt(int position);
-    }
-
-    protected final static ISelectionHandler defaultSelectionHandler = new ISelectionHandler()
-    {
-        @Override
-        public boolean isEnabledAt(int position)
-        {
-            return true;
-        }
-    };
-
 }

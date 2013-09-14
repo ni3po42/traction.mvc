@@ -17,31 +17,33 @@ package ni3po42.android.amvvmdemo.models;
 
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
+import amvvm.interfaces.IPropertyStore;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.format.Time;
 
-public class UserInfo extends ObservableObject
+public class UserInfo
+    extends ObservableObject
 {
-	private static PropertyStore store = new PropertyStore();
-	
+    private static PropertyStore store = new PropertyStore();
+
 	private String firstName;
 	private String lastName;
 	private Time dateOfBirth;
 	private Gender userGender;
-	
-	@Override
-	public PropertyStore getPropertyStore()
-	{
-		return store;
-	}
 
 	public UserInfo()
 	{
 		
 	}
-	
-	public static class Gender
+
+    @Override
+    public IPropertyStore getPropertyStore() {
+        return store;
+    }
+
+    public static class Gender
 	{
 		public static Gender getMale()
 		{ return new Gender("Male");}
@@ -106,7 +108,7 @@ public class UserInfo extends ObservableObject
 	public void setUserGender(Gender gender)
 	{
         userGender = gender;
-		notifyListener("UserGender");
+        notifyListener("UserGender");
 	}
 	
 	public void retrieveUserInfo(SharedPreferences preference)
@@ -138,7 +140,7 @@ public class UserInfo extends ObservableObject
 	public void setFirstName(String firstName)
 	{
 		this.firstName = firstName;
-		notifyListener("FirstName");
+        notifyListener("FirstName");
 	}
 
 
@@ -151,7 +153,7 @@ public class UserInfo extends ObservableObject
 	public void setLastName(String lastName)
 	{
 		this.lastName = lastName;
-		notifyListener("LastName");
+        notifyListener("LastName");
 	}
 
 
@@ -160,13 +162,9 @@ public class UserInfo extends ObservableObject
 		return dateOfBirth;
 	}
 
-
 	public void setDateOfBirth(Time dateOfBirth)
 	{
 		this.dateOfBirth = dateOfBirth;
-		notifyListener("DateOfBirth");
+        notifyListener("DateOfBirth");
 	}
-	
-	
-
 }

@@ -30,6 +30,7 @@
     <attr name="CommandValue" format="reference" />
 
 
+
     <declare-styleable name="Menu">
         <attr name="IsVisible"  />
         <attr name="OnClick" />
@@ -41,6 +42,7 @@
         <attr name="BindingType" format="string" />
         <attr name="GenericBindings" format="string" />
         <attr name="IgnoreChildren" format="boolean" />
+        <attr name="RelativeContext" format="string" />
     </declare-styleable>
 
     <declare-styleable name="TextView">
@@ -65,13 +67,17 @@
     </declare-styleable>
 
     <declare-styleable name="AdapterView">
-        <attr name="SelectedItem" format="string" />
+        <!--<attr name="SelectedItem" format="string" />-->
         <attr name="Items" format="string" />
         <attr name="ItemTemplate" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="Spinner">
+        <attr name="SelectedChoice" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="ListView">
-        <attr name="Selected" format="string" />
+        <attr name="OnSelected" format="string" />
         <attr name="SelectionEnabled" format="string|boolean" />
     </declare-styleable>
 

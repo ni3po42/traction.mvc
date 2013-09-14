@@ -13,21 +13,27 @@
    limitations under the License.
  */
 
-package amvvm.interfaces;
+package amvvm.implementations.observables;
 
-import android.content.Loader;
-import android.database.Cursor;
-import android.os.Bundle;
+import amvvm.interfaces.IObjectListener;
 
-/**
- * Defines methods for an observable cursor
- */
-public interface IObservableCursor
+public abstract class PropertyListener<T>
+    implements IObjectListener
 {
-    public interface ICursorLoader
+    private String propertyName;
+    public PropertyListener(String propertyName)
     {
-        public abstract Loader<Cursor> onCreateLoader(Bundle arg);
+        this.propertyName = propertyName;
     }
 
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
+    @Override
+    public void onEvent(EventArg arg)
+    {
+        if (propertyName == null || !propertyName.equals(arg.getPropagationId()))
+            return;
+
+        propertyUpdated((T)arg.getSource());
+    }
+
+    protected abstract void propertyUpdated(T source);
 }

@@ -26,3 +26,9 @@ android {
         testPackageName "amvvm.tests"
     }
 }
+
+configurations {
+    archives {
+        extendsFrom configurations.default
+    }
+}

@@ -15,11 +15,18 @@
 
 package amvvm.interfaces;
 
-/**
- * Handler for calculated properties
- */
-public interface ICalculatedPropertiesHandler<T>
+public interface IMultiSelection
 {
-    Class<?> getCalculatedPropertyType(String propertyName, T obj);
-    Object getCalculatedProperty(String propertyName, T obj);
+    int getSelectionCount();
+    void forEach(IAction action);
+
+    public interface IAction
+    {
+        boolean doAction(int arg);
+    }
+
+    public interface ISelection
+    {
+        void onSelection(int arg, boolean selected);
+    }
 }

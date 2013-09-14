@@ -15,8 +15,15 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.R;
+import amvvm.implementations.observables.SelectedArgument;
+import amvvm.implementations.ui.UIEvent;
+import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
+import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyObservableObject;
+import amvvm.interfaces.IUIElement;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -32,77 +39,107 @@ import android.widget.SpinnerAdapter;
 public class SpinnerViewBinding<T>
 extends AdapterViewBinding<T>
 implements OnItemSelectedListener
-{	
-	//There was some quirkyness to getting the spinner to work properly. The biggest issue was the wrong value
-	//being set as the selected value. With how Android handles creating the views for it and calling the item selected
-	//listener when a non ui selection was made, it was needed to add and remove the selection listener at different points
-	//to keep the correct item selected in the spinner and avoid weird infinite tasks queueing to be executed.
+{
+    public final UIEvent<SelectedArgument> SelectedChoice_event = new UIEvent<SelectedArgument>(this, R.styleable.Spinner_SelectedChoice);
+    public final UIProperty<Integer> SelectedChoice_prop = new  UIProperty<Integer>(this, R.styleable.Spinner_SelectedChoice);
 
-    private boolean itemSelectionEnabled = true;
+    private Boolean isEvent = null;
+    private int tempSelectionPosition = -1;
+
+    private OnItemSelectedListener nullListener = new OnItemSelectedListener()
+    {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            tryResettingListener();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            tryResettingListener();
+        }
+
+        private void tryResettingListener()
+        {
+            if (getWidget() != null)
+                getWidget().setOnItemSelectedListener(SpinnerViewBinding.this);
+        }
+    };
+
+    public SpinnerViewBinding()
+    {
+        SelectedChoice_prop.setUIUpdateListener(new IUIElement.IUIUpdateListener<Integer>() {
+            @Override
+            public void onUpdate(Integer value) {
+                tempSelectionPosition = value;
+                onAdapterChanged();
+            }
+        });
+    }
 
     @Override
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
+        IAttributeGroup ag = attributeBridge.getAttributes(R.styleable.Spinner);
+        SelectedChoice_event.initialize(ag);
+        SelectedChoice_prop.initialize(ag);
+        ag.recycle();
         if (getWidget() != null)
-            getWidget().setOnItemSelectedListener(this);
+            getWidget().setOnItemSelectedListener(nullListener);
+
+    }
+
+    @Override
+    protected void onAdapterChanged()
+    {
+        if (getWidget() == null)
+            return;
+
+        getWidget().setOnItemSelectedListener(nullListener);
+        getWidget().setSelection(tempSelectionPosition);
     }
 
     @Override
 	public void detachBindings()
 	{
         if (getWidget() != null)
-        getWidget().setOnItemSelectedListener(null);
+            getWidget().setOnItemSelectedListener(null);
         super.detachBindings();
 	}
 
-    @Override
-    protected void setSelection(int index)
-    {
-        itemSelectionEnabled = false;
-        super.setSelection(index);
-    }
-
-    //
-//	@Override
-//	protected void disableListeners()
-//	{
-//		if (getWidget() == null)
-//			return;
-//		getWidget().setOnItemSelectedListener(null);
-//	}
-//
-//	@Override
-//	protected void enableListeners()
-//	{
-//		if (getWidget() == null)
-//			return;
-//		getWidget().setOnItemSelectedListener(this);
-//	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onItemSelected(AdapterView<?> view, View arg1, int position, long arg3)
 	{
-        if (!itemSelectionEnabled)
+        if (isEvent == null)
         {
-            itemSelectionEnabled = true;
-            return;
+            isEvent = getBindingInventory().isCommand(SelectedChoice_event.getPath());
         }
-
-		Object obj = view.getItemAtPosition(position);	
-		SelectedItem.sendUpdate((T)obj);
+        if (isEvent)
+        {
+            SelectedArgument arg = new SelectedArgument(SelectedChoice_event.getPropertyName(), position);
+            SelectedChoice_event.execute(arg);
+        }
+        else
+        {
+            SelectedChoice_prop.sendUpdate(position);
+        }
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0)
 	{
-        if (!itemSelectionEnabled)
+        if (isEvent == null)
         {
-            itemSelectionEnabled = true;
-            return;
+            isEvent = getBindingInventory().isCommand(SelectedChoice_event.getPath());
         }
-
-		SelectedItem.sendUpdate(null);	
+        if (isEvent)
+        {
+            SelectedChoice_event.execute(null);
+        }
+        else
+        {
+            SelectedChoice_prop.sendUpdate(-1);
+        }
 	}
 }
