@@ -38,34 +38,16 @@ public class ObservableCursor
     extends ProxyAdapter<Cursor>
     implements IObservableCursor,LoaderManager.LoaderCallbacks<Cursor>
 {
-    private final SparseArray<Object> extensionObjects = new SparseArray<Object>();
-    private final Class<?> extensionClass;
     private ICursorExtension cursorExtension;
 
     public ObservableCursor()
     {
-        extensionClass = null;
         cursorExtension = null;
     }
 
     public void setCursorExtension(ICursorExtension extension)
     {
         this.cursorExtension = extension;
-    }
-
-    @Override
-    public Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject)
-    {
-        if (internalCursorAdapter == null || !internalCursorAdapter.isCursorAdapterValid())
-            return null;
-
-        int index = extensionObjects.indexOfValue(extensionObject);
-        if (index < 0)
-            return null;
-
-        Cursor c = internalCursorAdapter.getCursor();
-        c.moveToPosition(index);
-        return c;
     }
 
     private CursorAdapter internalCursorAdapter;
@@ -76,6 +58,13 @@ public class ObservableCursor
     {
         this.cursorLoader = cursorLoader;
         return (T)this;
+    }
+
+    public Cursor getCursor()
+    {
+        if (internalCursorAdapter != null && internalCursorAdapter.isCursorAdapterValid())
+            return internalCursorAdapter.getCursor();
+        return null;
     }
 
     @Override
@@ -243,12 +232,6 @@ public class ObservableCursor
                 store.put(index, new cursorPropAccessor((Class<Object>)type, index));
             }
             return store.get(index);
-        }
-
-        @Override
-        public void close() {
-            super.close();
-            extensionObjects.clear();
         }
 
         public internalCursorWrapper(Cursor cursor)

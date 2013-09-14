@@ -28,6 +28,4 @@ public interface IObservableCursor
     {
         public abstract Loader<Cursor> onCreateLoader(Bundle arg);
     }
-
-    Cursor getCursorByExtensionAtPosition(IProxyObservableObject extensionObject);
 }
