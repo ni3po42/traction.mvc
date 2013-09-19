@@ -15,6 +15,9 @@
 
 package amvvm.implementations.observables;
 
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.util.SparseIntArray;
 
 import amvvm.interfaces.ICursorExtension;
@@ -23,7 +26,7 @@ import amvvm.interfaces.IProxyObservableObject;
 
 public class MultiSelectionCursor
     extends ObservableCursor
-    implements IMultiSelection
+    implements IMultiSelection<CursorKey>
 {
     private ISelection selectionHandler;
     private SparseIntArray keyTrack = new SparseIntArray();
@@ -37,13 +40,32 @@ public class MultiSelectionCursor
                 return;
 
             boolean selected = keyTrack.indexOfKey(selectedArgument.getPosition())<0;
+            int id;
             if (selected)
-                keyTrack.put(selectedArgument.getPosition(), selectedArgument.getPosition());
+            {
+                synchronized (this)
+                {
+                    Cursor c = getCursor();
+                    int pos = c.getPosition();
+                    int idIndex = c.getColumnIndex("_id");
+                    id = c.getInt(idIndex);
+                    keyTrack.put(selectedArgument.getPosition(), id);
+                    c.moveToPosition(pos);
+                }
+            }
             else
-                keyTrack.delete(selectedArgument.getPosition());
+            {
+                id = keyTrack.get(selectedArgument.getPosition());
+                 keyTrack.delete(selectedArgument.getPosition());
+            }
 
             if (selectionHandler != null)
-                selectionHandler.onSelection(selectedArgument.getPosition(), selected);
+            {
+                CursorKey key = new CursorKey();
+                key.setPosition(selectedArgument.getPosition());
+                key.setId(id);
+                selectionHandler.onSelection(key, selected);
+            }
             MultiSelectionCursor.this.notifyListener("SelectionCount");
         }
     };
@@ -57,9 +79,12 @@ public class MultiSelectionCursor
     public void forEach(IAction action) {
         if (action == null)
             return;
+        CursorKey key = new CursorKey();
         for(int i=0;i<keyTrack.size();i++)
         {
-            int key = keyTrack.keyAt(i);
+            int index = keyTrack.keyAt(i);
+            key.setPosition(index);
+            key.setId(keyTrack.get(index));
             if (!action.doAction(key))
                 break;
         }
@@ -67,5 +92,19 @@ public class MultiSelectionCursor
 
     public void setSelectionHandler(ISelection selectionHandler) {
         this.selectionHandler = selectionHandler;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        keyTrack.clear();
+        notifyListener("SelectionCount");
+        return super.onCreateLoader(i, bundle);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        keyTrack.clear();
+        notifyListener("SelectionCount");
+        super.onLoaderReset(cursorLoader);
     }
 }

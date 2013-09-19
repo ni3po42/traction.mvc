@@ -402,6 +402,16 @@ public class TestViewFactory extends InstrumentationTestCase
 
         }
 
+        @Override
+        public String getPathPrefix() {
+            return null;
+        }
+
+        @Override
+        public void setPathPrefix(String prefix) {
+
+        }
+
     }
     public static class vAA implements IViewBinding{
 
@@ -444,6 +454,16 @@ public class TestViewFactory extends InstrumentationTestCase
 
         }
 
+        @Override
+        public String getPathPrefix() {
+            return null;
+        }
+
+        @Override
+        public void setPathPrefix(String prefix) {
+
+        }
+
     }
     public static class customViewBinding implements IViewBinding{
 
@@ -483,6 +503,16 @@ public class TestViewFactory extends InstrumentationTestCase
 
         @Override
         public void markAsSynthetic(BindingInventory inventory) {
+
+        }
+
+        @Override
+        public String getPathPrefix() {
+            return null;
+        }
+
+        @Override
+        public void setPathPrefix(String prefix) {
 
         }
     }

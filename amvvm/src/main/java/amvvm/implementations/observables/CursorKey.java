@@ -13,24 +13,20 @@
    limitations under the License.
  */
 
-package amvvm.implementations.ui;
+package amvvm.implementations.observables;
 
-import amvvm.implementations.BindingInventory;
-import amvvm.interfaces.IViewBinding;
+import amvvm.interfaces.IMultiSelection;
 
-public class UIRelativeContext
-    extends UIProperty<Object>
+public class CursorKey
+    extends IMultiSelection.SelectionKey
 {
-    public UIRelativeContext(IViewBinding viewBinding, int pathAttribute) {
-        super(viewBinding, pathAttribute);
+    private int id;
+
+    public int getId() {
+        return id;
     }
 
-    public UIRelativeContext(IViewBinding viewBinding) {
-        super(viewBinding);
-    }
-
-    @Override
-    public BindingInventory getBindingInventory() {
-        return super.getBindingInventory().getParentInventory();
+    public void setId(int id) {
+        this.id = id;
     }
 }

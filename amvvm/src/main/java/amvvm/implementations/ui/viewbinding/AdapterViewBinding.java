@@ -44,19 +44,12 @@ import amvvm.R;
  */
 public class AdapterViewBinding<T>
 extends GenericViewBinding<AdapterView<BaseAdapter>>
-{	
+{
 	public final UIProperty<ProxyAdapter<T>> Items = new UIProperty<ProxyAdapter<T>>(this, R.styleable.AdapterView_Items);
-	//public final UIProperty<T> SelectedItem = new UIProperty<T>(this, R.styleable.AdapterView_SelectedItem);
 
 	//layout to use for child views
 	private int itemTemplateId = -1;
 	private BaseAdapter internalAdapter;
-
-	//local reference to the selected item
-	private T currentSelection;
-	private int currentIndex=-1;
-
-    private ProxyAdapter<T> adapterCache;
 
 	public AdapterViewBinding()
 	{
@@ -86,9 +79,7 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
                 if (!callSetChanged)
                     return;
 
-                //if (adapterCache != null)
-                //   adapterCache.clearProxyAdapter();
-                adapterCache = value;
+                Items.setTempValue(value);
 
                 if (adapter instanceof ProxyAdapter.IAdapterLayout)
                     ((ProxyAdapter.IAdapterLayout)adapter).setLayoutId(itemTemplateId);
@@ -97,7 +88,7 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
                 onAdapterChanged();
 
 			}
-			
+
 		});
 	}
 

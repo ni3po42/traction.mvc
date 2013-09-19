@@ -44,7 +44,7 @@ implements OnItemSelectedListener
     public final UIProperty<Integer> SelectedChoice_prop = new  UIProperty<Integer>(this, R.styleable.Spinner_SelectedChoice);
 
     private Boolean isEvent = null;
-    private int tempSelectionPosition = -1;
+    //private int tempSelectionPosition = -1;
 
     private OnItemSelectedListener nullListener = new OnItemSelectedListener()
     {
@@ -70,7 +70,7 @@ implements OnItemSelectedListener
         SelectedChoice_prop.setUIUpdateListener(new IUIElement.IUIUpdateListener<Integer>() {
             @Override
             public void onUpdate(Integer value) {
-                tempSelectionPosition = value;
+                SelectedChoice_prop.setTempValue(value);
                 onAdapterChanged();
             }
         });
@@ -96,7 +96,7 @@ implements OnItemSelectedListener
             return;
 
         getWidget().setOnItemSelectedListener(nullListener);
-        getWidget().setSelection(tempSelectionPosition);
+        getWidget().setSelection(SelectedChoice_prop.getTempValue());
     }
 
     @Override

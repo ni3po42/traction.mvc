@@ -22,6 +22,7 @@ import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.widget.NumberPicker;
 import amvvm.R;
+import amvvm.util.Log;
 
 /**
  * Defines ui elements for binding to a number picker.
@@ -41,10 +42,7 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 	public final UIProperty<Integer> MinValue = new UIProperty<Integer>(this,R.styleable.NumberPicker_MinValue);
 	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, R.styleable.NumberPicker_MaxValue);
 	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, R.styleable.NumberPicker_Value);
-	
-	//temp cache for the value
-	private Integer tempValue;
-		
+
 	public NumberPickerBinding()
 	{
 		//because there is no guarantee of the order the updates are called, we can't 
@@ -52,75 +50,83 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 		//the values get in at the right time
 		//Value is dependent on Max and Min, but max and min are independent of each other and neither are dependent on the value.
 		MinValue.setUIUpdateListener(new IUIUpdateListener<Integer>()
-		{			
+		{
 			@Override
 			public void onUpdate(Integer value)
 			{
 				if (getWidget() == null || value == null)
 					return;
-				
-				getWidget().setMinValue(value);
-				
-				//check to see if the tempValue was previously set, and if so and it lays within the range...
-				if (tempValue != null && tempValue<= getWidget().getMaxValue() && tempValue >= getWidget().getMinValue())
-					synchronized(NumberPickerBinding.this)
-					{
-						//set the value and clear the temp value
-						getWidget().setValue(tempValue);
-						tempValue = null;
-					}
-				getWidget().requestLayout();				
+
+
+			    getWidget().setMinValue(value);
+
+                synchronized(NumberPickerBinding.this)
+                {
+                    //check to see if the tempValue was previously set, and if so and it lays within the range...
+                    Integer tempValue = Value.getTempValue();
+                    if (tempValue != null && tempValue<= getWidget().getMaxValue() && tempValue >= getWidget().getMinValue() && tempValue != getWidget().getValue())
+                    {
+                        //set the value and clear the temp value
+                        getWidget().setValue(tempValue);
+                        Value.setTempValue(null);
+                    }
+                }
+				//getWidget().requestLayout();
 			}
 		});
-		
+
 		MaxValue.setUIUpdateListener(new IUIUpdateListener<Integer>()
-		{			
+		{
 			@Override
 			public void onUpdate(Integer value)
 			{
 				if (getWidget() == null || value == null)
 					return;
-				
-				getWidget().setMaxValue(value);	
-				//check to see if the tempValue was previously set, and if so and it lays within the range...
-				if (tempValue != null && tempValue<= getWidget().getMaxValue() && tempValue >= getWidget().getMinValue())
-					synchronized(NumberPickerBinding.this)
-					{
-						//set the value and clear the temp value
-						getWidget().setValue(tempValue);
-						tempValue = null;
-					}
-				getWidget().requestLayout();
-				
+
+				getWidget().setMaxValue(value);
+
+                synchronized(NumberPickerBinding.this)
+                {
+                    //check to see if the tempValue was previously set, and if so and it lays within the range...
+                    Integer tempValue = Value.getTempValue();
+                    if (tempValue != null && tempValue<= getWidget().getMaxValue() && tempValue >= getWidget().getMinValue())
+                    {
+                        //set the value and clear the temp value
+                        getWidget().setValue(tempValue);
+                        Value.setTempValue(null);
+                    }
+                }
+				//getWidget().requestLayout();
+
 			}
 		});
-		
+
 		Value.setUIUpdateListener(new IUIUpdateListener<Integer>()
-		{			
+		{
 			@Override
 			public void onUpdate(Integer value)
 			{
 				if (getWidget() == null || value == null)
 					return;
-										
-				if (getWidget().getValue() == value)
-					return;
-				
-				//if value is within the mim max range...
-				if(value <= getWidget().getMaxValue() && value >= getWidget().getMinValue())
-				{
-					//set value and require layout update.
-					getWidget().setValue(value);
-					getWidget().requestLayout();
+
+                synchronized(NumberPickerBinding.this)
+                {
+                    //if value is within the mim max range...
+                    if(value <= getWidget().getMaxValue() && value >= getWidget().getMinValue())
+                    {
+                        //set value and require layout update.
+                        getWidget().setValue(value);
+                        getWidget().requestLayout();
+                    }
+                    //..but if the value lays outside the range...
+                    else
+                    {
+
+                        //don't update the value. One, it doens't make sense, and two, it could mean we've updated the min or max as well,
+                        //and they are being updated out of order, so save the integer to be used when the min/max values update.
+                        Value.setTempValue(value);
+                    }
 				}
-				//..but if the value lays outside the range...
-				else
-					synchronized(NumberPickerBinding.this)
-					{
-						//don't update the value. One, it doens't make sense, and two, it could mean we've updated the min or max as well,
-						//and they are being updated out of order, so save the integer to be used when the min/max values update.
-						tempValue = value;
-					}
 			}
 		});
 			
@@ -132,8 +138,8 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 	{				
 		if (oldVal == newVal)
 			return;
-		
-		Value.sendUpdate(newVal);
+        //Log.i("value changed to "+newVal);
+        Value.sendUpdate(newVal);
 	}
 	@Override
 	public void onScrollStateChange(NumberPicker view, int scrollState)
@@ -159,6 +165,7 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 		MinValue.initialize(ta);
 		MaxValue.initialize(ta);
 		Value.initialize(ta);
+
 		ta.recycle();
 	}
 	

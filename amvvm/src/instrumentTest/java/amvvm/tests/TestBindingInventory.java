@@ -65,8 +65,8 @@ public class TestBindingInventory extends TestCase
 		obj.getObj().setI(3141);//reaction should fire I
 		
 		//assert		
-		verify(uiprop1, times(2)).recieveUpdate(eq(42));
-		verify(uiprop2).recieveUpdate(eq(3141));
+		verify(uiprop1, times(2)).receiveUpdate(eq(42));
+		verify(uiprop2).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanWireReactionPaths_depth2()
@@ -91,8 +91,8 @@ public class TestBindingInventory extends TestCase
 		obj.getObj().getObj().setI(3141);//reaction should fire I
 		
 		//assert		
-		verify(uiprop1, times(2)).recieveUpdate(eq(42));
-		verify(uiprop2).recieveUpdate(eq(3141));
+		verify(uiprop1, times(2)).receiveUpdate(eq(42));
+		verify(uiprop2).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanFireCommand()
@@ -113,7 +113,7 @@ public class TestBindingInventory extends TestCase
 		inv.fireCommand(path, arg);
 		
 		//assert
-		verify(uiprop).recieveUpdate(eq(3141));		
+		verify(uiprop).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanNotFireCommand()
@@ -134,7 +134,7 @@ public class TestBindingInventory extends TestCase
 		inv.fireCommand(path, arg);
 		
 		//assert
-		verify(uiprop, never()).recieveUpdate(eq(3141));		
+		verify(uiprop, never()).receiveUpdate(eq(3141));
 	}
 	
 //	public void testCanSendUpdateThroughUIElement()
@@ -186,7 +186,7 @@ public class TestBindingInventory extends TestCase
 		context.setI(3141);
 		
 		//assert
-		verify(uiprop).recieveUpdate(eq(3141));				
+		verify(uiprop).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanBindObjectTrackerElements_1Deep_NullByDefault()
@@ -209,7 +209,7 @@ public class TestBindingInventory extends TestCase
 		context.setObj(newBiObj);//add new sub object with I already set
 		
 		//assert
-		verify(uiprop).recieveUpdate(eq(3141));//still expect uielement to recieve I update
+		verify(uiprop).receiveUpdate(eq(3141));//still expect uielement to recieve I update
 	}
 		
 	public void testCanBindObjectTrackerElements_1Deep_NotNullByDefault()
@@ -229,7 +229,7 @@ public class TestBindingInventory extends TestCase
 		context.getObj().setI(3141);
 		
 		//assert
-		verify(uiprop).recieveUpdate(eq(3141));		
+		verify(uiprop).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanBindObjectTrackerElements_2Deep_NotNullByDefault()
@@ -250,7 +250,7 @@ public class TestBindingInventory extends TestCase
 		context.getObj().getObj().setI(3141);
 		
 		//assert
-		verify(uiprop).recieveUpdate(eq(3141));		
+		verify(uiprop).receiveUpdate(eq(3141));
 	}
 	
 	public void testCanBindObjectTrackerElements_multipleProps_NotNullByDefault()
@@ -284,9 +284,9 @@ public class TestBindingInventory extends TestCase
 		context.getObj().getObj().setI(3003);
 		
 		//assert
-		verify(uiprop1).recieveUpdate(eq(1001));		
-		verify(uiprop2).recieveUpdate(eq(2002));
-		verify(uiprop3).recieveUpdate(eq(3003));
+		verify(uiprop1).receiveUpdate(eq(1001));
+		verify(uiprop2).receiveUpdate(eq(2002));
+		verify(uiprop3).receiveUpdate(eq(3003));
 	}
 	
 	public static class biObj

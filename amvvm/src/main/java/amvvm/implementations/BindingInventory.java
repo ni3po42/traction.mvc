@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import android.app.FragmentManager;
 import android.util.Property;
 
+import amvvm.R;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableList;
@@ -33,7 +34,6 @@ import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IObjectListener;
-import amvvm.interfaces.IObjectListener.EventArg;
 
 /**
  * Tracks all ui element and the property paths to the model's data, also delegates to and from the view and the model/view-model.
@@ -49,7 +49,7 @@ public class BindingInventory
 	private final static Pattern pathPattern = Pattern.compile("(\\\\|[\\.]*)(.+)");
 	private final static Pattern split = Pattern.compile("\\.");
 	private final static Pattern splitIndex = Pattern.compile("([^@]+)(@(\\d+)\\[(.+)\\])?");
-	
+
 	//used for determining a range of paths to get from the inventory. Useful for getting all properties down a 
 	//specific branch
 	private final static String pathTerminator = "{";
@@ -84,7 +84,7 @@ public class BindingInventory
 			sendUpdate(fragmentMapping.get(i).path, fragment);	
 		}*/
 	}
-		
+
 	private String[] tempStringArray = new String[0];
 
 	protected void onContextSignaled(String path)
@@ -96,7 +96,7 @@ public class BindingInventory
 
 		if (path == null || !map.containsKey(path))
 		{
-			path = (path == null) ? "" : path + ".";
+            path = (path == null) ? "" : path + ".";
 			
 			NavigableMap<String, PathBinding> subMap = map.subMap(path, false, path+pathTerminator, true);
 
@@ -111,7 +111,7 @@ public class BindingInventory
 									
 				for(int j=0;j<elements.size();j++)
 				{
-					elements.get(j).recieveUpdate(subValue);
+					elements.get(j).receiveUpdate(subValue);
 				}
 			}			
 		}
@@ -120,7 +120,7 @@ public class BindingInventory
 			ArrayList<IUIElement<?>> elements = map.get(path).getUIElements();
 			for(int i=0;i<elements.size();i++)
 			{
-				elements.get(i).recieveUpdate(value);
+				elements.get(i).receiveUpdate(value);
 			}
 		}
 
@@ -233,20 +233,21 @@ public class BindingInventory
 
 	public void track (IUIElement<?> element)
 	{
-		if (element.getPath() == null)
+        String path = element.getPath();
+		if (path == null)
 			return;//no path, no track.
 		
-		if (!map.containsKey(element.getPath()))
+		if (!map.containsKey(path))
 		{
-			map.put(element.getPath(), new PathBinding());
+			map.put(path, new PathBinding());
 		}
-		PathBinding p = map.get(element.getPath());
+		PathBinding p = map.get(path);
 		p.addUIElement(element);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void sendUpdate(String path, Object value)
-	{		
+	{
 		if (path == null || path.equals("."))
 			return;
 		
@@ -334,7 +335,8 @@ public class BindingInventory
 	
 	public void sendUpdateFromUIElement(IUIElement<?> element, Object value)
 	{
-		sendUpdate(element.getPath(), value);
+        String path = element.getPath();
+		sendUpdate(path, value);
 	}
 	
 	private BindingInventory getInventoryByMatchedPattern(Matcher matches)
@@ -354,8 +356,8 @@ public class BindingInventory
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Object dereferenceValue(String path)
-	{		
+    public Object dereferenceValue(String path)
+    {
 		if (path == null)
 			return null;
 		
@@ -421,10 +423,9 @@ public class BindingInventory
 			 return((IProxyObservableObject)obj).getProxyObservableObject().getSource();
 		return obj;
 	}
-	
 
 	@SuppressWarnings("unchecked")
-	public Class<?> dereferencePropertyType(String path)
+    public Class<?> dereferencePropertyType(String path)
 	{
         if (path == null)
             return null;

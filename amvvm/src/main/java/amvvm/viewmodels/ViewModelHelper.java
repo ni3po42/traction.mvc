@@ -83,10 +83,15 @@ implements IAccessibleFragmentManager
 		@Override
 		public void onEvent(EventArg arg)
 		{
-			getActivity().invalidateOptionsMenu();
+            invalidateMenu();
 		}		
 	};
-	
+
+    protected void invalidateMenu()
+    {
+        getActivity().invalidateOptionsMenu();
+    }
+
 	/**
 	 * runnable used to force pending fragment transaction to execute immediately
 	 */
@@ -273,7 +278,7 @@ implements IAccessibleFragmentManager
 	public void setMenuLayoutId(int i)
 	{
 		menuLayoutId = i;
-		getActivity().invalidateOptionsMenu();
+        invalidateMenu();
 	}
 
 	public Object tweakServiceCall(String name, Object obj)

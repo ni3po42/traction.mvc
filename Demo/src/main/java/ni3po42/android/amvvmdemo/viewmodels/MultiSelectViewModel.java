@@ -42,10 +42,10 @@ public class MultiSelectViewModel extends ViewModel
         for(int i=0;i<12;i++)
             Items.add(new SelectableItem());
 
-		Items.setSelectionHandler(new IMultiSelection.ISelection() {
+		Items.setSelectionHandler(new IMultiSelection.ISelection<IMultiSelection.SelectionKey>() {
             @Override
-            public void onSelection(int arg, boolean selected) {
-                Items.get(arg).setSelected(selected);
+            public void onSelection(IMultiSelection.SelectionKey arg, boolean selected) {
+                Items.get(arg.getPosition()).setSelected(selected);
             }
         });
 	}

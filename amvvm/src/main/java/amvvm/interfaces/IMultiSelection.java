@@ -15,18 +15,32 @@
 
 package amvvm.interfaces;
 
-public interface IMultiSelection
+public interface IMultiSelection<TKey extends IMultiSelection.SelectionKey>
 {
     int getSelectionCount();
     void forEach(IAction action);
 
-    public interface IAction
+    public interface IAction<TKey extends IMultiSelection.SelectionKey>
     {
-        boolean doAction(int arg);
+        boolean doAction(TKey arg);
     }
 
-    public interface ISelection
+    public interface ISelection<TKey extends IMultiSelection.SelectionKey>
     {
-        void onSelection(int arg, boolean selected);
+        void onSelection(TKey arg, boolean selected);
     }
+
+    public class SelectionKey
+    {
+        private int position;
+
+        public int getPosition() {
+            return position;
+        }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+    }
+
 }

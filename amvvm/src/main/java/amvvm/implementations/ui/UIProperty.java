@@ -35,6 +35,8 @@ public class UIProperty<T>
 implements IUIElement<T>
 {				
 	protected String path;
+    protected T tempValue;
+
 	private IUIElement.IUIUpdateListener<T> updateListener;		
 	
 	private boolean _isUpdating;
@@ -64,44 +66,7 @@ implements IUIElement<T>
 	
 	@SuppressWarnings("unused")
 	private UIProperty(){}
-		
-	/**
-	 * When called, updates view with passed data.
-	 */
-	@SuppressWarnings("unchecked")
-	public void recieveUpdate(final Object value)
-	{
-		if (updateListener == null)
-			return;
-		
-		synchronized(this)
-		{	
-			//is true is 'disableRecieveUpdates' has been called before 'enablRecieveUpdates'
-			//This is also the case if UIProperty has called the 'sendUpdate' method
-			if (isUpdating())
-				return;
-			
-			//if no handler, then just run on current thread
-			if (parentViewBinding.getUIHandler() == null)
-			{
-				updateListener.onUpdate((T)value);
-			}
-			else
-			{
-				//call the update listener on the UI thread. Needs to be on the UI thread because it is most
-				//certainly updating something on the UI
-                parentViewBinding.getUIHandler().tryPostImmediatelyToUIThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        updateListener.onUpdate((T) value);
-                    }
-                });
-			}
-		}				
-	}
-	
+
 	/**
 	 * Initiates the BindingInventory to send data to the model/view-model
 	 */
@@ -110,9 +75,9 @@ implements IUIElement<T>
 		if (path == null)
 			return;
 		
-		disableRecieveUpdates();
+		disableReceiveUpdates();
         getBindingInventory().sendUpdateFromUIElement(this, value);
-		enableRecieveUpdates();		
+		enableReceiveUpdates();
 	}
 
     @Override
@@ -129,6 +94,18 @@ implements IUIElement<T>
 	{
 		return path;
 	}
+
+    @Override
+    public T getTempValue()
+    {
+        return tempValue;
+    }
+
+    @Override
+    public void setTempValue(T value)
+    {
+        this.tempValue = value;
+    }
 
     @Override
     public String getPropertyName()
@@ -153,42 +130,83 @@ implements IUIElement<T>
 	{
 		this.updateListener = listener;
 	}
-	
-	/**
-	 * disables the ui element from receiving data from the model/view-model
-	 */
-	@Override
-	public void disableRecieveUpdates()
-	{
-		synchronized(this)
-		{	
-			_isUpdating = true;
-		}
-	}
-	
-	/**
-	 * re-enables the ui element to receive data from the model/view-model
-	 */
-	@Override
-	public void enableRecieveUpdates()
-	{
-		synchronized(this)
-		{	
-			_isUpdating = false;
-		}
-	}
+
+    @Override
+    public void receiveUpdate(final Object value)
+    {
+        if (updateListener == null)
+            return;
+
+        synchronized(this)
+        {
+            //is true is 'disableReceiveUpdates' has been called before 'enablRecieveUpdates'
+            //This is also the case if UIProperty has called the 'sendUpdate' method
+            if (isUpdating())
+                return;
+
+            //if no handler, then just run on current thread
+            if (getUIHandler() == null)
+            {
+                updateListener.onUpdate((T)value);
+            }
+            else
+            {
+                //call the update listener on the UI thread. Needs to be on the UI thread because it is most
+                //certainly updating something on the UI
+                getUIHandler().tryPostImmediatelyToUIThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        updateListener.onUpdate((T) value);
+                    }
+                });
+            }
+        }
+    }
 
 	@Override
 	public void initialize(IAttributeGroup attributeGroup)
 	{
 		if (pathAttribute >= 0 && attributeGroup != null)
-			path = attributeGroup.getString(pathAttribute);
+        {
+			String tempPath = attributeGroup.getString(pathAttribute);
+            if (parentViewBinding.getPathPrefix() == null)
+                path = tempPath;
+            else if (tempPath != null)
+                path = parentViewBinding.getPathPrefix() + "." + tempPath;
+            else
+                path = tempPath;
+        }
         getBindingInventory().track(this);
 	}
 
-	@Override
+    @Override
+    public void disableReceiveUpdates()
+    {
+        synchronized(this)
+        {
+            _isUpdating = true;
+        }
+    }
+
+    @Override
+    public void enableReceiveUpdates()
+    {
+        synchronized(this)
+        {
+            _isUpdating = false;
+        }
+    }
+
+    @Override
 	public BindingInventory getBindingInventory()
 	{
 		return parentViewBinding.getBindingInventory();
-	}	
+	}
+
+    protected UIHandler getUIHandler()
+    {
+        return parentViewBinding.getUIHandler();
+    }
 }

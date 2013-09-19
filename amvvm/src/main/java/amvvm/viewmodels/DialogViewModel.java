@@ -25,10 +25,14 @@ import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IViewModel;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Property;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -68,9 +72,49 @@ implements IViewModel, IObservableObject
 			//hijack 'this', makes helper think 'this' is the dialog fragment			
 			return DialogViewModel.this;
 		};
-	};
 
-	@Override
+        @Override
+        protected void invalidateMenu()
+        {
+            if (DialogViewModel.this.getDialog() != null)
+                DialogViewModel.this.getDialog().invalidateOptionsMenu();
+        }
+    };
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
+        tempDialog = new Dialog(getActivity(), getTheme())
+        {
+            @Override
+            public boolean onCreateOptionsMenu(Menu menu)
+            {
+                return helper.onCreateOptionsMenu(menu);
+            }
+        };
+        if (helper.getMenuLayoutId() > 0)
+            helper.invalidateMenu();
+        return tempDialog;
+    }
+
+    protected Dialog tempDialog;
+
+    @Override
+    public Dialog getDialog()
+    {
+        Dialog d = super.getDialog();
+        if (d != null)
+        {
+            tempDialog = null;
+            return d;
+        }
+        else
+        {
+            return tempDialog;
+        }
+    }
+
+    @Override
 	public IObservableObject getProxyObservableObject()
 	{
 		return helper;
@@ -91,21 +135,21 @@ implements IViewModel, IObservableObject
 	@Override
 	public void setMenuLayout(int id)
 	{
-		//helper.setMenuLayoutId(id);
-		//supported yet...
+        setHasOptionsMenu(id > 0);
+
+        helper.setMenuLayoutId(id);
 	}
 
     @Override
     public <T extends IViewModel> T getViewModel(String memberName)
     {
-        //return helper.getViewModel(memberName);
-        return null;
+        return helper.getViewModel(memberName);
     }
 
     @Override
     public <T extends IViewModel> void setViewModel(String memberName, T viewModel)
     {
-        //helper.<T>setViewModel(memberName, viewModel);
+        helper.<T>setViewModel(memberName, viewModel);
     }
 		
 	@Override

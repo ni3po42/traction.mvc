@@ -151,4 +151,14 @@ implements MenuItem.OnMenuItemClickListener, MenuItem.OnActionExpandListener, IV
 
     }
 
+    @Override
+    public String getPathPrefix() {
+        return null;
+    }
+
+    @Override
+    public void setPathPrefix(String prefix) {
+        //not used
+    }
+
 }

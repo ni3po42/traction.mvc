@@ -153,6 +153,16 @@ public class SwipeEntryView
     }
 
     @Override
+    public String getPathPrefix() {
+        return helper.getPrefix();
+    }
+
+    @Override
+    public void setPathPrefix(String prefix) {
+        helper.setPrefix(prefix);
+    }
+
+    @Override
     public void onLeftSwipe()
     {
         Boolean value = Active.dereferenceValue();

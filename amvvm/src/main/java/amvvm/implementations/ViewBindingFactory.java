@@ -30,6 +30,7 @@ public class ViewBindingFactory
     //lookup table to map view types to view-binding types
     private Map<Class<?>, String> bindingConfig = new Hashtable<Class<?>, String>();
 
+
     //cache of keys for the bindingConfig map
     private Class<?>[] bindingKeys;
 
@@ -52,7 +53,7 @@ public class ViewBindingFactory
             addBindingConfig("android.widget.CompoundButton", packageName+".CompoundButtonBinding");
             addBindingConfig("android.widget.Button", packageName+".ButtonBinding");
             addBindingConfig("android.widget.CalendarView", packageName+".CalendarViewBinding");
-            addBindingConfig("android.widget.DatePicker", packageName+".DatePickerBinding");
+            addBindingConfig("android.widget.DatePicker", packageName + ".DatePickerBinding");
         }
         catch(ClassNotFoundException ex)
         {
@@ -66,7 +67,6 @@ public class ViewBindingFactory
         bindingConfig.put(Class.forName(viewClass), viewBindingClass);
         bindingKeys = null;
     }
-
 
     /**
      * Injects a 'synthetic' viewholder into the view

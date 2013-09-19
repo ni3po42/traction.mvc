@@ -21,6 +21,7 @@ import java.util.Map;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
@@ -139,12 +140,21 @@ implements Factory2
         int flags = IViewBinding.Flags.NO_FLAGS;
         flags |= ignoreChildren ? IViewBinding.Flags.IGNORE_CHILDREN : IViewBinding.Flags.NO_FLAGS;
         flags |= isRoot ? IViewBinding.Flags.IS_ROOT : IViewBinding.Flags.NO_FLAGS;
-        flags |= hasRelativeContext ? (IViewBinding.Flags.HAS_RELATIVE_CONTEXT | IViewBinding.Flags.IS_ROOT): IViewBinding.Flags.NO_FLAGS;
+        flags |= hasRelativeContext ? (IViewBinding.Flags.HAS_RELATIVE_CONTEXT): IViewBinding.Flags.NO_FLAGS;
 
         //grab custom binding type, if available
          String bindingType = ta.getString(R.styleable.View_BindingType);
-         
- 		ta.recycle();
+
+        String prefix = (parentViewBinding == null ? null : parentViewBinding.getPathPrefix());
+        if (hasRelativeContext)
+        {
+            if (prefix == null)
+                prefix = ta.getString(R.styleable.View_RelativeContext);
+            else
+                prefix = prefix + "." + ta.getString(R.styleable.View_RelativeContext);
+        }
+
+        ta.recycle();
 
         IViewBinding newViewBinding = null;
          //if view implements IViewBinding and no custom type is given...
@@ -160,6 +170,9 @@ implements Factory2
          {
              BindingInventory inv = (parentViewBinding != null) ? parentViewBinding.getBindingInventory() : null;
 
+             /*if (isRoot && hasRelativeContext)
+                 inv = new BindingInventory(new BindingInventory(inv));
+             else*/
              if (isRoot)
                  inv = new BindingInventory(inv);
 
@@ -168,6 +181,7 @@ implements Factory2
 
             if (inv != null)
             {
+                newViewBinding.setPathPrefix(prefix);
                 view.setTag(R.id.amvvm_viewholder, newViewBinding);
                 newViewBinding.initialise(view, attributeBridge, handler, inv, flags);
             }

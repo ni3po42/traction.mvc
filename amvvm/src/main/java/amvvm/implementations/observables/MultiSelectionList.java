@@ -17,15 +17,15 @@ package amvvm.implementations.observables;
 
 import android.util.SparseIntArray;
 
+import java.util.Collection;
 import java.util.List;
 
 import amvvm.interfaces.IMultiSelection;
 
 public class MultiSelectionList<T>
     extends ObservableList<T>
-    implements IMultiSelection
+    implements IMultiSelection<IMultiSelection.SelectionKey>
 {
-
     private ISelection selectionHandler;
 
     private SparseIntArray indexTrack = new SparseIntArray();
@@ -50,7 +50,11 @@ public class MultiSelectionList<T>
                 indexTrack.delete(selectedArgument.getPosition());
 
             if (selectionHandler != null)
-                selectionHandler.onSelection(selectedArgument.getPosition(), selected);
+            {
+                SelectionKey key = new SelectionKey();
+                key.setPosition(selectedArgument.getPosition());
+                selectionHandler.onSelection(key, selected);
+            }
 
             MultiSelectionList.this.notifyListener("SelectionCount");
         }
@@ -66,12 +70,67 @@ public class MultiSelectionList<T>
     {
         if (action == null)
             return;
+        SelectionKey key = new SelectionKey();
         for(int i=0;i<indexTrack.size();i++)
         {
             int index = indexTrack.keyAt(i);
-            if (!action.doAction(index))
+            key.setPosition(index);
+            if (!action.doAction(key))
                 break;
         }
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> arg0) {
+        if (super.removeAll(arg0))
+        {
+            indexTrack.clear();
+            notifyListener("SelectionCount");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object arg0) {
+        int index = indexOf(arg0);
+        if (super.remove(arg0))
+        {
+            indexTrack.delete(index);
+            notifyListener("SelectionCount");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public T remove(int location)
+    {
+        T obj = super.remove(location);
+        if (obj != null)
+        {
+            indexTrack.delete(location);
+            notifyListener("SelectionCount");
+        }
+        return obj;
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        indexTrack.clear();
+        notifyListener("SelectionCount");
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> arg0) {
+        if(super.retainAll(arg0))
+        {
+            indexTrack.clear();
+            notifyListener("SelectionCount");
+            return true;
+        }
+        return false;
     }
 
     public void setSelectionHandler(ISelection selectionHandler) {

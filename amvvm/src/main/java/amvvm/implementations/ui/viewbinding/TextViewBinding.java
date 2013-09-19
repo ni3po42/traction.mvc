@@ -47,8 +47,7 @@ implements IViewBinding, TextWatcher
 	public final UIProperty<Object> Format = new UIProperty<Object>(this, R.styleable.TextView_Format);
 	
 	private boolean initFormatSet = false;
-	private Object currentFormat; 	
-	
+
 	public TextViewBinding()
 	{
 		//since we can't be sure of the order the elements will update, we must do additional checks to ensure
@@ -58,16 +57,16 @@ implements IViewBinding, TextWatcher
 			@Override
 			public void onUpdate(Object value)
 			{
-				if (value != currentFormat)
+				if (value != Format.getTempValue())
 				{
 					//let binding know the format has been set.
 					initFormatSet = true;
-					
-					currentFormat = value;
+
+                    Format.setTempValue(value);
 					Object obj = Text.dereferenceValue();
 					
 					//force an update on the Text element
-					Text.recieveUpdate(obj);
+					Text.receiveUpdate(obj);
 				}
 			}
 		});
@@ -95,20 +94,20 @@ implements IViewBinding, TextWatcher
 					if (!initFormatSet && Format.getPath() != null)
 					{
 						//..grab that format
-						currentFormat = Format.dereferenceValue();
+                        Format.setTempValue(Format.dereferenceValue());
 					}
 					
 					//if still no format, then just use the value as is.
-					if (currentFormat == null)					
+					if (Format.getTempValue() == null)
 						getWidget().setText(value.toString());
 					else
 					//..otherwise
 					{
 						//if format is a resource..
-						if (currentFormat instanceof Integer || currentFormat.getClass().equals(int.class))
+						if (Format.getTempValue() instanceof Integer || Format.getTempValue().getClass().equals(int.class))
 						{
 							//..get as a string...
-							String format = getWidget().getContext().getResources().getString((Integer)currentFormat);
+							String format = getWidget().getContext().getResources().getString((Integer)Format.getTempValue());
 							if (format == null)
 								getWidget().setText(value.toString());
 							else
@@ -116,10 +115,10 @@ implements IViewBinding, TextWatcher
 								getWidget().setText(String.format(format.toString(), value));
 						}
 						//.. but if it's a string
-						else if (currentFormat instanceof String)
+						else if (Format.getTempValue() instanceof String)
 						{
 							//apply format
-							getWidget().setText(String.format(currentFormat.toString(), value));
+							getWidget().setText(String.format(Format.getTempValue().toString(), value));
 						}
 					}
 					//restore editview listener now

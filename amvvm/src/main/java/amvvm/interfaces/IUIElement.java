@@ -35,6 +35,18 @@ public interface IUIElement<T>
 	public String getPath();
 
     /**
+     * Cache a temporary value that can be used later.
+     * @return
+     */
+    public T getTempValue();
+
+    /**
+     * Cache a temporary value that can be used later.
+     * @param value
+     */
+    public void setTempValue(T value);
+
+    /**
      * returns the last chain of the property path to model/view-model data
      * @return
      */
@@ -56,7 +68,7 @@ public interface IUIElement<T>
 	 * Sends data to the ui element. Expects the IUIUpdateListener to be called 
 	 * @param value
 	 */
-	public void recieveUpdate(final Object value);
+	public void receiveUpdate(final Object value);
 	
 	/**
 	 * Sends data from ui back to model/view-model
@@ -78,12 +90,12 @@ public interface IUIElement<T>
 	/**
 	 * turns off ability to receive updates from model/view-model
 	 */
-	public void disableRecieveUpdates();
+	public void disableReceiveUpdates();
 	
 	/**
 	 * turns on ability to receive updates from model/view-model
 	 */
-	public void enableRecieveUpdates();
+	public void enableReceiveUpdates();
 	
 	/**
 	 * gets the binding inventory the ui element is associated to

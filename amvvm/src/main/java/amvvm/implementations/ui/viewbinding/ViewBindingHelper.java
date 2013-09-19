@@ -15,6 +15,8 @@ public class ViewBindingHelper
     private BindingInventory bindingInventory;
     private UIHandler uiHandler;
 
+    private String prefix;
+
     private ViewBindingFactory factory = new ViewBindingFactory();
 
     private int bindingFlags = IViewBinding.Flags.NO_FLAGS;
@@ -66,5 +68,13 @@ public class ViewBindingHelper
 
     public void setBindingFlags(int bindingFlags) {
         this.bindingFlags = bindingFlags;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 }
