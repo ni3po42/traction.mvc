@@ -15,18 +15,7 @@
 
 package amvvm.interfaces;
 
-import android.app.FragmentManager;
-
-import amvvm.implementations.BindingInventory;
-
-/**
- * Access to the FragmentManager is required to tracking fragments in layout files and syncing them to properties.
- * This allows object to accept a BindingInvetory and callit's it's link fragments call and pass it's instance of FragmentManager
- * @author Tim Stratton
- *
- */
-public interface IAccessibleFragmentManager
+public interface IProxyViewModel
 {
-	void linkFragments(BindingInventory inventory);
-    FragmentManager getFragmentManager();
+    IViewModel getProxyViewModel();
 }

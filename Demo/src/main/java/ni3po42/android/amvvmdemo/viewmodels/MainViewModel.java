@@ -62,7 +62,6 @@ public class MainViewModel extends ViewModel
 		ViewModelChoices.add(new DemoViewModelChoice(MultiSelectViewModel.class, "Multi-selection", "Gives an example on how multi-selection could work in AMVVM."));
         ViewModelChoices.add(new DemoViewModelChoice(EntryViewModel.class, "Swipe List", "A custom view is built that binds data and provides a catchy (ok, at least not boring) UX. Swipe items to the left to activate/de-active."));
         ViewModelChoices.add(new DemoViewModelChoice(CalculatorViewModel.class, "Calculator", "A simple calculator. Lots of buttons; simple view model."));
-
         ViewModelChoices.add(new DemoViewModelChoice(BridgeOfDeathViewModel.class, "The Bridge of Death", "STOP! Who would cross the Bridge of Death must answer me these questions three; Ere the other side he see. Cursors and Generic Bindings!"));
         ViewModelChoices.add(new DemoViewModelChoice(RelativeContextViewModel.class, "Relative Context", "Shows how relative context works."));
 		
@@ -81,10 +80,7 @@ public class MainViewModel extends ViewModel
         {
             viewModel = currentChoice.getViewModelType().newInstance();
         }
-        catch (java.lang.InstantiationException e)
-        {
-        }
-        catch (IllegalAccessException e)
+        catch (Throwable e)
         {
         }
         if (viewModel == null)
@@ -93,15 +89,13 @@ public class MainViewModel extends ViewModel
         FragmentTransaction trans = getFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .replace(R.id.main_view_id, viewModel);
-        if (!hasMultiViewModelSupport())
+        if (hasNoMultiViewModelSupport())
             trans.addToBackStack(null);
         trans.commit();
     }
 
-    private boolean hasMultiViewModelSupport()
+    private boolean hasNoMultiViewModelSupport()
     {
-        if (getArguments() != null && getArguments().containsKey(NoMultiViewModelSupport))
-            return getArguments().getBoolean(NoMultiViewModelSupport, true);
-        return true;
+        return getArguments() == null ? false : getArguments().getBoolean(NoMultiViewModelSupport, false);
     }
 }

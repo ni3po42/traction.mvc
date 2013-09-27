@@ -18,6 +18,7 @@ package amvvm.implementations.ui;
 import android.content.res.TypedArray;
 
 import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
 import amvvm.interfaces.IUIElement;
@@ -41,19 +42,21 @@ implements IUIElement<T>
 	
 	private boolean _isUpdating;
 	
-	private int pathAttribute;
-	private IViewBinding parentViewBinding;
+	private int pathAttribute = -1;
+	private final IViewBinding parentViewBinding;
 
-	public UIProperty(IViewBinding viewBinding, int pathAttribute)
+    @SuppressWarnings("unused")
+    private UIProperty(){parentViewBinding = null;}
+
+	public UIProperty(IProxyViewBinding viewBinding, int pathAttribute)
 	{
+        this.parentViewBinding = viewBinding.getProxyViewBinding();
 		this.pathAttribute = pathAttribute;
-        this.parentViewBinding = viewBinding;
 	}
 	
-	public UIProperty(IViewBinding viewBinding)
+	public UIProperty(IProxyViewBinding viewBinding)
 	{
-		this.pathAttribute = -1;
-        this.parentViewBinding = viewBinding;
+        this.parentViewBinding = viewBinding.getProxyViewBinding();
 	}
 	
 	/**
@@ -63,9 +66,6 @@ implements IUIElement<T>
 	{
 		return _isUpdating;
 	}
-	
-	@SuppressWarnings("unused")
-	private UIProperty(){}
 
 	/**
 	 * Initiates the BindingInventory to send data to the model/view-model
@@ -171,9 +171,9 @@ implements IUIElement<T>
 		if (pathAttribute >= 0 && attributeGroup != null)
         {
 			String tempPath = attributeGroup.getString(pathAttribute);
-            if (parentViewBinding.getPathPrefix() == null)
+            if (parentViewBinding != null && parentViewBinding.getPathPrefix() == null)
                 path = tempPath;
-            else if (tempPath != null)
+            else if (parentViewBinding != null && tempPath != null)
                 path = parentViewBinding.getPathPrefix() + "." + tempPath;
             else
                 path = tempPath;

@@ -20,6 +20,7 @@ import java.util.LinkedList;
 
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.InflatedAttributes;
+import amvvm.implementations.ViewFactory;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IObservableObject;
@@ -34,6 +35,7 @@ import android.view.InflateException;
 import android.view.Menu;
 import android.view.MenuItem;
 import amvvm.R;
+import amvvm.interfaces.IViewBinding;
 
 /**Custom menu-inflater to bind it with view-model. This is more complex then the ViewFactory implementation because there is no
  * inherent hook when a the menu is inflating. 
@@ -73,7 +75,7 @@ public class MenuInflater extends android.view.MenuInflater
 		
 		//prepare bindings
 		for(int i=0;i<menuBindings.size();i++)
-			menuBindings.get(i).detachBindings();
+			menuBindings.get(i).getProxyViewBinding().detachBindings();
 		menuBindings.clear();
 
 		XmlResourceParser parser = null;
@@ -99,11 +101,21 @@ public class MenuInflater extends android.view.MenuInflater
                     if (id != 0)
                     {
                         //get menu item, create bindings from it
-                        IAttributeGroup ag = bridge.getAttributes(R.styleable.Menu);
                         MenuItem m = menu.findItem(id);
-                        MenuBinding mb = new MenuBinding(m, ag ,inventory);
+
+                        //update action view to use menu inventory
+                        if (m.getActionView() != null)
+                        {
+                            IViewBinding actionViewBinding = ViewFactory.getViewBinding(m.getActionView());
+                            if (actionViewBinding != null)
+                            {
+                                actionViewBinding.updateBindingInventory(inventory);
+                            }
+                        }
+
+                        MenuBinding mb = new MenuBinding(m);
+                        mb.getProxyViewBinding().initialise(null, bridge, null, inventory, IViewBinding.Flags.NO_FLAGS);
                         menuBindings.add(mb);
-                        ag.recycle();
                     }
 
                 }	                

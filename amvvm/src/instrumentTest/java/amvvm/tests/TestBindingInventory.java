@@ -15,6 +15,8 @@
 
 package amvvm.tests;
 
+import android.test.InstrumentationTestCase;
+
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableObject;
@@ -27,10 +29,18 @@ import junit.framework.TestCase;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
-public class TestBindingInventory extends TestCase
+public class TestBindingInventory extends InstrumentationTestCase
 {
     public TestBindingInventory()
     {
+    }
+
+
+    @Override
+    protected void setUp() throws Exception {
+
+        super.setUp();
+        System.setProperty( "dexmaker.dexcache", getInstrumentation().getTargetContext().getCacheDir().getPath() );
     }
 
 	public void testCanCreateBindingInventory()
@@ -288,7 +298,48 @@ public class TestBindingInventory extends TestCase
 		verify(uiprop2).receiveUpdate(eq(2002));
 		verify(uiprop3).receiveUpdate(eq(3003));
 	}
-	
+
+    public void testCanMergeBindingInventories()
+    {
+        //arrange
+        String simplePath1 = "I";
+        String simplePath2 = "Obj.I";
+        String simplePath3 = "Obj.Obj.I";
+        biObj context = new biObj();
+        context.setObj(new biObj());
+        context.getObj().setObj(new biObj());
+
+        BindingInventory inv = new BindingInventory();
+        BindingInventory invToMerge = new BindingInventory();
+
+        IUIElement uiprop1 = mock(IUIElement.class);
+
+        IUIElement uiprop2 = mock(IUIElement.class);
+        IUIElement uiprop3 = mock(IUIElement.class);
+
+        when(uiprop1.getPath()).thenReturn(simplePath1);
+        when(uiprop2.getPath()).thenReturn(simplePath2);
+        when(uiprop3.getPath()).thenReturn(simplePath3);
+
+        //act
+        inv.track(uiprop1);
+        invToMerge.track(uiprop2);
+        invToMerge.track(uiprop3);
+
+        inv.merge(invToMerge);
+
+        inv.setContextObject(context);
+
+        context.setI(1001);
+        context.getObj().setI(2002);
+        context.getObj().getObj().setI(3003);
+
+        //assert
+        verify(uiprop1).receiveUpdate(eq(1001));
+        verify(uiprop2).receiveUpdate(eq(2002));
+        verify(uiprop3).receiveUpdate(eq(3003));
+    }
+
 	public static class biObj
 	extends ObservableObject
 	{

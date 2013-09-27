@@ -15,12 +15,14 @@
 
 package amvvm.implementations;
 
+import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 import java.util.Map;
 
 import amvvm.implementations.ui.UIHandler;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
@@ -46,8 +48,8 @@ implements Factory2
 {
 	//stores current inflater
 	private LayoutInflater inflater;
-
     private final ViewBindingFactory viewBindingFactory;
+    private static final Class<?>[] signature = new Class[]{ Context.class, AttributeSet.class };
 
 	/**
 	 * Constructor to create custom ViewFactory
@@ -70,6 +72,8 @@ implements Factory2
         return new InflatedAttributes(context, attrs);
     }
 
+
+
     public View inflateViewByClassName(String className, AttributeSet attrs)
     {
         if (inflater == null)
@@ -81,11 +85,20 @@ implements Factory2
         }
         catch (Exception e)
         {
-            //fail silently. Sometimes the inflater will fail. This happens
+            //Try again before fail silently. Sometimes the inflater will fail. This happens
             //somewhere in the ViewConfiguration.get method when a Display metric
-            //is being retrieved, but null pointer exception occurs. I suspected it
-            //has to do with android remeasuring the layout and failing. I don't have a better
-            //fix for now except to ignore it; it apparently tries again successfully.
+            //is being retrieved, but null pointer exception occurs (sometimes involving the Context obj.
+            try
+            {
+                Class<? extends View> viewClass = inflater.getContext().getClassLoader().loadClass(className).asSubclass(View.class);
+                Constructor<? extends View> constructor = viewClass.getConstructor(signature);
+
+                return constructor.newInstance(new Object[]{inflater.getContext(), attrs});
+
+            }catch (Exception e2)
+            {
+                Log.w(e.getMessage());
+            }
         }
         return null;
     }
@@ -121,19 +134,27 @@ implements Factory2
          if (view==null) return null;
 
         //should we go on?
-        IViewBinding parentViewBinding = parent == null ? null : getViewBinding(parent);
-
-        //if either there is no View Binding for a non null parent or that parent's View Binding says to ignore children..
-        if ((parent != null && parentViewBinding == null) || (parentViewBinding != null && IViewBinding.Flags.hasFlags(parentViewBinding.getBindingFlags(), IViewBinding.Flags.IGNORE_CHILDREN)))
-            //then stop here and return the view, no binding steps needed now.
-            return view;
+        IProxyViewBinding parentViewBinding = parent == null ? null : getViewBinding(parent);
 
         IAttributeBridge attributeBridge = createAttributeBridge(context, attrs);
-         UIHandler handler = new UIHandler();
-         
-       //pull base attributes
- 		IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
+        //pull base attributes
+        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
         boolean isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
+
+        //if either there is no View Binding for a non null parent or that parent's View Binding says to ignore children..
+        boolean noParentViewBindingAndNotRoot = parent != null && parentViewBinding == null && !isRoot;
+        boolean hasParentViewBindingButIgnoreChildrenFlag = (parentViewBinding != null && parentViewBinding.getProxyViewBinding() != null
+                && IViewBinding.Flags.hasFlags(parentViewBinding.getProxyViewBinding().getBindingFlags(), IViewBinding.Flags.IGNORE_CHILDREN));
+
+        if (noParentViewBindingAndNotRoot || hasParentViewBindingButIgnoreChildrenFlag)
+        {
+            //then stop here and return the view, no binding steps needed now.
+            ta.recycle();
+            return view;
+        }
+
+         UIHandler handler = new UIHandler();
+
         boolean ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);
         boolean hasRelativeContext = ta.hasValue(R.styleable.View_RelativeContext);
 
@@ -145,7 +166,7 @@ implements Factory2
         //grab custom binding type, if available
          String bindingType = ta.getString(R.styleable.View_BindingType);
 
-        String prefix = (parentViewBinding == null ? null : parentViewBinding.getPathPrefix());
+        String prefix = (parentViewBinding == null || parentViewBinding.getProxyViewBinding() == null ? null : parentViewBinding.getProxyViewBinding().getPathPrefix());
         if (hasRelativeContext)
         {
             if (prefix == null)
@@ -156,11 +177,11 @@ implements Factory2
 
         ta.recycle();
 
-        IViewBinding newViewBinding = null;
+        IProxyViewBinding newViewBinding = null;
          //if view implements IViewBinding and no custom type is given...
-         if (view instanceof IViewBinding && bindingType == null)
+         if (view instanceof IProxyViewBinding && bindingType == null)
         	 //use the view itself...
-             newViewBinding = (IViewBinding)view;
+             newViewBinding = (IProxyViewBinding)view;
          else
         	 //...otherwise lookup the binding needed.
              newViewBinding = createViewBinding(view, bindingType);
@@ -168,7 +189,7 @@ implements Factory2
          //if at this point we actually have a view binding...
          if (newViewBinding != null)
          {
-             BindingInventory inv = (parentViewBinding != null) ? parentViewBinding.getBindingInventory() : null;
+             BindingInventory inv = (parentViewBinding == null || parentViewBinding.getProxyViewBinding() == null) ? null : parentViewBinding.getProxyViewBinding().getBindingInventory();
 
              /*if (isRoot && hasRelativeContext)
                  inv = new BindingInventory(new BindingInventory(inv));
@@ -179,18 +200,18 @@ implements Factory2
              //if not labeled as root and no inventory is coming from parent, then it's probably
              //coming from a step above the root; ignore it
 
-            if (inv != null)
+            if (inv != null && newViewBinding != null)
             {
-                newViewBinding.setPathPrefix(prefix);
+                newViewBinding.getProxyViewBinding().setPathPrefix(prefix);
                 view.setTag(R.id.amvvm_viewholder, newViewBinding);
-                newViewBinding.initialise(view, attributeBridge, handler, inv, flags);
+                newViewBinding.getProxyViewBinding().initialise(view, attributeBridge, handler, inv, flags);
             }
          }
          
          return view;
 	}
 
-    public IViewBinding createViewBinding(View view, String bindingType)
+    public IProxyViewBinding createViewBinding(View view, String bindingType)
     {
         return getViewBindingFactory().createViewBinding(view, bindingType);
     }
@@ -211,7 +232,8 @@ implements Factory2
 	{
 		if (view == null)
 			return null;
-		return (IViewBinding)view.getTag(R.id.amvvm_viewholder);
+        IProxyViewBinding proxy = (IProxyViewBinding)view.getTag(R.id.amvvm_viewholder);
+		return (proxy == null) ? null : proxy.getProxyViewBinding();
 	}
 
 	/**
@@ -226,8 +248,8 @@ implements Factory2
 	{
 		if (context == null || view == null)
 			return;
-		
-		IViewBinding vb = getViewBinding(view);
+
+        IViewBinding vb = getViewBinding(view);
 		if (vb == null)
 			return;
 		
@@ -251,8 +273,8 @@ implements Factory2
 	{
 		if (view == null)
 			return;
-		
-		IViewBinding vb = getViewBinding(view);
+
+        IViewBinding vb = getViewBinding(view);
 		
 		if (vb == null)
 			return;
@@ -262,12 +284,9 @@ implements Factory2
 		{
             inv.setContextObject(null);
 		}
-		
-		//if found, then detachBindings...
-		if (vb != null)
-		{
-			vb.detachBindings();
-		}
+
+		vb.detachBindings();
+
 		view.setTag(R.id.amvvm_viewholder, null);
 	}
 

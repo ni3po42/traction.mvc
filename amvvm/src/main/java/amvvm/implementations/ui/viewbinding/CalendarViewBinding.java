@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.interfaces.IAttributeGroup;
@@ -36,15 +37,26 @@ import amvvm.R;
  */
 public class CalendarViewBinding 
 extends GenericViewBinding<CalendarView>
-implements CalendarView.OnDateChangeListener
 {
 	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, R.styleable.CalendarView_SelectedDate);
 	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, R.styleable.CalendarView_MinDate);
 	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, R.styleable.CalendarView_MaxDate);
-	
-	//public final UIProperty<Boolean> AutoCenter = new UIProperty<Boolean>();
-	//public final UIProperty<Boolean> AnimateScroll = new UIProperty<Boolean>();
-		
+
+    private static final CalendarView.OnDateChangeListener dateChangeListener = new CalendarView.OnDateChangeListener()
+    {
+        @Override
+        public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
+        {
+            //wanted to keep the time consistant with the date, just cause we are changing the date,
+            //doesn't mean the view-model isn't also keeping track of the current time elsewhere.
+            //so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet)
+            CalendarViewBinding cal = (CalendarViewBinding) ViewFactory.getViewBinding(view);
+            Time t = new Time(cal.SelectedDate.dereferenceValue());
+            t.set(t.second, t.minute, t.hour, dayOfMonth, month, year);
+            cal.SelectedDate.sendUpdate(t);
+        }
+    };
+
 	public CalendarViewBinding()
 	{		
 		SelectedDate.setUIUpdateListener(new IUIUpdateListener<Time>()
@@ -89,7 +101,7 @@ implements CalendarView.OnDateChangeListener
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
-		getWidget().setOnDateChangeListener(this);
+		getWidget().setOnDateChangeListener(dateChangeListener);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.CalendarView);
 		SelectedDate.initialize(ta);
 		MinDate.initialize(ta);
@@ -109,16 +121,4 @@ implements CalendarView.OnDateChangeListener
 		getWidget().setOnDateChangeListener(null);
 		super.detachBindings();
 	}
-
-	@Override
-	public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth)
-	{
-		//wanted to keep the time consistant with the date, just cause we are changing the date,
-		//doesn't mean the view-model isn't also keeping track of the current time elsewhere.
-		//so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet) 
-		Time t = new Time(SelectedDate.dereferenceValue());
-		t.set(t.second, t.minute, t.hour, dayOfMonth, month, year);		
-		SelectedDate.sendUpdate(t);
-	}
-
 }

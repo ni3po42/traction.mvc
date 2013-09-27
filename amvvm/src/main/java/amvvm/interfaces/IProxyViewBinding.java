@@ -13,27 +13,9 @@
    limitations under the License.
  */
 
-package amvvm.implementations.observables;
+package amvvm.interfaces;
 
-import amvvm.interfaces.IObjectListener;
-
-public abstract class PropertyListener<T>
-    implements IObjectListener
+public interface IProxyViewBinding
 {
-    private String propertyName;
-    public PropertyListener(String propertyName)
-    {
-        this.propertyName = propertyName;
-    }
-
-    @Override
-    public void onEvent(EventArg arg)
-    {
-        if (propertyName == null || !propertyName.equals(arg.getPropagationId()))
-            return;
-
-        propertyUpdated((T)arg.getSource());
-    }
-
-    protected abstract void propertyUpdated(T source);
+    IViewBinding getProxyViewBinding();
 }

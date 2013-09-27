@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import amvvm.implementations.ViewFactory;
 import amvvm.implementations.observables.ResourceArgument;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIEvent;
@@ -36,12 +37,50 @@ import amvvm.interfaces.IAttributeGroup;
  */
 public class ImageButtonBinding
 extends ImageViewBinding
-implements OnClickListener, OnLongClickListener
 {
 	public UIEvent<ResourceArgument> OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnClick);
 	public UIEvent<ResourceArgument> OnLongClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnLongClick);
 
+    static class eventHandler
+            implements OnClickListener, OnLongClickListener
+    {
+        @Override
+        public void onClick(View arg0)
+        {
+            ImageButtonBinding bb = getButtonBinding(arg0);
+            if (bb == null)
+                return;
+            ResourceArgument arg = null;
+            if (bb.getCommandValueResourceId() > 0)
+                arg = new ResourceArgument(bb.OnClick.getPropertyName(), bb.getCommandValueResourceId());
+            bb.OnClick.execute(arg);
+        }
+
+        @Override
+        public boolean onLongClick(View v)
+        {
+            ImageButtonBinding bb = getButtonBinding(v);
+            if (bb == null)
+                return false;
+
+            ResourceArgument arg = null;
+            if (bb.getCommandValueResourceId() > 0)
+                arg = new ResourceArgument(bb.OnLongClick.getPropertyName(), bb.getCommandValueResourceId());
+            return bb.OnLongClick.execute(arg);
+        }
+        private static ImageButtonBinding getButtonBinding(View v)
+        {
+            return (ImageButtonBinding) ViewFactory.getViewBinding(v);
+        }
+    }
+
+    private static final eventHandler clickHandler = new eventHandler();
+
     private int commandValueResourceId = -1;
+    public int getCommandValueResourceId()
+    {
+        return commandValueResourceId;
+    }
 
 	public ImageButtonBinding()
 	{
@@ -52,8 +91,8 @@ implements OnClickListener, OnLongClickListener
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
-		getWidget().setOnClickListener(this);
-		getWidget().setOnLongClickListener(this);
+		getWidget().setOnClickListener(clickHandler);
+		getWidget().setOnLongClickListener(clickHandler);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
 		OnClick.initialize(ta);
 		OnLongClick.initialize(ta);
@@ -69,23 +108,4 @@ implements OnClickListener, OnLongClickListener
 		getWidget().setOnLongClickListener(null);
 		super.detachBindings();
 	}
-	
-	@Override
-	public void onClick(View arg0) 
-	{
-        ResourceArgument arg = null;
-        if (commandValueResourceId > 0)
-            arg = new ResourceArgument(OnClick.getPropertyName(), commandValueResourceId);
-        OnClick.execute(arg);
-	}
-
-	@Override
-	public boolean onLongClick(View v) 
-	{
-        ResourceArgument arg = null;
-        if (commandValueResourceId > 0)
-            arg = new ResourceArgument(OnLongClick.getPropertyName(),commandValueResourceId);
-        return OnLongClick.execute(arg);
-	}
-	
 }

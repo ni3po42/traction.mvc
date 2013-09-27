@@ -29,7 +29,6 @@ import amvvm.implementations.ui.viewbinding.ProxyAdapter;
 import amvvm.interfaces.ICursorExtension;
 import amvvm.interfaces.IObservableCursor;
 import amvvm.interfaces.IPropertyStore;
-import amvvm.interfaces.IProxyObservableObject;
 
 /**
  * Expose a cursor that is observable, duh.
@@ -39,20 +38,13 @@ public class ObservableCursor
     implements IObservableCursor,LoaderManager.LoaderCallbacks<Cursor>
 {
     private ICursorExtension cursorExtension;
-
-    public ObservableCursor()
-    {
-        cursorExtension = null;
-    }
+    private CursorAdapter internalCursorAdapter;
+    private ICursorLoader cursorLoader;
 
     public void setCursorExtension(ICursorExtension extension)
     {
         this.cursorExtension = extension;
     }
-
-    private CursorAdapter internalCursorAdapter;
-
-    private ICursorLoader cursorLoader;
 
     public <T extends ObservableCursor> T setCursorLoader(ICursorLoader cursorLoader)
     {
@@ -70,8 +62,7 @@ public class ObservableCursor
     @Override
     protected int indexOf(Cursor value)
     {
-        if (value == null)
-            return -1;
+        if (value == null) return -1;
         return value.getPosition();
     }
 
@@ -106,7 +97,10 @@ public class ObservableCursor
             notifyListener();
         }
         else
-            internalCursorAdapter.swapCursor(wrappedCursor);
+            if (internalCursorAdapter.swapCursor(wrappedCursor) != null)
+            {
+                notifyListener();
+            }
     }
 
     @Override

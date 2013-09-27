@@ -52,15 +52,16 @@ public class MainActivity extends ActivityViewModel
 		if (savedInstanceState != null)
 			return;
 		
-		boolean multiViewModelSupport =  getMainViewModel() != null;
+		boolean noMultiViewModelSupport =  getMainViewModel() == null;
 			
-		if (!multiViewModelSupport)
+		if (noMultiViewModelSupport)
 		{
-			setMainViewModel(new MainViewModel());
-
+            MainViewModel mvm = new MainViewModel();
             Bundle args = new Bundle();
             args.putBoolean(MainViewModel.NoMultiViewModelSupport, true);
-            getMainViewModel().setArguments(args);
+            mvm.setArguments(args);
+
+            setMainViewModel(mvm);
 
 			getFragmentManager()
 				.beginTransaction()

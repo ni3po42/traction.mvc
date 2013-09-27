@@ -30,6 +30,7 @@ import android.view.View;
  *
  */
 public interface IViewBinding
+    extends IProxyViewBinding
 {		
 	/**
 	 * Initialise the ViewBinding. It is here you will read properties defined in the layout files
@@ -89,6 +90,9 @@ public interface IViewBinding
      */
     void markAsSynthetic(BindingInventory inventory);
 
+    void updateBindingInventory(BindingInventory inventory);
+
     String getPathPrefix();
     void setPathPrefix(String prefix);
+
 }

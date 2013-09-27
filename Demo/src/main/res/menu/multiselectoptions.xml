@@ -10,4 +10,8 @@
         >   
     </item>
 
+    <item android:actionLayout="@layout/exampleactionview"
+        android:id="@+id/menu.actionview"
+        android:showAsAction="always"></item>
+
 </menu>

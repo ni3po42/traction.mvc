@@ -15,69 +15,28 @@
 
 package amvvm.interfaces;
 
-
-import java.util.EventObject;
-
 /**
  * Defined a handler for IObservableObject object to signal
  * @author Tim Stratton
  *
  */
 public interface IObjectListener
-{	
-	public static class EventArg
-	{
-		private String propertyName;
-        private String propagationId;
-        private Object source;
-
-        public void setAll(String propertyName, Object source)
+{
+    public static class Utility
+    {
+        public static String generatePropagationId(String currentPropagationId, String currentSource)
         {
-            this.propertyName = propertyName;
-            this.source = source;
-        }
-
-        public Object getSource()
-        {
-            return source;
-        }
-
-        public String getPropertyName()
-        {
-            return propertyName;
-        }
-
-		public void recycle()
-		{
-			setAll(null, null);
-            this.propagationId = null;
-		}
-
-        public void setPropagationId(String id)
-        {
-            this.propagationId = id;
-        }
-
-        public String getPropagationId()
-        {
-            return this.propagationId;
-        }
-
-        public String generateNextPropagationId()
-        {
-            if (propertyName == null || propertyName.equals(""))
-                return propagationId;
-            else if (propagationId != null && !propagationId.equals(""))
-                return propertyName + "." + propagationId;
+            if (currentSource == null || currentSource.equals(""))
+                return currentPropagationId;
+            else if (currentPropagationId == null || currentPropagationId.equals(""))
+                return currentSource;
             else
-                return propertyName;
+                return currentSource + "." + currentPropagationId;
         }
-	}	
-	
+    }
+
 	/**
 	 * Fired when listener is signalled of something, anything really.
-	 * @param arg
 	 */
-	void onEvent(EventArg arg);
-	
+    void onEvent(String propagationId);
 }

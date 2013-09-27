@@ -49,10 +49,17 @@ public class TestViewFactory extends InstrumentationTestCase
         View parentLayout = mock(View.class);
         View childLayout = mock(View.class);
 
-        ViewFactory vf = createViewFactory(null, childLayout, viewClass);
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        IAttributeGroup group = mock(IAttributeGroup.class);
+
+        ViewFactory vf = createViewFactory(bridge, childLayout, viewClass);
         IViewBinding parentVB = mock(IViewBinding.class);
+        when(parentVB.getProxyViewBinding()).thenReturn(parentVB);
         when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
         when(parentVB.getBindingFlags()).thenReturn(ignoreChildren);
+
+        when(bridge.getAttributes(any(int[].class))).thenReturn(group);
+        when(group.getBoolean(eq(R.styleable.View_IsRoot),eq(false))).thenReturn(true);
 
         when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
 
@@ -64,14 +71,22 @@ public class TestViewFactory extends InstrumentationTestCase
         verify(v, never()).setTag(eq(R.id.amvvm_viewholder), any(IViewBinding.class));
     }
 
-    public void testChildrenIgnoredWhenParentHasNoViewHolder()
+    public void testChildrenIgnoredWhenParentHasNoViewHolderAndRootFalse()
     {
         //arrange
         String viewClass = "ni3po42.android.amvvm.views.realview";
         View parentLayout = mock(View.class);
         View childLayout = mock(View.class);
 
-        ViewFactory vf = createViewFactory(null, childLayout, viewClass);
+        IAttributeBridge bridge = mock(IAttributeBridge.class);
+        IAttributeGroup group = mock(IAttributeGroup.class);
+
+        ViewFactory vf = createViewFactory(bridge, childLayout, viewClass);
+
+
+        when(bridge.getAttributes(any(int[].class))).thenReturn(group);
+        when(group.getBoolean(eq(R.styleable.View_IsRoot),eq(false))).thenReturn(false);
+
         when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(null);
 
         //act
@@ -170,6 +185,9 @@ public class TestViewFactory extends InstrumentationTestCase
         IViewBinding parentVB = mock(IViewBinding.class);
         IViewBinding childVB = mock(IViewBinding.class);
 
+        when(parentVB.getProxyViewBinding()).thenReturn(parentVB);
+        when(childVB.getProxyViewBinding()).thenReturn(childVB);
+
         when(parentVB.getBindingInventory()).thenReturn(mock(BindingInventory.class));
         when(parentVB.getBindingFlags()).thenReturn(isRoot);
         when(parentLayout.getTag(R.id.amvvm_viewholder)).thenReturn(parentVB);
@@ -199,6 +217,7 @@ public class TestViewFactory extends InstrumentationTestCase
         String viewClass = View.class.getName();
         View childView = mock(View.class);
         IViewBinding viewBinding = mock(IViewBinding.class);
+        when(viewBinding.getProxyViewBinding()).thenReturn(viewBinding);
 
         IAttributeBridge bridge = mock(IAttributeBridge.class);
         ViewFactory vf = createViewFactory(bridge, childView, viewClass);
@@ -223,6 +242,8 @@ public class TestViewFactory extends InstrumentationTestCase
         String viewbindingClass = "ni3po42.android.amvvm.viewbindings.realviewbinding";
         View childView = mock(View.class);
         IViewBinding viewBinding = mock(IViewBinding.class);
+
+        when(viewBinding.getProxyViewBinding()).thenReturn(viewBinding);
 
         IAttributeBridge bridge = mock(IAttributeBridge.class);
         ViewFactory vf = mock(ViewFactory.class);
@@ -253,7 +274,7 @@ public class TestViewFactory extends InstrumentationTestCase
         View v = mock(A.class);
 
         //act
-        IViewBinding vb = vbf.createViewBinding(v, null);
+        IViewBinding vb = (IViewBinding)vbf.createViewBinding(v, null);
 
         //assert
         assertNotNull(vb);
@@ -271,7 +292,7 @@ public class TestViewFactory extends InstrumentationTestCase
         View v = mock(AAA.class);
 
         //act
-        IViewBinding vb = vbf.createViewBinding(v, null);
+        IViewBinding vb = (IViewBinding)vbf.createViewBinding(v, null);
 
         //assert
         assertNotNull(vb);
@@ -285,7 +306,7 @@ public class TestViewFactory extends InstrumentationTestCase
         loadConfigs(vbf);
 
         //act
-        IViewBinding vb = vbf.createViewBinding(null, customViewBinding.class.getName());
+        IViewBinding vb = (IViewBinding)vbf.createViewBinding(null, customViewBinding.class.getName());
 
         //assert
         assertNotNull(vb);
@@ -403,6 +424,11 @@ public class TestViewFactory extends InstrumentationTestCase
         }
 
         @Override
+        public void updateBindingInventory(BindingInventory inventory) {
+
+        }
+
+        @Override
         public String getPathPrefix() {
             return null;
         }
@@ -412,6 +438,10 @@ public class TestViewFactory extends InstrumentationTestCase
 
         }
 
+        @Override
+        public IViewBinding getProxyViewBinding() {
+            return this;
+        }
     }
     public static class vAA implements IViewBinding{
 
@@ -455,6 +485,11 @@ public class TestViewFactory extends InstrumentationTestCase
         }
 
         @Override
+        public void updateBindingInventory(BindingInventory inventory) {
+
+        }
+
+        @Override
         public String getPathPrefix() {
             return null;
         }
@@ -464,6 +499,10 @@ public class TestViewFactory extends InstrumentationTestCase
 
         }
 
+        @Override
+        public IViewBinding getProxyViewBinding() {
+            return this;
+        }
     }
     public static class customViewBinding implements IViewBinding{
 
@@ -507,6 +546,11 @@ public class TestViewFactory extends InstrumentationTestCase
         }
 
         @Override
+        public void updateBindingInventory(BindingInventory inventory) {
+
+        }
+
+        @Override
         public String getPathPrefix() {
             return null;
         }
@@ -514,6 +558,11 @@ public class TestViewFactory extends InstrumentationTestCase
         @Override
         public void setPathPrefix(String prefix) {
 
+        }
+
+        @Override
+        public IViewBinding getProxyViewBinding() {
+            return this;
         }
     }
 }

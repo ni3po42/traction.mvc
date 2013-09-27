@@ -28,21 +28,22 @@
     <attr name="MinDate" format="string" />
     <attr name="MaxDate" format="string" />
     <attr name="CommandValue" format="reference" />
-
-
+    <attr name="RelativeContext" format="string" />
+    <attr name="GenericBindings" format="string" />
 
     <declare-styleable name="Menu">
         <attr name="IsVisible"  />
         <attr name="OnClick" />
+        <attr name="GenericBindings" />
     </declare-styleable>
 
     <declare-styleable name="View">
         <attr name="IsRoot" format="boolean" />
         <attr name="IsVisible" />
         <attr name="BindingType" format="string" />
-        <attr name="GenericBindings" format="string" />
+        <attr name="GenericBindings" />
         <attr name="IgnoreChildren" format="boolean" />
-        <attr name="RelativeContext" format="string" />
+        <attr name="RelativeContext" />
     </declare-styleable>
 
     <declare-styleable name="TextView">

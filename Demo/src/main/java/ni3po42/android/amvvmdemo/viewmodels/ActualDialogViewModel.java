@@ -36,7 +36,7 @@ public class ActualDialogViewModel extends DialogViewModel
 	public void setSomeText(String t)
 	{
 		someText = t;
-		notifyListener("SomeText");
+        getProxyObservableObject().notifyListener("SomeText");
 	}
 	
 	public final SimpleCommand Close = new SimpleCommand()
@@ -53,7 +53,8 @@ public class ActualDialogViewModel extends DialogViewModel
 	{
 		super.onCreate(savedInstanceState);
 		setSomeText("You opened a Dialog!");
-		setContentView(R.layout.dialogviewmodel);
+        getProxyViewModel().setContentView(R.layout.dialogviewmodel);
+        getProxyViewModel().setMenuLayout(R.menu.dialog_menu);
 	};
 	
 	

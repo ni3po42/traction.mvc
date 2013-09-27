@@ -17,6 +17,8 @@ package amvvm.implementations;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
@@ -25,15 +27,14 @@ import java.util.regex.Pattern;
 import android.app.FragmentManager;
 import android.util.Property;
 
-import amvvm.R;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement;
-import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IObjectListener;
+import amvvm.interfaces.IViewModel;
 
 /**
  * Tracks all ui element and the property paths to the model's data, also delegates to and from the view and the model/view-model.
@@ -48,7 +49,6 @@ public class BindingInventory
 	 */
 	private final static Pattern pathPattern = Pattern.compile("(\\\\|[\\.]*)(.+)");
 	private final static Pattern split = Pattern.compile("\\.");
-	private final static Pattern splitIndex = Pattern.compile("([^@]+)(@(\\d+)\\[(.+)\\])?");
 
 	//used for determining a range of paths to get from the inventory. Useful for getting all properties down a 
 	//specific branch
@@ -64,26 +64,13 @@ public class BindingInventory
 	private final TreeMap<String, PathBinding> map = new TreeMap<String, PathBinding>();
 
 	private IObjectListener contextListener = new IObjectListener()
-	{		
-		@Override
-		public void onEvent(EventArg arg)
-		{
-			if (arg ==  null)
-				return;
-			
-			onContextSignaled(arg.generateNextPropagationId());
-		}
+	{
+        @Override
+        public void onEvent(String propagationId)
+        {
+            onContextSignaled(propagationId);
+        }
 	};
-	
-	public void linkFragments(FragmentManager fragmentManager)
-	{		
-		//will be used laster for Dynamic fragments
-		/*for (int i=0;i< fragmentMapping.size();i++)
-		{
-			Object fragment = fragmentManager.findFragmentById(fragmentMapping.get(i).id);
-			sendUpdate(fragmentMapping.get(i).path, fragment);	
-		}*/
-	}
 
 	private String[] tempStringArray = new String[0];
 
@@ -123,16 +110,6 @@ public class BindingInventory
 				elements.get(i).receiveUpdate(value);
 			}
 		}
-
-        if (getContextObject() instanceof IProxyObservableObject)
-        {
-            IProxyObservableObject proxyObj = (IProxyObservableObject)getContextObject();
-            if (proxyObj.getProxyObservableObject() != null &&
-                    proxyObj.getProxyObservableObject().getSource() instanceof IAccessibleFragmentManager)
-            {
-                ((IAccessibleFragmentManager)proxyObj.getProxyObservableObject().getSource()).linkFragments(this);
-            }
-        }
 	}
 
 	public BindingInventory()
@@ -149,6 +126,28 @@ public class BindingInventory
 	{
 		return parentInventory;
 	}
+
+    public void merge(BindingInventory inventoryToMerge)
+    {
+        Iterator<PathBinding> collection = inventoryToMerge.map.values().iterator();
+
+        while(collection.hasNext())
+        {
+            PathBinding current = collection.next();
+            ArrayList<IUIElement<?>> elements = current.getUIElements();
+            if (elements != null)
+            {
+                int size = elements.size();
+                for(int i=0;i<size;i++)
+                {
+                    track(elements.get(i));
+                }
+            }
+        }
+
+        inventoryToMerge.map.clear();
+        inventoryToMerge.setContextObject(null);
+    }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void  fireCommand(String commandPath, ICommand.CommandArgument commandArg)
@@ -256,24 +255,16 @@ public class BindingInventory
 			return;
 		
 		BindingInventory currentInventory = getInventoryByMatchedPattern(matches);
-				
 		Object currentContext = currentInventory.extractSource();
-
 		String[] chains = split.split(matches.group(2));
-		
 		Property<Object,Object> prop = null;
-		String indexStr = null;
 		
 		 for(int i=0;i<chains.length;i++)
 		 { 		
 			 if (currentContext == null)
-				 return;//throw new NullPointerException("Cannot send value update to null object.");
-			 Matcher m = splitIndex.matcher(chains[i]);
-			 if (!m.find())
-				 throw new RuntimeException("Not a valid membeer: " + chains[i]);
-			 
-			 String member = m.group(1);
-			indexStr = m.group(3);
+				 return;
+
+			 String member =chains[i];
 
              if (currentContext instanceof IPropertyStore)
              {
@@ -286,8 +277,7 @@ public class BindingInventory
 
 			if (i + 1 < chains.length)
 			{
-				currentContext = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
-				indexStr = null;
+				currentContext = extractByProxy(prop.get(currentContext));
 			}
 		 }
 			
@@ -296,43 +286,13 @@ public class BindingInventory
 		 if (prop == null)
 			 throw new InvalidParameterException("invalid path supplied: "+path);
 		 
-		 Object propertyCurrentValue = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
+		 Object propertyCurrentValue = extractByProxy(prop.get(currentContext));
 				 
 		 if ((propertyCurrentValue != null && !propertyCurrentValue.equals(value))				 
 				 || (propertyCurrentValue == null && value != null))
-		setIndex(prop, indexStr, currentContext, value);
+        prop.set(currentContext,value);
 	}
-		
-	private Object getIndex(String indexStr, Object host)
-	{
-		if (indexStr == null || host == null || !(host instanceof IObservableList))
-			return host;
-		
-		try
-		{
-			int index = Integer.parseInt(indexStr);
-			return ((IObservableList<?>)host).get(index);
-		}
-		catch(Exception e)
-		{
-			
-		}
-		return host;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private void setIndex(Property<Object,Object> prop, String indexStr, Object host, Object value)
-	{
-		if (indexStr == null)
-			prop.set(host, value);
-		else
-		{
-//			int index = Integer.parseInt(indexStr);
-//			Object listObj = prop.get(host);
-//			((IObservableList<Object>)listObj).set(index, value);
-		}
-	}
-	
+
 	public void sendUpdateFromUIElement(IUIElement<?> element, Object value)
 	{
         String path = element.getPath();
@@ -384,11 +344,8 @@ public class BindingInventory
 		 { 		
 			 if (currentContext == null)
 				 return null;
-			 Matcher m = splitIndex.matcher(chains[i]);
-			 if (!m.find())
-				 throw new RuntimeException("Not a valid member: " + chains[i]);
 			 
-			 String member = m.group(1);				
+			 String member = chains[i];
 			 Property<Object,Object> prop = null;
              if (currentContext instanceof IPropertyStore)
                  prop = (Property<Object, Object>)((IPropertyStore)currentContext).getProperty(currentContext.getClass(), member);
@@ -398,21 +355,7 @@ public class BindingInventory
              if (prop == null)
                  return null;
 
-			 currentContext = extractByProxy(prop.get(currentContext));	
-						 
-			 String indexStr = m.group(3);
-			if (currentContext != null && currentContext instanceof IObservableList && indexStr != null)
-			{	
-				try
-				{
-					int index = Integer.parseInt(indexStr);
-					currentContext = extractByProxy(((IObservableList<?>)currentContext).get(index));					
-				}
-				catch (Exception e)
-				{
-					throw new RuntimeException(e);
-				}			
-			}											
+			 currentContext = extractByProxy(prop.get(currentContext));
 		 }
 		 return currentContext;
 	}	
@@ -444,24 +387,17 @@ public class BindingInventory
 		String[] chains = split.split(matches.group(2));
 		
 		Property<Object,Object> prop = null;
-		String indexStr = null;
 		
 		 for(int i=0;i<chains.length;i++)
 		 { 		
 			 if (currentContext == null)
 				 return null;
-			 Matcher m = splitIndex.matcher(chains[i]);
-			 if (!m.find())
-				 throw new RuntimeException("Not a valid membeer: " + chains[i]);
-			 
-			 String member = m.group(1);
-			indexStr = m.group(3);
+			 String member = chains[i];
 			
 			prop = (Property<Object, Object>) PropertyStore.find(currentContext.getClass(), member);
 			if (i + 1 < chains.length)
 			{
-				currentContext = extractByProxy(getIndex(indexStr, prop.get(currentContext)));
-				indexStr = null;
+				currentContext = extractByProxy(prop.get(currentContext));
 			}
 		 }
 			
@@ -469,6 +405,5 @@ public class BindingInventory
 			 throw new InvalidParameterException("invalid path supplied: "+path);
 		 
 		 return prop.getType();
-	}	
-	
+	}
 }

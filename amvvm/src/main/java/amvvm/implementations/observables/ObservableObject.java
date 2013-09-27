@@ -36,34 +36,8 @@ import android.util.Property;
  */
 public abstract class ObservableObject
 implements IObservableObject
-{	
-	//object pool for requesting arguments
-	protected ObjectPool<IObjectListener.EventArg> argPool = new ObjectPool<IObjectListener.EventArg>()
-	{	
-		@Override
-		protected void cleanObj(EventArg obj)
-		{
-			obj.recycle();
-		}
-
-		@Override
-		protected <S extends EventArg> S createNewObject(Class<S> objType)
-		{
-			try
-			{
-				return objType.newInstance();
-			}
-			catch (InstantiationException e)
-			{
-			}
-			catch (IllegalAccessException e)
-			{
-			}
-			return null;
-		}
-	};
-
-    private boolean hasAutoRegisteredFields = false;
+{
+    protected boolean hasAutoRegisteredFields = false;
 
 	//map relating a listener to a source by name
 	protected HashMap<IObjectListener, ArrayList<String>> tracableListeners = new HashMap<IObjectListener, ArrayList<String>>();
@@ -124,8 +98,6 @@ implements IObservableObject
 	{	
 		synchronized (tracableListeners)
 		{
-            EventArg arg = argPool.checkOut(EventArg.class);
-
 			//notify properties that react to this property
 			if (reactions.size() > 0 && reactions.containsKey(propertyName))
 			{
@@ -148,12 +120,9 @@ implements IObservableObject
 				for(int j=0;j<sourceNames.size();j++)
 				{
 					String sourceName = sourceNames.get(j);
-                    arg.setAll(sourceName, getSource());
-                    arg.setPropagationId(propertyName);
-					listener.onEvent(arg);
+                    listener.onEvent(IObjectListener.Utility.generatePropagationId(propertyName, sourceName));
 				}
-			}		
-			argPool.checkIn(arg);
+			}
 		}
 	}
 
@@ -163,23 +132,14 @@ implements IObservableObject
 		notifyListenerRecursive(null);
 	}
 	
-	private void notifyListenerRecursive(EventArg bubbledArg)
+	private void notifyListenerRecursive(String propagationId)
 	{
 		synchronized(tracableListeners)
 		{
-            EventArg arg = argPool.checkOut(EventArg.class);
-			
-			//if not null, means this change is bubbling up through the object till it reaches the top level
-			//(probably the activity or head view model)
-			//grab the full path at this point and add it to this new argument
-			if (bubbledArg != null)
-				arg.setPropagationId(bubbledArg.generateNextPropagationId());
-			String ph = arg.getPropagationId();
-			
 			//notify properties that react to this property
-			if (reactions.size() > 0 && reactions.containsKey(ph))
+			if (reactions.size() > 0 && reactions.containsKey(propagationId))
 			{
-				ArrayList<String> props = reactions.get(ph);
+				ArrayList<String> props = reactions.get(propagationId);
 				for(int i=0;i<props.size();i++)
 				{
 					notifyListener(props.get(i));
@@ -195,11 +155,9 @@ implements IObservableObject
 				ArrayList<String> sourceNames = tracableListeners.get(listener);
 				for(int j=0;j<sourceNames.size();j++)
 				{
-                    arg.setAll(sourceNames.get(j), getSource());
-					listener.onEvent(arg);
+                    listener.onEvent(IObjectListener.Utility.generatePropagationId(propagationId, sourceNames.get(j)));
 				}
-			}		
-			argPool.checkIn(arg);
+			}
 		}
 	}
 	
@@ -218,9 +176,9 @@ implements IObservableObject
 	}
 	
 	@Override
-	public void onEvent(EventArg arg)
+	public void onEvent(String propagationId)
 	{
-        notifyListenerRecursive(arg);
+        notifyListener(propagationId);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -240,7 +198,6 @@ implements IObservableObject
                 {
                     autoFieldRegistration();
                 }
-
 			}
 			return (T)this;
 		}		
@@ -305,5 +262,4 @@ implements IObservableObject
         }
         hasAutoRegisteredFields = true;
     }
-
 }

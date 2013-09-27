@@ -15,6 +15,8 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ViewFactory;
+import amvvm.implementations.observables.Command;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
@@ -35,10 +37,19 @@ import amvvm.R;
  */
 public class CompoundButtonBinding
 extends ButtonBinding<CompoundButton>
-implements OnCheckedChangeListener
 {	
 	public UIProperty<Boolean> IsChecked = new UIProperty<Boolean>(this, R.styleable.Toggle_IsChecked);
-		
+
+    private static final OnCheckedChangeListener checkHandler = new OnCheckedChangeListener()
+    {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked)
+        {
+            CompoundButtonBinding cbb = (CompoundButtonBinding) ViewFactory.getViewBinding(compoundButton);
+            cbb.IsChecked.sendUpdate(isChecked);
+        }
+    };
+
 	public CompoundButtonBinding()
 	{
 		super();
@@ -59,7 +70,7 @@ implements OnCheckedChangeListener
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
-		getWidget().setOnCheckedChangeListener(this);
+		getWidget().setOnCheckedChangeListener(checkHandler);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Toggle);
 		IsChecked.initialize(ta);
 		ta.recycle();
@@ -71,11 +82,4 @@ implements OnCheckedChangeListener
 		getWidget().setOnCheckedChangeListener(null);
 		super.detachBindings();
 	}
-	
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
-	{	
-		IsChecked.sendUpdate(isChecked);
-	}
-
 }

@@ -29,7 +29,9 @@ public class UIWiring extends ViewModel
 	private boolean mainFlag;
 	private int upperBound;
 	private int currentInteger;
-	
+	private int myInt;
+
+
 	public final int Smallest = 0;
 	public final int Largest = 20;
 	
@@ -96,5 +98,12 @@ public class UIWiring extends ViewModel
                     .show();
         }
     };
-	
+
+    public int getMyInt() {
+        return myInt;
+    }
+
+    public void setMyInt(int myInt) {
+        this.myInt = myInt;
+    }
 }

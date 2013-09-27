@@ -15,7 +15,13 @@
 
 package ni3po42.android.amvvmdemo.viewmodels;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.View;
+import android.view.Window;
 
 import amvvm.implementations.observables.SimpleCommand;
 import amvvm.interfaces.ICommand;

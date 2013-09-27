@@ -32,18 +32,40 @@ import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.ui.viewbinding.ViewBindingHelper;
 import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import ni3po42.android.amvvmdemo.R;
 
 public class SwipeEntryView
     extends LinearLayout
-    implements IViewBinding, SwipableListView.ISwipable
+    implements IProxyViewBinding, SwipableListView.ISwipable, Animator.AnimatorListener
 {
     private TextView content;
     private TextView id;
 
-    private final ViewBindingHelper helper = new ViewBindingHelper();
+    private final ViewBindingHelper helper = new ViewBindingHelper<SwipeEntryView>()
+    {
+        @Override
+        public SwipeEntryView getWidget()
+        {
+            return SwipeEntryView.this;
+        }
+
+        @Override
+        public void detachBindings()
+        {
+            super.detachBindings();
+            SwipeEntryView.this.detachBindings();
+        }
+
+        @Override
+        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
+        {
+            super.initialise(v, attributeBridge, uiHandler, inventory, bindingFlags);
+            SwipeEntryView.this.initialise(attributeBridge, uiHandler, inventory);
+        }
+    };
 
     public UIProperty<Boolean> Active = new UIProperty<Boolean>(this, R.styleable.SwipeEntryView_Active);
 
@@ -74,25 +96,18 @@ public class SwipeEntryView
         addView(id, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
         addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, MarginLayoutParams.MATCH_PARENT));
 
-        Active.setUIUpdateListener(new IUIElement.IUIUpdateListener<Boolean>()
-        {
+        Active.setUIUpdateListener(new IUIElement.IUIUpdateListener<Boolean>() {
             @Override
-            public void onUpdate(Boolean value)
-            {
+            public void onUpdate(Boolean value) {
                 if (value == null)
                     return;
-                setBackgroundColor( value ? 0x00000000 : 0xFFCCCCCC);
+                setBackgroundColor(value ? 0x00000000 : 0xFFCCCCCC);
             }
         });
-
     }
 
-    @Override
-    public void initialise(View notUsed, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
+    private void initialise(IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
     {
-        helper.setBindingInventory(inventory);
-        helper.setUiHandler(uiHandler);
-
         //when this view is initialised, the internal views must also be initialised so they
         //can take advantage of binding
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.SwipeEntryView);
@@ -112,65 +127,26 @@ public class SwipeEntryView
             .addAttribute(R.styleable.TextView, R.styleable.TextView_Text, "Id", Builder.TYPE_STRING)
             .build();
 
-        contentBinding.initialise(content, contentBridge, uiHandler, inventory, Flags.NO_FLAGS);
-        idBinding.initialise(id, idBridge, uiHandler, inventory, Flags.NO_FLAGS);
+        contentBinding.initialise(content, contentBridge, uiHandler, inventory, IViewBinding.Flags.NO_FLAGS);
+        idBinding.initialise(id, idBridge, uiHandler, inventory, IViewBinding.Flags.NO_FLAGS);
     }
 
-    @Override
-    public void detachBindings()
+    private void detachBindings()
     {
-        ViewFactory.getViewBinding(content).detachBindings();
-        ViewFactory.getViewBinding(id).detachBindings();
-    }
-
-    @Override
-    public BindingInventory getBindingInventory()
-    {
-        return helper.getBindingInventory();
-    }
-
-    @Override
-    public UIHandler getUIHandler()
-    {
-        return helper.getUIHandler();
-    }
-
-    @Override
-    public int getBindingFlags() {
-        return helper.getBindingFlags();
-    }
-
-    @Override
-    public boolean isSynthetic()
-    {
-        return helper.isSynthetic();
-    }
-
-    @Override
-    public void markAsSynthetic(BindingInventory inventory)
-    {
-        helper.markAsSynthetic(inventory);
-    }
-
-    @Override
-    public String getPathPrefix() {
-        return helper.getPrefix();
-    }
-
-    @Override
-    public void setPathPrefix(String prefix) {
-        helper.setPrefix(prefix);
+        if (content != null)
+            ViewFactory.getViewBinding(content).detachBindings();
+        if (id != null)
+            ViewFactory.getViewBinding(id).detachBindings();
     }
 
     @Override
     public void onLeftSwipe()
     {
-        Boolean value = Active.dereferenceValue();
-        if (value != null)
-        {
-             Active.sendUpdate(!value);
-            performAnimation(!value);
-        }
+        ObjectAnimator outAnimator = ObjectAnimator
+                .ofFloat(this, "x", -getWidth())
+                .setDuration(250);
+        outAnimator.addListener(this);
+        outAnimator.start();
     }
 
     @Override
@@ -179,43 +155,33 @@ public class SwipeEntryView
 
     }
 
-    private void performAnimation(final boolean isActive)
-    {
-        ObjectAnimator outAnimator = ObjectAnimator
-                .ofFloat(this, "x", -getWidth())
+    @Override
+    public IViewBinding getProxyViewBinding() {
+        return helper;
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animator) {
+        ObjectAnimator inAnimator = ObjectAnimator
+                .ofFloat(this, "x", this.getWidth(), 0)
                 .setDuration(250);
-        outAnimator
-                .addListener(new Animator.AnimatorListener()
-                {
-                    @Override
-                    public void onAnimationStart(Animator animator)
-                    {
 
-                    }
+        Boolean value = Active.dereferenceValue();
+        if (value != null)
+        {
+            Active.sendUpdate(!value);
+            setBackgroundColor( !value ? 0x00000000 : 0xFFCCCCCC);
+            inAnimator.start();
+        }
+    }
 
-                    @Override
-                    public void onAnimationEnd(Animator animator)
-                    {
-                        ObjectAnimator inAnimator = ObjectAnimator
-                                .ofFloat(SwipeEntryView.this, "x", SwipeEntryView.this.getWidth(), 0)
-                                .setDuration(250);
-
-                        setBackgroundColor( isActive ? 0x00000000 : 0xFFCCCCCC);
-                        inAnimator.start();
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animator)
-                    {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animator)
-                    {
-
-                    }
-                });
-        outAnimator.start();
+    @Override
+    public void onAnimationStart(Animator animator) {
+    }
+    @Override
+    public void onAnimationCancel(Animator animator) {
+    }
+    @Override
+    public void onAnimationRepeat(Animator animator) {
     }
 }

@@ -18,18 +18,13 @@ package amvvm.tests;
 import android.test.InstrumentationTestCase;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatcher;
 
 import amvvm.annotations.IgnoreObservable;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.interfaces.IObjectListener;
-import amvvm.interfaces.IObservableObject;
-import amvvm.interfaces.IObjectListener.EventArg;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
-
 
 import static org.mockito.Mockito.*;
 
@@ -64,38 +59,12 @@ public class TestObservableObject extends InstrumentationTestCase
 		obj.notifyListener("prop");
 		
 		//assert
-        ArgumentCaptor<EventArg> argument = ArgumentCaptor.forClass(EventArg.class);
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
 		verify(listen).onEvent(argument.capture());
 
-        EventArg arg = argument.getValue();
+        String arg = argument.getValue();
 
-        assertEquals("testSource", arg.getPropertyName());
-        assertEquals("prop", arg.getPropagationId());
-        assertEquals("testSource.prop", arg.generateNextPropagationId());
-	}
-	
-	public void testEventSendSourceNotThis()
-	{
-		//arrange
-		final IObservableObject newSource = mock(IObservableObject.class);
-		
-		ObservableObject obj = new OOTEST()
-		{
-			@Override
-			public IObservableObject getSource()
-			{
-				return newSource;
-			}
-		};
-		
-		IObjectListener listen = mock(IObjectListener.class);
-		obj.registerListener("anySource",listen);
-		
-		//act
-		obj.notifyListener();
-        ArgumentCaptor<EventArg> argument = ArgumentCaptor.forClass(EventArg.class);
-		verify(listen).onEvent(argument.capture());
-        assertSame(newSource, argument.getValue().getSource());
+        assertEquals("testSource.prop", arg);
 	}
 
     public void testCanAutoRegisterFinalFields()

@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import amvvm.R;
+import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 
@@ -75,11 +76,12 @@ public class ViewBindingFactory
      */
     public IViewBinding createSyntheticFor(final View view, String viewBindingType, BindingInventory inventory)
     {
-        IViewBinding viewBinding = createViewBinding(view, viewBindingType);
-        viewBinding.markAsSynthetic(inventory);
+        IProxyViewBinding viewBinding = createViewBinding(view, viewBindingType);
+        if (viewBinding != null && viewBinding.getProxyViewBinding() != null)
+            viewBinding.getProxyViewBinding().markAsSynthetic(inventory);
 
         view.setTag(R.id.amvvm_viewholder, viewBinding);
-        return viewBinding;
+        return (viewBinding == null || viewBinding.getProxyViewBinding() == null) ? null : viewBinding.getProxyViewBinding();
     }
 
     /**
@@ -88,7 +90,7 @@ public class ViewBindingFactory
      * @param viewBindingTypeAsString : optional custom View type override as string. May be null.
      * @return : an instantiated IViewBinding object
      */
-    public IViewBinding createViewBinding(View view, String viewBindingTypeAsString)
+    public IProxyViewBinding createViewBinding(View view, String viewBindingTypeAsString)
     {
         //if no override is given...
         if (viewBindingTypeAsString == null)
@@ -130,11 +132,11 @@ public class ViewBindingFactory
             return null;
         }
 
-        IViewBinding viewBinding = null;
+        IProxyViewBinding viewBinding = null;
         try
         {
             //try and get instance...
-            viewBinding = (IViewBinding)theClass.newInstance();
+            viewBinding = (IProxyViewBinding)theClass.newInstance();
         }
         catch (Exception e)
         {

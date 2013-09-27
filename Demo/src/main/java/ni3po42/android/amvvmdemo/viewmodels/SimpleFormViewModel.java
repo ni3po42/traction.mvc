@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import amvvm.implementations.observables.ObservableList;
-import amvvm.implementations.observables.PropertyListener;
 import amvvm.implementations.observables.SimpleCommand;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.viewmodels.ViewModel;

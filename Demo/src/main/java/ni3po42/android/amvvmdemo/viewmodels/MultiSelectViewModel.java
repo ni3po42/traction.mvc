@@ -55,10 +55,18 @@ public class MultiSelectViewModel extends ViewModel
         @Override
         protected void onExecuted(CommandArgument commandArgument)
         {
-            Toast.makeText(getActivity(), "There are "+ Items.getSelectionCount()+" item(s) selected.", Toast.LENGTH_SHORT).show();
+            String txt = myString == null ? "" : myString;
+            Toast.makeText(getActivity(), "There are "+ Items.getSelectionCount()+" item(s) selected. "+txt, Toast.LENGTH_SHORT).show();
         }
     };
-	
+
+    public int getExampleIcon()
+    {
+        return R.drawable.ic_launcher;
+    }
+
+    private String myString;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{	
@@ -67,5 +75,13 @@ public class MultiSelectViewModel extends ViewModel
 		setContentView(R.layout.multiselection);
 		setMenuLayout(R.menu.multiselectoptions);
 	}
-	
+
+    public String getMyString() {
+        return myString;
+    }
+
+    public void setMyString(String myString) {
+        this.myString = myString;
+        notifyListener("MyString");
+    }
 }

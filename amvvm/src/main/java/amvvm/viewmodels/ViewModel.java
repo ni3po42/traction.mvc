@@ -42,28 +42,26 @@ import amvvm.interfaces.IViewModel;
  * @author Tim Stratton
  *
  */
-public abstract class ViewModel
+public class ViewModel
 extends Fragment
 implements IViewModel, IObservableObject
-{	
-	private int contentViewId = 0;
-	
+{
 	/**
 	 * Helper to implement view model logic.
 	 */
-	private final ViewModelHelper<ActivityViewModel> helper = new ViewModelHelper<ActivityViewModel>()
+	private final ViewModelHelper helper = new ViewModelHelper()
 	{
-		@Override
-		protected ActivityViewModel getActivity()
-		{
-			//get access to the activity for the view.
-			//IT MUST ALSO BE AN ACTIVITY THAT IMPLEMENTS IViewModel!!!!
-			if (ViewModel.this.getActivity() instanceof ActivityViewModel)
-				return (ActivityViewModel)ViewModel.this.getActivity();
-			return null;
-		}
-		
-		@Override
+        @Override
+        protected <T extends Activity & IViewModel> T getActivity()
+        {
+            //get access to the activity for the view.
+            //IT MUST ALSO BE AN ACTIVITY THAT IMPLEMENTS IViewModel!!!!
+            if (ViewModel.this.getActivity() instanceof IViewModel)
+                return (T)ViewModel.this.getActivity();
+            return null;
+        }
+
+        @Override
 		public Object getSource() 
 		{
 			//hijack 'this', makes ViewModelHelper think 'this' is actually the fragment instead
@@ -76,19 +74,12 @@ implements IViewModel, IObservableObject
 	{
 		return helper;
 	}
-	
-	@Override
-	public void linkFragments(BindingInventory inventory) 
-	{
-		inventory.linkFragments(getFragmentManager());
-	};
-		
-	
+
 	@Override
 	public void setMenuLayout(int id)
 	{		
 		setHasOptionsMenu(id > 0);
-		helper.setMenuLayoutId(id);
+		helper.setMenuLayout(id);
 	}
 
     @Override
@@ -106,7 +97,7 @@ implements IViewModel, IObservableObject
 	@Override
 	public void setContentView(int layoutResID)
 	{
-		contentViewId = layoutResID;
+		helper.setContentView(layoutResID);
 	}
 	
 	@Override
@@ -119,9 +110,7 @@ implements IViewModel, IObservableObject
 	@Override
 	public View onCreateView(LayoutInflater notUsed, ViewGroup container, Bundle savedInstanceState) 
 	{
-		if (contentViewId == 0)
-			return null;	
-		return helper.inflateView(contentViewId, container, container != null);
+		return helper.inflateView(helper.getContentView(), container, container != null);
 	}
 	
 	@Override
@@ -161,11 +150,10 @@ implements IViewModel, IObservableObject
     /*
 	 * All code from this point down are not neccessary, however it's being provided here as a convenience
 	 */
-	
 	@Override
-	public void onEvent(EventArg arg)
+	public void onEvent(String propagationId)
 	{
-		helper.onEvent(arg);
+        helper.onEvent(propagationId);
 	}
 
 	@Override
@@ -233,4 +221,10 @@ implements IViewModel, IObservableObject
 	{
 		return this;
 	}
+
+    @Override
+    public IViewModel getProxyViewModel()
+    {
+        return this;
+    }
 }

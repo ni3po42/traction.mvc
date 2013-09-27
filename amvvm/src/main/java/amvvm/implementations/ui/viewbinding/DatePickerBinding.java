@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ViewFactory;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
@@ -36,12 +37,27 @@ import amvvm.R;
  */
 public class DatePickerBinding 
 extends GenericViewBinding<DatePicker>
-implements DatePicker.OnDateChangedListener
 {
 	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, R.styleable.DatePicker_SelectedDate);
 	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, R.styleable.DatePicker_MinDate);
 	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, R.styleable.DatePicker_MaxDate);
-		
+
+    private static final DatePicker.OnDateChangedListener dateChangeListener = new DatePicker.OnDateChangedListener()
+    {
+        @Override
+        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+        {
+            //wanted to keep the time consistant with the date, just cause we are changing the date,
+            //doesn't mean the view-model isn't also keeping track of the current time elsewhere.
+            //so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet)
+            DatePickerBinding datePickerBinding = (DatePickerBinding) ViewFactory.getViewBinding(view);
+            Time t = datePickerBinding.SelectedDate.dereferenceValue();
+            t = (t == null) ? new Time() : new Time(t);
+            t.set(t.second, t.minute, t.hour, dayOfMonth, monthOfYear, year);
+            datePickerBinding.SelectedDate.sendUpdate(t);
+        }
+    };
+
 	public DatePickerBinding()
 	{
 		SelectedDate.setUIUpdateListener(new IUIUpdateListener<Time>()
@@ -53,10 +69,10 @@ implements DatePicker.OnDateChangedListener
 					return;
 				if (value == null)
 				{
-					getWidget().init(1970, 0, 1, DatePickerBinding.this);
+					getWidget().init(1970, 0, 1, dateChangeListener);
 					return;
 				}				
-				getWidget().init(value.year, value.month, value.monthDay, DatePickerBinding.this);
+				getWidget().init(value.year, value.month, value.monthDay, dateChangeListener);
 			}
 		});
 		
@@ -91,7 +107,7 @@ implements DatePicker.OnDateChangedListener
     {
         super.initialise(attributeBridge);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.DatePicker);
-		getWidget().init(1970, 0, 1, this);
+		getWidget().init(1970, 0, 1, dateChangeListener);
 		SelectedDate.initialize(ta);
 		MinDate.initialize(ta);
 		MaxDate.initialize(ta);
@@ -104,17 +120,5 @@ implements DatePicker.OnDateChangedListener
 	{
 		getWidget().init(1970, 0, 1, null);
 		super.detachBindings();
-	}
-
-	@Override
-	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth)
-	{
-		//wanted to keep the time consistant with the date, just cause we are changing the date,
-		//doesn't mean the view-model isn't also keeping track of the current time elsewhere.
-		//so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet)
-		Time t = SelectedDate.dereferenceValue();
-		t = (t == null) ? new Time() : new Time(t);			
-		t.set(t.second, t.minute, t.hour, dayOfMonth, monthOfYear, year);
-		SelectedDate.sendUpdate(t);
 	}
 }

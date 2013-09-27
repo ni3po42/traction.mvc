@@ -45,15 +45,15 @@ implements IViewModel, IObservableObject
 	/**
 	 * Helper object: houses almost all the logic the activity will need 
 	 */
-	private final ViewModelHelper<ActivityViewModel> helper = new ViewModelHelper<ActivityViewModel>()
+	private final ViewModelHelper helper = new ViewModelHelper()
 	{
-		@Override
-		protected ActivityViewModel getActivity()
-		{
-			//get the helper access to this activity
-			return ActivityViewModel.this;
-		}			
-	};
+        @Override
+        protected <T extends Activity & IViewModel> T getActivity()
+        {
+            //get the helper access to this activity
+            return (T)ActivityViewModel.this;
+        }
+    };
 
 
     @Override
@@ -61,23 +61,18 @@ implements IViewModel, IObservableObject
 	{
 		return helper;
 	};
-	
-	@Override
-	public void linkFragments(BindingInventory inventory) 
-	{
-		helper.linkFragments(inventory);
-	};
 
 	@Override
 	public void setContentView(int layoutResID)
 	{
+        helper.setContentView(layoutResID);
 		setContentView(helper.inflateView(layoutResID, null, true));
 	}
 	
 	@Override
 	public void setMenuLayout(int id)
 	{
-		helper.setMenuLayoutId(id);
+		helper.setMenuLayout(id);
 	}
 
 
@@ -116,9 +111,9 @@ implements IViewModel, IObservableObject
 	 */
 	
 	@Override
-	public void onEvent(EventArg arg)
+	public void onEvent(String propagationId)
 	{
-		helper.onEvent(arg);
+        helper.onEvent(propagationId);
 	}
 
 	@Override
@@ -186,5 +181,10 @@ implements IViewModel, IObservableObject
 	{
 		return this;
 	}
-	
+
+    @Override
+    public IViewModel getProxyViewModel()
+    {
+        return this;
+    }
 }

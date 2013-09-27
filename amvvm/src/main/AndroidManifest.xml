@@ -14,8 +14,8 @@
  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="amvvm"
-          android:versionCode="4"
-          android:versionName="BETA 0.5.2" >
+          android:versionCode="6"
+          android:versionName="BETA 0.6.0" >
 
     <uses-sdk android:minSdkVersion="16"
               android:targetSdkVersion="16" />

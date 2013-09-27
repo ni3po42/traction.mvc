@@ -102,7 +102,7 @@ public interface IUIElement<T>
 	 * @return
 	 */
 	public BindingInventory getBindingInventory();
-	
+
 	/**
 	 * listener to handle updates to the ui element
 	 * @author Tim Stratton

@@ -227,6 +227,10 @@ implements IViewBinding, TextWatcher
     protected void initialise(IAttributeBridge attributeBridge)
     {
         super.initialise(attributeBridge);
+        if (getEditTextView() != null)
+        {
+            getEditTextView().addTextChangedListener(this);
+        }
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TextView);
 		Text.initialize(ta);
 		Format.initialize(ta);

@@ -22,9 +22,9 @@ import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.menubinding.MenuInflater;
 import amvvm.interfaces.IPropertyStore;
+import amvvm.interfaces.IProxyViewModel;
 import amvvm.interfaces.IViewBinding;
 import amvvm.interfaces.IViewModel;
-import amvvm.interfaces.IAccessibleFragmentManager;
 import amvvm.interfaces.IObjectListener;
 
 import android.app.Activity;
@@ -43,11 +43,10 @@ import android.view.ViewGroup;
  * in your own base, or just use these classes as your base yourself.
  * @author Tim Stratton
  *
- * @param <T>
  */
-public abstract class ViewModelHelper<T extends Activity & IViewModel>
+public abstract class ViewModelHelper
 extends ObservableObject
-implements IAccessibleFragmentManager
+implements IViewModel
 {
 	/**
 	 * property cache
@@ -63,7 +62,12 @@ implements IAccessibleFragmentManager
 	 * menu layout id
 	 */
 	private int menuLayoutId;
-	
+
+    /**
+     * content layout id
+     */
+    private int contentViewId = 0;
+
 	/**
 	 * access to layout inflator with custom viewfactory2 added
 	 */
@@ -73,23 +77,25 @@ implements IAccessibleFragmentManager
 	 * Access to an activity implementing IviewModel
 	 * @return
 	 */
-	protected abstract T getActivity();
+	protected abstract <T extends Activity & IViewModel> T getActivity();
 	
 	/**
 	 * forces menu to invalidate on activity
 	 */
 	private IObjectListener invalidateMenuListener = new IObjectListener()
 	{
-		@Override
-		public void onEvent(EventArg arg)
-		{
-            invalidateMenu();
-		}		
+        @Override
+        public void onEvent(String propagationId)
+        {
+            if (propagationId == null)
+                invalidateMenu();
+        }
 	};
 
     protected void invalidateMenu()
     {
-        getActivity().invalidateOptionsMenu();
+        if (menuLayoutId > 0)
+            getActivity().invalidateOptionsMenu();
     }
 
 	/**
@@ -160,6 +166,9 @@ implements IAccessibleFragmentManager
 	 */
 	public View inflateView(int layoutResID, ViewGroup parent, boolean attachToContext)
 	{
+        if (layoutResID <= 0)
+            return null;
+
 		View v = getActivity().getLayoutInflater().inflate(layoutResID, parent, false);
         if (attachToContext)
 		    ViewFactory.RegisterContext(v, this);
@@ -183,20 +192,6 @@ implements IAccessibleFragmentManager
         ViewFactory.RegisterContext(fragment.getView(), this);
     }
 
-	/**
-	 * links fragments registered to the binding inventory 
-	 */
-	@Override
-	public void linkFragments(BindingInventory inventory)
-	{
-		inventory.linkFragments(getActivity().getFragmentManager());
-	}
-
-    @Override
-    public FragmentManager getFragmentManager() {
-        return getActivity().getFragmentManager();
-    }
-
     @Override
 	public IPropertyStore getPropertyStore()
 	{
@@ -209,8 +204,24 @@ implements IAccessibleFragmentManager
 			menuInflater = new MenuInflater(getActivity(),this);
 		return menuInflater;
 	}
-	
-	/**
+
+    @Override
+    public void setMenuLayout(int id)
+    {
+        menuLayoutId = id;
+        invalidateMenu();
+    }
+
+    /**
+     * Gets menu layout
+     * @return
+     */
+    public int getMenuLayoutId()
+    {
+        return menuLayoutId;
+    }
+
+    /**
 	 * The framework assumes all viewmodel-fragments are maintained in the fragment manager. use this method to access view-models
 	 * @param memberName
 	 * @return : view-model if found
@@ -261,25 +272,18 @@ implements IAccessibleFragmentManager
 		
 		return true;
 	}
-	
-	/**
-	 * Gets menu layout
-	 * @return
-	 */
-	public int getMenuLayoutId()
-	{
-		return menuLayoutId;
-	}
-	
-	/**
-	 * sets menu layout
-	 * @param i
-	 */
-	public void setMenuLayoutId(int i)
-	{
-		menuLayoutId = i;
-        invalidateMenu();
-	}
+
+
+    @Override
+    public void setContentView(int layoutResID)
+    {
+        this.contentViewId = layoutResID;
+    }
+
+    public int getContentView()
+    {
+        return this.contentViewId;
+    }
 
 	public Object tweakServiceCall(String name, Object obj)
 	{
@@ -299,4 +303,8 @@ implements IAccessibleFragmentManager
             return obj;
 	}
 
+    @Override
+    public IViewModel getProxyViewModel() {
+        return this;
+    }
 }

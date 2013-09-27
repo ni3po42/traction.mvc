@@ -16,6 +16,7 @@
 package amvvm.implementations.ui;
 
 import amvvm.interfaces.ICommand;
+import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IViewBinding;
 
 /**
@@ -28,7 +29,7 @@ import amvvm.interfaces.IViewBinding;
 public class UIEvent<TArg extends ICommand.CommandArgument>
 extends UIProperty<TArg>
 {	
-	public UIEvent(IViewBinding viewBinding, int pathAttribute)
+	public UIEvent(IProxyViewBinding viewBinding, int pathAttribute)
 	{
 		super(viewBinding, pathAttribute);
 	}

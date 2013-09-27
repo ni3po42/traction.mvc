@@ -35,7 +35,7 @@ public class PropertyStore
 	private static final String[] prefixes = new String[]{"get","is"};
 	private static final Class<?>[] emptyclasses = new Class<?>[]{};
 	
-	private Hashtable<String, Property<?,?>> properties = new Hashtable<String, Property<?,?>>();
+	protected final Hashtable<String, Property<?,?>> properties = new Hashtable<String, Property<?,?>>();
 	
 	/**
 	 * get property form store

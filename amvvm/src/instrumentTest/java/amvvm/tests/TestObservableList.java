@@ -40,13 +40,13 @@ public class TestObservableList extends TestCase
         list.notifyListener();
 
         //assert
-        ArgumentCaptor<IObjectListener.EventArg> argument = ArgumentCaptor.forClass(IObjectListener.EventArg.class);
+        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+
         verify(listen).onEvent(argument.capture());
 
-        IObjectListener.EventArg arg = argument.getValue();
+        String arg = argument.getValue();
 
-        assertEquals("testSource", arg.getPropertyName());
-        assertEquals("testSource", arg.generateNextPropagationId());
+        assertEquals("testSource", arg);
     }
 
     private ObservableList<oo> createList()
