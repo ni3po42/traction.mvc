@@ -1,4 +1,4 @@
-<h1>amvvm, v BETA 0.5.2</h1>
+<h1>amvvm, v BETA 0.6.0</h1>
 
 <ul>
 <li><a href="https://github.com/ni3po42/amvvm/wiki/How-does-it-work%3F">How's it work</a></li>
