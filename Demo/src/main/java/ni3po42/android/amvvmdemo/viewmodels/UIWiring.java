@@ -16,6 +16,7 @@
 package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import amvvm.implementations.observables.SimpleCommand;
@@ -64,6 +65,7 @@ public class UIWiring extends ViewModel
 	{
 		this.mainFlag = mainFlag;
 		notifyListener("MainFlagOn");
+        notifyListener("MyString");
 	}
 	
 	public int getUpperBound()
@@ -93,11 +95,17 @@ public class UIWiring extends ViewModel
         @Override
         protected void onExecuted(CommandArgument commandArgument)
         {
-            Toast
-                    .makeText(getActivity(), "MainFlag is " + (isMainFlagOn() ? "on" : "off"), Toast.LENGTH_SHORT)
-                    .show();
+
+            Toast toast = createBindableToast(R.layout.customtoast);
+                  toast.setDuration(Toast.LENGTH_LONG);
+                  toast.show();
         }
     };
+
+    public String getMyString()
+    {
+        return "MainFlag is " + (isMainFlagOn() ? "on" : "off");
+    }
 
     public int getMyInt() {
         return myInt;
