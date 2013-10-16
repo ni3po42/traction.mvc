@@ -53,7 +53,28 @@ public class TestBindingInventory extends InstrumentationTestCase
 	}
 	
 	//public void test
-	
+
+    public void testCanBindToThis()
+    {
+        //arrange
+        biObj obj = new biObj();
+        obj.setObj(new biObj());
+
+        BindingInventory inv = new BindingInventory();
+        IUIElement uiprop = mock(IUIElement.class);
+
+        when(uiprop.getPath()).thenReturn(".");
+
+        //act
+        inv.track(uiprop);
+        inv.setContextObject(obj);
+
+        obj.notifyListener();
+
+        //assert
+        verify(uiprop).receiveUpdate((obj));
+    }
+
 	public void testCanWireReactionPaths_depth1()
 	{
 		//arrange

@@ -5,6 +5,6 @@
     android:layout_width="wrap_content"
     android:layout_height="50dip"
   	mvvm:IsRoot="true" 
-  	mvvm:Text="Type"
+  	mvvm:Text="."
      />
 

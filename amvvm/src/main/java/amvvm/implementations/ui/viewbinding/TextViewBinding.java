@@ -144,6 +144,7 @@ implements IViewBinding, TextWatcher
 	@Override
 	public void afterTextChanged(Editable text)
 	{
+
 		//this binding view doesn't restrict the data from the model as a string only, you can send any type of object,
 		//it will use either the format or the .toString() to display the data.
 		//but updates will need to be sent back if it's a editview

@@ -6,5 +6,19 @@
         mvvm:Active="Active"
         android:layout_width="match_parent"
         android:layout_height="50dip"
+        >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        mvvm:Text="Content"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        mvvm:Text="Id"
+        />
+
+   </ni3po42.android.amvvmdemo.views.SwipeEntryView>
 

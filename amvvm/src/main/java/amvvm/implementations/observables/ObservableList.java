@@ -26,9 +26,7 @@ import amvvm.implementations.ui.viewbinding.ProxyAdapter;
 import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IPropertyStore;
-import amvvm.interfaces.IProxyObservableObject;
 
-import android.content.Context;
 import android.util.Property;
 import android.widget.BaseAdapter;
 

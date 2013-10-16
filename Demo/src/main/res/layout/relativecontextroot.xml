@@ -12,6 +12,13 @@
         mvvm:RelativeContext="MyModel"
         >
         <include layout="@layout/relativecontextinclude" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            mvvm:RelativeContext="Value"
+            mvvm:Text="."
+            />
+
     </LinearLayout>
 
 </LinearLayout>

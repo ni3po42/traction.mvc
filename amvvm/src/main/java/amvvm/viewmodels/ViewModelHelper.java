@@ -32,10 +32,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 /**
  * Implements all logic for a view model to function. Activities and Fragments can wrap this logic to become the base object to handle
@@ -78,7 +80,9 @@ implements IViewModel
 	 * @return
 	 */
 	protected abstract <T extends Activity & IViewModel> T getActivity();
-	
+
+    protected final SparseIntArray toastRootIds = new SparseIntArray();
+
 	/**
 	 * forces menu to invalidate on activity
 	 */
@@ -306,5 +310,25 @@ implements IViewModel
     @Override
     public IViewModel getProxyViewModel() {
         return this;
+    }
+
+    @Override
+    public Toast createBindableToast(int layoutId)
+    {
+        Toast t = new Toast(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        ViewGroup root = null;
+        int rootId = toastRootIds.get(layoutId, -1);
+        if (rootId != -1)
+            root = (ViewGroup)  getActivity().findViewById(rootId);
+
+        View layout = inflater.inflate(layoutId, root);
+        ViewFactory.RegisterContext(layout, getSource());
+
+        t.setView(layout);
+
+        return t;
     }
 }

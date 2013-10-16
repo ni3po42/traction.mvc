@@ -28,6 +28,7 @@ import android.app.FragmentManager;
 import android.util.Property;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.Toast;
 
 /**
  * Base class for view model activities. In AMVVM, the activity is used to manage the different view model (fragments), but can act as
@@ -186,5 +187,11 @@ implements IViewModel, IObservableObject
     public IViewModel getProxyViewModel()
     {
         return this;
+    }
+
+    @Override
+    public Toast createBindableToast(int layoutId)
+    {
+        return helper.createBindableToast(layoutId);
     }
 }

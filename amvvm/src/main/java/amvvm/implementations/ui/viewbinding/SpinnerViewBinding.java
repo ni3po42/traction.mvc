@@ -44,7 +44,6 @@ implements OnItemSelectedListener
     public final UIProperty<Integer> SelectedChoice_prop = new  UIProperty<Integer>(this, R.styleable.Spinner_SelectedChoice);
 
     private Boolean isEvent = null;
-    //private int tempSelectionPosition = -1;
 
     private OnItemSelectedListener nullListener = new OnItemSelectedListener()
     {

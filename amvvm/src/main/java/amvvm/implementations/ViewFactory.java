@@ -204,12 +204,27 @@ implements Factory2
             {
                 newViewBinding.getProxyViewBinding().setPathPrefix(prefix);
                 view.setTag(R.id.amvvm_viewholder, newViewBinding);
+
+                view.addOnAttachStateChangeListener(detachListener);
+
                 newViewBinding.getProxyViewBinding().initialise(view, attributeBridge, handler, inv, flags);
             }
          }
          
          return view;
 	}
+
+    private final View.OnAttachStateChangeListener detachListener = new View.OnAttachStateChangeListener() {
+        @Override
+        public void onViewAttachedToWindow(View view) {
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(View view) {
+            view.removeOnAttachStateChangeListener(detachListener);
+            ViewFactory.DetachContext(view);
+        }
+    };
 
     public IProxyViewBinding createViewBinding(View view, String bindingType)
     {

@@ -15,6 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
+import amvvm.implementations.ViewFactory;
 import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.interfaces.IAttributeGroup;
@@ -34,11 +35,26 @@ import amvvm.R;
  * SelectedTime - current time in the widget
  */
 public class TimePickerBinding 
-extends GenericViewBinding<TimePicker> 
-implements OnTimeChangedListener
+extends GenericViewBinding<TimePicker>
 {
 	public final UIProperty<Time> SelectedTime = new UIProperty<Time>(this, R.styleable.TimePicker_SelectedTime);
-	
+
+    private static final OnTimeChangedListener timeChangedListener = new OnTimeChangedListener()
+    {
+        @Override
+        public void onTimeChanged(TimePicker picker, int hourOfDay, int minutes)
+        {
+            TimePickerBinding tpb = (TimePickerBinding)ViewFactory.getViewBinding(picker);
+            if (tpb == null)
+                return;
+
+            BindingInventory inv = tpb.SelectedTime.getBindingInventory();
+            Time t = new Time(tpb.SelectedTime.dereferenceValue());
+            t.set(0, minutes, hourOfDay, t.monthDay, t.month, t.year);
+            tpb.SelectedTime.sendUpdate(t);
+        }
+    };
+
 	public TimePickerBinding()
 	{
 		SelectedTime.setUIUpdateListener(new IUIElement.IUIUpdateListener<Time>()
@@ -61,6 +77,7 @@ implements OnTimeChangedListener
         super.initialise(attributeBridge);
         IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TimePicker);
 		SelectedTime.initialize(ta);
+        getWidget().setOnTimeChangedListener(timeChangedListener);
 		ta.recycle();
 	}
 
@@ -71,15 +88,4 @@ implements OnTimeChangedListener
 		super.detachBindings();
 	}
 
-	@Override
-	public void onTimeChanged(TimePicker arg0, int hourOfDay, int minutes)
-	{
-		BindingInventory inv = SelectedTime.getBindingInventory();
-		Time t = new Time(SelectedTime.dereferenceValue());
-		t.set(0, minutes, hourOfDay, t.monthDay, t.month, t.year);
-		SelectedTime.sendUpdate(t);
-	}
-	
-	
-	
 }

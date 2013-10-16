@@ -406,4 +406,9 @@ public class BindingInventory
 		 
 		 return prop.getType();
 	}
+
+    public void clearAll()
+    {
+        map.clear();
+    }
 }

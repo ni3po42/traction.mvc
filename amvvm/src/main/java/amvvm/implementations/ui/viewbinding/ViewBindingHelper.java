@@ -51,8 +51,6 @@ public abstract class ViewBindingHelper<V>
 
     private String prefix;
 
-    private ViewBindingFactory factory = new ViewBindingFactory();
-
     private int bindingFlags = IViewBinding.Flags.NO_FLAGS;
 
     private boolean synthetic;
@@ -290,11 +288,8 @@ public abstract class ViewBindingHelper<V>
         {
             genericBindedEvents.get(i).clearProxyListner();
         }
-    }
-
-    public IViewBinding createSyntheticFor(View view, String bindingType, BindingInventory inventory)
-    {
-        return factory.createSyntheticFor(view, bindingType, inventory);
+        if (getBindingInventory() != null)
+            getBindingInventory().clearAll();
     }
 
     @Override

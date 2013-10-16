@@ -23,5 +23,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 17
+        testPackageName "ni3po42.android.amvvmdemo.test"
     }
 }
+

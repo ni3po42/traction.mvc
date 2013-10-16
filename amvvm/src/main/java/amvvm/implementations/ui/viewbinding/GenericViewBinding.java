@@ -178,6 +178,7 @@ implements IViewBinding
 	public void detachBindings()
 	{
         helper.detachBindings();
+        widget.clear();
 	}
 
     @Override
