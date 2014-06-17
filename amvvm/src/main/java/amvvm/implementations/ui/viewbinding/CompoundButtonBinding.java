@@ -16,14 +16,15 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.observables.Command;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
 
 /**
@@ -38,7 +39,7 @@ import amvvm.R;
 public class CompoundButtonBinding
 extends ButtonBinding<CompoundButton>
 {	
-	public UIProperty<Boolean> IsChecked = new UIProperty<Boolean>(this, R.styleable.Toggle_IsChecked);
+	public UIProperty<Boolean> IsChecked = new UIProperty<Boolean>(this, "IsChecked");
 
     private static final OnCheckedChangeListener checkHandler = new OnCheckedChangeListener()
     {
@@ -67,13 +68,10 @@ extends ButtonBinding<CompoundButton>
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		getWidget().setOnCheckedChangeListener(checkHandler);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Toggle);
-		IsChecked.initialize(ta);
-		ta.recycle();
 	}
 
 	@Override

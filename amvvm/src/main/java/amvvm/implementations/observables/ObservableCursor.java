@@ -26,7 +26,6 @@ import android.widget.BaseAdapter;
 
 import amvvm.implementations.ui.viewbinding.CursorAdapter;
 import amvvm.implementations.ui.viewbinding.ProxyAdapter;
-import amvvm.interfaces.ICursorExtension;
 import amvvm.interfaces.IObservableCursor;
 import amvvm.interfaces.IPropertyStore;
 
@@ -37,14 +36,8 @@ public class ObservableCursor
     extends ProxyAdapter<Cursor>
     implements IObservableCursor,LoaderManager.LoaderCallbacks<Cursor>
 {
-    private ICursorExtension cursorExtension;
     private CursorAdapter internalCursorAdapter;
     private ICursorLoader cursorLoader;
-
-    public void setCursorExtension(ICursorExtension extension)
-    {
-        this.cursorExtension = extension;
-    }
 
     public <T extends ObservableCursor> T setCursorLoader(ICursorLoader cursorLoader)
     {
@@ -142,9 +135,10 @@ public class ObservableCursor
 
             Cursor c = (Cursor)obj;
 
-            if (index < 0 && cursorExtension != null)
+//            if (index < 0 && extension != null)
             {
-                cursorExtension.setCursorExtendedProperty(c, getName(), value);
+                //Property<?,?> prop = PropertyStore.find(extension.getClass(), getName());
+                //prop.set(extension, value);
             }
         }
 
@@ -158,9 +152,9 @@ public class ObservableCursor
 
             if (index == -1)
             {
-                if (cursorExtension == null)
-                    return null;
-                return cursorExtension.getCursorExtendedProperty(internalCursor, getName());
+                //if (cursorExtension == null)
+                //    return null;
+                //return cursorExtension.getCursorExtendedProperty(internalCursor, getName());
             }
 
             Class<Object> c = cursorPropAccessor.this.getType();

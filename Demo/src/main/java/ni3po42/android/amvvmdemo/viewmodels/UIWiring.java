@@ -17,7 +17,11 @@ package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import amvvm.implementations.observables.SimpleCommand;
 import amvvm.interfaces.ICommand;
@@ -103,6 +107,7 @@ public class UIWiring extends ViewModel
     };
 
     public String getMyString()
+            throws JSONException
     {
         return "MainFlag is " + (isMainFlagOn() ? "on" : "off");
     }

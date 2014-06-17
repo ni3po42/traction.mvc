@@ -22,12 +22,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.ui.viewbinding.ViewBindingHelper;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
@@ -45,15 +46,12 @@ public class SwipeEntryView
             return SwipeEntryView.this;
         }
 
-        @Override
-        public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
-        {
-            super.initialise(v, attributeBridge, uiHandler, inventory, bindingFlags);
-            SwipeEntryView.this.initialise(attributeBridge, uiHandler, inventory);
-        }
     };
-
-    public UIProperty<Boolean> Active = new UIProperty<Boolean>(this, R.styleable.SwipeEntryView_Active);
+    @Override
+    public IViewBinding getProxyViewBinding() {
+        return helper;
+    }
+    public UIProperty<Boolean> Active = new UIProperty<Boolean>(this, "Active");
 
     public SwipeEntryView(Context context)
     {
@@ -85,13 +83,6 @@ public class SwipeEntryView
         });
     }
 
-    private void initialise(IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory)
-    {
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.SwipeEntryView);
-        Active.initialize(ta);
-        ta.recycle();
-    }
-
     @Override
     public void onLeftSwipe()
     {
@@ -106,11 +97,6 @@ public class SwipeEntryView
     public void onRightSwipe()
     {
 
-    }
-
-    @Override
-    public IViewBinding getProxyViewBinding() {
-        return helper;
     }
 
     @Override

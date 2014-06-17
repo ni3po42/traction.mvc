@@ -16,6 +16,8 @@
 package amvvm.interfaces;
 
 
+import org.json.JSONObject;
+
 /**
  * An absttaction of a Command
  * @author Tim Stratton
@@ -47,8 +49,8 @@ public interface ICommand<TArg extends ICommand.CommandArgument>
     public class CommandArgument
     {
         private String commandName;
-
         private boolean eventCancelled;
+        private JSONObject tagProperties;
 
         public boolean isEventCancelled()
         {
@@ -62,8 +64,19 @@ public interface ICommand<TArg extends ICommand.CommandArgument>
 
         public CommandArgument(String commandName)
         {
+            this(commandName, null);
+        }
+
+        public CommandArgument(String commandName, JSONObject tagProperties)
+        {
             this.commandName = commandName;
             this.eventCancelled = false;
+            this.tagProperties = tagProperties;
+        }
+
+        public JSONObject getEventData()
+        {
+            return tagProperties;
         }
 
         public String getCommandName()

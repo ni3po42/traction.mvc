@@ -16,11 +16,13 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.widget.ProgressBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
 
 /**
@@ -36,9 +38,9 @@ import amvvm.R;
 public class ProgressBarBinding 
 extends GenericViewBinding<ProgressBar>
 {
-	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, R.styleable.ProgressView_MaxValue);
-	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, R.styleable.ProgressView_Value);
-	public final UIProperty<Boolean> IsIndeterminate = new UIProperty<Boolean>(this, R.styleable.ProgressView_IsIndeterminate);
+	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, "MaxValue");
+	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, "Value");
+	public final UIProperty<Boolean> IsIndeterminate = new UIProperty<Boolean>(this, "IsIndeterminate");
 		
 	public ProgressBarBinding()
 	{
@@ -84,16 +86,4 @@ extends GenericViewBinding<ProgressBar>
 			}
 		});		
 	}
-
-    @Override
-    protected void initialise(IAttributeBridge attributeBridge)
-    {
-        super.initialise(attributeBridge);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ProgressView);
-		MaxValue.initialize(ta);
-		Value.initialize(ta);
-		IsIndeterminate.initialize(ta);
-		ta.recycle();
-	}
-
 }

@@ -7,11 +7,8 @@
 
           android:choiceMode="singleChoice"
 
-          xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-          mvvm:IsRoot="true"
-          mvvm:Items="Entries"
-          mvvm:ItemTemplate="@layout/swipeentry"
-            mvvm:SelectionEnabled="false"
+        android:tag="{@IsRoot:true, Items:'Entries', ItemTemplate:'@layout/swipeentry', SelectionEnabled:false}"
+
         >
 
 </ni3po42.android.amvvmdemo.views.SwipableListView>

@@ -16,10 +16,11 @@
 package ni3po42.android.amvvmdemo.viewmodels;
 
 import android.os.Bundle;
-import android.util.FloatMath;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import amvvm.implementations.observables.Command;
-import amvvm.implementations.observables.ResourceArgument;
 import amvvm.implementations.observables.SimpleCommand;
 import amvvm.interfaces.ICommand;
 import amvvm.viewmodels.ViewModel;
@@ -39,30 +40,28 @@ public class CalculatorViewModel extends ViewModel
     private double stack = 0;
     private int stackSize = 0;
 
-    private int currentAction = -1;
+    private String currentAction = null;
 
     public String getDisplay()
     {
         return String.valueOf(currentValue);
     }
 
-    public final Command<ResourceArgument> NumberUpdate = new Command<ResourceArgument>()
-                .setOnExecuteListener(new Command.IOnExecuteListener<ResourceArgument>()
-                {
-                    @Override
-                    public void onExecuted(ResourceArgument resourceArgument)
-                    {
-                        int nextInput = getResources().getInteger(resourceArgument.getResourceId());
-                        updateCurrentNumber(nextInput);
-                    }
-                });
-
-    public final Command<ResourceArgument> Operation = new Command<ResourceArgument>()
+    public final Command<ICommand.CommandArgument> NumberUpdate = new Command<ICommand.CommandArgument>()
     {
         @Override
-        protected void onExecuted(ResourceArgument resourceArgument)
+        public void onExecuted(ICommand.CommandArgument argument)
         {
-            doOperation(resourceArgument.getResourceId());
+            updateCurrentNumber(argument);
+        }
+    };
+
+    public final Command<ICommand.CommandArgument> Operation = new Command<ICommand.CommandArgument>()
+    {
+        @Override
+        protected void onExecuted(ICommand.CommandArgument argument)
+        {
+            doOperation(argument.getEventData());
         }
     };
 
@@ -84,42 +83,48 @@ public class CalculatorViewModel extends ViewModel
         }
     };
 
-    public void doOperation(int action)
+    public void doOperation(JSONObject argument)
     {
-        if (action != R.id.calc_equals)
+        String action = null;
+        try
         {
-            currentAction = action;
-            pushStack();
+            action = argument.getString("CommandValue");
+        }
+        catch (JSONException ex)
+        {
+
+        }
+
+        if ("+/-".equals(action))
+        {
+            currentValue*=-1;
+            notifyListener("Display");
+            return;
+        }
+        else if ("=".equals(action))
+        {
+            popStack();
+            if ("+".equals(currentAction))
+                    currentValue += stack;
+            else if ("-".equals(currentAction))
+                    currentValue = stack - currentValue;
+            else if ("X".equals(currentAction))
+                    currentValue *= stack;
+            else if ("/".equals(currentAction)) {
+                if (currentValue == 0) {
+                    currentValue = Double.NaN;
+                } else {
+                    currentValue = stack / currentValue;
+                }
+            }
+            currentAction = null;
+            notifyListener("Display");
+            return;
         }
         else
         {
-            popStack();
-            switch (currentAction)
-            {
-                //push to stack
-                case R.id.calc_add:
-                    currentValue += stack;
-                    break;
-                case R.id.calc_subtract:
-                    currentValue = stack - currentValue;
-                    break;
-                case R.id.calc_multiply:
-                    currentValue *= stack;
-                    break;
-                case R.id.calc_divide:
-                    if (currentValue == 0)
-                    {
-                        currentValue = Double.NaN;
-                    }
-                    else
-                    {
-                        currentValue = stack / currentValue;
-                    }
-                    break;
-            }
-            currentAction = -1;
-            notifyListener("Display");
-            return;
+            currentAction = action;
+            pushStack();
         }
         totalDigits = 0;
     }
@@ -147,8 +152,18 @@ public class CalculatorViewModel extends ViewModel
         notifyListener("Display");
     }
 
-    public void updateCurrentNumber(int nextInput)
+    public void updateCurrentNumber(ICommand.CommandArgument argument)
     {
+        int nextInput = 0;
+        try
+        {
+            nextInput = argument.getEventData().getInt("CommandValue");
+        }
+        catch (JSONException ex)
+        {
+
+        }
+
         if (totalDigits == MAX_DIGITS)
             return;
 
@@ -156,11 +171,11 @@ public class CalculatorViewModel extends ViewModel
             currentValue = nextInput;
         else if (decimalPlace == 0)
         {
-            currentValue = currentValue * 10 + nextInput;
+            currentValue = currentValue * 10 + (currentValue > 0 ? nextInput : -nextInput);
         }
         else
         {
-            currentValue = currentValue +  (nextInput * Math.pow(10, -decimalPlace));
+            currentValue = currentValue +  ((currentValue > 0 ? nextInput : -nextInput) * Math.pow(10, -decimalPlace));
             decimalPlace++;
         }
         totalDigits++;

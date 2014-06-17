@@ -19,8 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 import amvvm.interfaces.IViewBinding;
 
@@ -28,7 +26,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
-import amvvm.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Defines the ui elements for a TextView (and an edit view)
@@ -43,8 +43,8 @@ public class TextViewBinding
 extends GenericViewBinding<TextView>
 implements IViewBinding, TextWatcher
 {	
-	public final UIProperty<Object> Text = new UIProperty<Object>(this, R.styleable.TextView_Text);
-	public final UIProperty<Object> Format = new UIProperty<Object>(this, R.styleable.TextView_Format);
+	public final UIProperty<Object> Text = new UIProperty<Object>(this,"Text");
+	public final UIProperty<Object> Format = new UIProperty<Object>(this, "Format");
 	
 	private boolean initFormatSet = false;
 
@@ -91,7 +91,7 @@ implements IViewBinding, TextWatcher
 				if (getWidget() != null)
 				{
 					//if format was not flagged as set but there is a format provided...
-					if (!initFormatSet && Format.getPath() != null)
+					if (!initFormatSet && Format.isDefined())
 					{
 						//..grab that format
                         Format.setTempValue(Format.dereferenceValue());
@@ -112,7 +112,7 @@ implements IViewBinding, TextWatcher
 								getWidget().setText(value.toString());
 							else
 								//and apply the format
-								getWidget().setText(String.format(format.toString(), value));
+								getWidget().setText(String.format(format, value));
 						}
 						//.. but if it's a string
 						else if (Format.getTempValue() instanceof String)
@@ -152,7 +152,7 @@ implements IViewBinding, TextWatcher
 			return;
 
 		//get the type of property
-		Class<?> fieldType = Text.getBindingInventory().dereferencePropertyType(Text.getPath());
+		Class<?> fieldType = Text.getDereferencedPathType();
 		
 		//field type can be null if:
 		//1) there is a null object down the path that's not the last chain, which would be impossible to set a value anyways, so we can exit
@@ -225,17 +225,13 @@ implements IViewBinding, TextWatcher
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
         if (getEditTextView() != null)
         {
             getEditTextView().addTextChangedListener(this);
         }
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TextView);
-		Text.initialize(ta);
-		Format.initialize(ta);
-		ta.recycle();
 	}
 
 	@Override

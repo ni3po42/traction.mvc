@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-  	mvvm:IsRoot="true"
+    android:tag="{@IsRoot:true}"
     >
 <GridView
     android:layout_width="match_parent"
@@ -18,15 +17,13 @@
     android:horizontalSpacing="10dp"
     android:stretchMode="columnWidth"
     android:gravity="center"
-    mvvm:Items="Items"
-    mvvm:OnSelected="Items.Selected"
-    mvvm:ItemTemplate="@layout/selectable"
+    android:tag="{Items:'Items', SelectedIndex:'SelectedIndex', ItemTemplate:'@layout/selectable'}"
 
     >
 </GridView>
 <TextView 
         android:layout_width="match_parent"
     android:layout_height="match_parent"
-    mvvm:Text="Items.SelectionCount"
+    android:tag="{Text:'SelectedCount'}"
     />
 </LinearLayout>

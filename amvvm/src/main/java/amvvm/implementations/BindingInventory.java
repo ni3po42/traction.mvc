@@ -140,7 +140,7 @@ public class BindingInventory
                 int size = elements.size();
                 for(int i=0;i<size;i++)
                 {
-                    track(elements.get(i));
+                    elements.get(i).track(this);
                 }
             }
         }
@@ -230,9 +230,8 @@ public class BindingInventory
             return context.getProxyObservableObject().getSource();
     }
 
-	public void track (IUIElement<?> element)
+	public void track (IUIElement<?> element, String path)
 	{
-        String path = element.getPath();
 		if (path == null)
 			return;//no path, no track.
 		
@@ -293,12 +292,6 @@ public class BindingInventory
         prop.set(currentContext,value);
 	}
 
-	public void sendUpdateFromUIElement(IUIElement<?> element, Object value)
-	{
-        String path = element.getPath();
-		sendUpdate(path, value);
-	}
-	
 	private BindingInventory getInventoryByMatchedPattern(Matcher matches)
 	{
 		BindingInventory currentInventory = this;

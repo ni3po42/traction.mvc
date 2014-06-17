@@ -15,18 +15,18 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.observables.SelectedArgument;
-import amvvm.implementations.ui.UIEvent;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeGroup;
-import amvvm.interfaces.IProxyObservableObject;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.content.Context;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.regex.Pattern;
 
 import amvvm.R;
 
@@ -45,7 +45,8 @@ import amvvm.R;
 public class AdapterViewBinding<T>
 extends GenericViewBinding<AdapterView<BaseAdapter>>
 {
-	public final UIProperty<ProxyAdapter<T>> Items = new UIProperty<ProxyAdapter<T>>(this, R.styleable.AdapterView_Items);
+
+	public final UIProperty<ProxyAdapter<T>> Items = new UIProperty<ProxyAdapter<T>>(this, "Items");
 
 	//layout to use for child views
 	private int itemTemplateId = -1;
@@ -98,17 +99,25 @@ extends GenericViewBinding<AdapterView<BaseAdapter>>
     }
 
 	@Override
-	protected void initialise(IAttributeBridge attributeBridge)
+	protected void initialise() throws Exception
 	{	
-		super.initialise(attributeBridge);
+		super.initialise();
+        if (getWidget() == null)
+            return;
 
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.AdapterView);
-		
-		//sets the item template
-		itemTemplateId = ta.getResourceId(R.styleable.AdapterView_ItemTemplate, -1);
+        Context context = getWidget().getContext();
 
-        Items.initialize(ta);
-		ta.recycle();
+        String resourceName = getTagProperties().getString("ItemTemplate");
+        if (resourceName == null) return;
+
+        String[] parts = resourceName.split(":");
+        String packageName = parts.length == 1 ? context.getPackageName() : parts[0];
+        String resource = parts.length == 1 ? resourceName : parts[1];
+        parts = resource.split("\\/");
+        String defType = parts.length == 1 ? "layout" : parts[0];
+        String entityName = parts.length == 1 ? resourceName : parts[1];
+        defType = defType.replace("@", "");
+        itemTemplateId = context.getResources().getIdentifier(entityName, defType, packageName);
 	}
 	
 	

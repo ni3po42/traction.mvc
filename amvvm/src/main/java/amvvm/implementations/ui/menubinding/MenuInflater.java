@@ -16,20 +16,21 @@
 package amvvm.implementations.ui.menubinding;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import amvvm.implementations.BindingInventory;
-import amvvm.implementations.InflatedAttributes;
 import amvvm.implementations.ViewFactory;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IObservableObject;
 import amvvm.interfaces.IProxyObservableObject;
 
+import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.util.Xml;
 import android.view.InflateException;
 import android.view.Menu;
@@ -51,7 +52,7 @@ public class MenuInflater extends android.view.MenuInflater
 	private BindingInventory inventory = new BindingInventory();
 	private IProxyObservableObject menuContext;
 	
-	public <S extends IObservableObject> MenuInflater(Context context, IProxyObservableObject menuContext)
+	public MenuInflater(Context context, IProxyObservableObject menuContext)
 	{
 		super(context);
 		
@@ -79,13 +80,13 @@ public class MenuInflater extends android.view.MenuInflater
 		menuBindings.clear();
 
 		XmlResourceParser parser = null;
-		
-        try {
+
+        SparseArray<String> tagTracker = new SparseArray<String>();
+        try
+        {
         	//get parser and attributes for the menu layout
             parser = context.getResources().getLayout(menuRes);
             AttributeSet attrs = Xml.asAttributeSet(parser);
-
-            IAttributeBridge bridge = new InflatedAttributes(context, attrs);
 
             int eventType = parser.getEventType();
             
@@ -94,34 +95,16 @@ public class MenuInflater extends android.view.MenuInflater
             {
             	if (eventType == XmlPullParser.START_TAG && parser.getName().equals("item"))
             	{
-            		//.. then get the menu's id
             		String idStr = attrs.getAttributeValue(androidRESNamespace, "id");
-                    idStr = idStr == null ? "0" : idStr;
-                    int id = Integer.parseInt(idStr.replace("@",""));
-                    if (id != 0)
+                    String tag = attrs.getAttributeValue(androidRESNamespace, "tag");
+                    int id = idStr == null ? 0 : Integer.parseInt(idStr.replace("@",""));
+                    if (id != 0 && tag != null)
                     {
-                        //get menu item, create bindings from it
-                        MenuItem m = menu.findItem(id);
-
-                        //update action view to use menu inventory
-                        if (m.getActionView() != null)
-                        {
-                            IViewBinding actionViewBinding = ViewFactory.getViewBinding(m.getActionView());
-                            if (actionViewBinding != null)
-                            {
-                                actionViewBinding.updateBindingInventory(inventory);
-                            }
-                        }
-
-                        MenuBinding mb = new MenuBinding(m);
-                        mb.getProxyViewBinding().initialise(null, bridge, null, inventory, IViewBinding.Flags.NO_FLAGS);
-                        menuBindings.add(mb);
+                        tagTracker.put(id, tag);
                     }
-
                 }	                
                 eventType = parser.next();
             }
-            
         } 
         catch (Exception e) 
         {
@@ -131,7 +114,33 @@ public class MenuInflater extends android.view.MenuInflater
         {
         	//close parser
             if (parser != null) parser.close();
-        }	
+        }
+
+        for(int i=0;i<menu.size();i++)
+        {
+            //get menu item, create bindings from it
+            MenuItem m = menu.getItem(i);
+            //update action view to use menu inventory
+            if (m.getActionView() != null)
+            {
+                IViewBinding actionViewBinding = ViewFactory.getViewBinding(m.getActionView());
+                if (actionViewBinding != null)
+                {
+                    actionViewBinding.updateBindingInventory(inventory);
+                }
+            }
+
+            String tag = tagTracker.get(m.getItemId(), null);
+            if (tag != null)
+            {
+                MenuBinding mb = new MenuBinding(m,tag);
+                mb.getProxyViewBinding().initialise(null, null, inventory, IViewBinding.Flags.NO_FLAGS);
+                menuBindings.add(mb);
+            }
+        }
+
         inventory.setContextObject(menuContext);
 	}
+
+
 }

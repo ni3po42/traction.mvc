@@ -16,16 +16,16 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ViewFactory;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.implementations.BindingInventory;
 
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.text.format.Time;
-import amvvm.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Binds a TimePicker widget to the model/view-model
@@ -37,7 +37,7 @@ import amvvm.R;
 public class TimePickerBinding 
 extends GenericViewBinding<TimePicker>
 {
-	public final UIProperty<Time> SelectedTime = new UIProperty<Time>(this, R.styleable.TimePicker_SelectedTime);
+	public final UIProperty<Time> SelectedTime = new UIProperty<Time>(this,"SelectedTime");
 
     private static final OnTimeChangedListener timeChangedListener = new OnTimeChangedListener()
     {
@@ -72,13 +72,10 @@ extends GenericViewBinding<TimePicker>
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.TimePicker);
-		SelectedTime.initialize(ta);
+        super.initialise();
         getWidget().setOnTimeChangedListener(timeChangedListener);
-		ta.recycle();
 	}
 
 	@Override

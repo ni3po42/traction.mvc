@@ -19,12 +19,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.observables.ResourceArgument;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIEvent;
-import amvvm.R;
-import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.ICommand;
 
 /**
  * Extends a imageview to handle button like events
@@ -38,8 +38,8 @@ import amvvm.interfaces.IAttributeGroup;
 public class ImageButtonBinding
 extends ImageViewBinding
 {
-	public UIEvent<ResourceArgument> OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnClick);
-	public UIEvent<ResourceArgument> OnLongClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnLongClick);
+	public UIEvent<ICommand.CommandArgument> OnClick = new UIEvent<ICommand.CommandArgument>(this, "OnClick");
+	public UIEvent<ICommand.CommandArgument> OnLongClick = new UIEvent<ICommand.CommandArgument>(this, "OnLongClick");
 
     static class eventHandler
             implements OnClickListener, OnLongClickListener
@@ -50,10 +50,8 @@ extends ImageViewBinding
             ImageButtonBinding bb = getButtonBinding(arg0);
             if (bb == null)
                 return;
-            ResourceArgument arg = null;
-            if (bb.getCommandValueResourceId() > 0)
-                arg = new ResourceArgument(bb.OnClick.getPropertyName(), bb.getCommandValueResourceId());
-            bb.OnClick.execute(arg);
+
+            bb.OnClick.execute(null);
         }
 
         @Override
@@ -63,10 +61,7 @@ extends ImageViewBinding
             if (bb == null)
                 return false;
 
-            ResourceArgument arg = null;
-            if (bb.getCommandValueResourceId() > 0)
-                arg = new ResourceArgument(bb.OnLongClick.getPropertyName(), bb.getCommandValueResourceId());
-            return bb.OnLongClick.execute(arg);
+            return bb.OnLongClick.execute(null);
         }
         private static ImageButtonBinding getButtonBinding(View v)
         {
@@ -76,28 +71,17 @@ extends ImageViewBinding
 
     private static final eventHandler clickHandler = new eventHandler();
 
-    private int commandValueResourceId = -1;
-    public int getCommandValueResourceId()
-    {
-        return commandValueResourceId;
-    }
-
 	public ImageButtonBinding()
 	{
 		super();
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		getWidget().setOnClickListener(clickHandler);
 		getWidget().setOnLongClickListener(clickHandler);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
-		OnClick.initialize(ta);
-		OnLongClick.initialize(ta);
-        commandValueResourceId = ta.getResourceId(R.styleable.Button_CommandValue, -1);
-		ta.recycle();
 	}
 
 

@@ -15,26 +15,13 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.implementations.observables.SelectedArgument;
 import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.ViewFactory;
-import amvvm.interfaces.IAttributeGroup;
-import amvvm.interfaces.IProxyObservableObject;
+import amvvm.interfaces.ICommand;
 
-import android.content.res.TypedArray;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-import amvvm.R;
-import amvvm.interfaces.IViewBinding;
 
 /**
  * Binding for a list view; it just extends the AdapterViewBinding to add a special attribute: 'Selected'.
@@ -53,37 +40,23 @@ implements OnItemClickListener
 {	
 	//stores the path to the property that denotes if the item is selected.
 	private String enabledPath;
-    private Boolean enabledOverride;
 
-    public final UIEvent<SelectedArgument> OnSelected_event = new UIEvent<SelectedArgument>(this, R.styleable.ListView_OnSelected);
-    public final UIProperty<Integer> OnSelected_property = new UIProperty<Integer>(this, R.styleable.ListView_OnSelected);
-
-    private Boolean isEvent = null;
+    public final UIEvent<ICommand.CommandArgument> OnSelected = new UIEvent<ICommand.CommandArgument>(this,"OnSelected");
+    public final UIProperty<Integer> SelectedIndex = new UIProperty<Integer>(this, "SelectedIndex");
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
-
-        AbsListView lv = (AbsListView)(ViewGroup)getWidget();
-
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ListView);
-
-        OnSelected_event.initialize(ta);
-        OnSelected_property.initialize(ta);
-
-        if (ta.hasValue(R.styleable.ListView_SelectionEnabled))
+        super.initialise();
+        if (getTagProperties().has("SelectionEnabled"))
         {
-            enabledPath = ta.getString(R.styleable.ListView_SelectionEnabled);
+            enabledPath = getTagProperties().getString("SelectionEnabled");
             if (enabledPath == null || enabledPath.equals("") ||
                     enabledPath.toLowerCase().equals("true") || enabledPath.toLowerCase().equals("false"))//if must be a boolean
             {
                 enabledPath = null;
-                enabledOverride = ta.getBoolean(R.styleable.ListView_SelectionEnabled, true);
             }
         }
-
-        ta.recycle();
 		getWidget().setOnItemClickListener(this);
 	}
 
@@ -99,19 +72,8 @@ implements OnItemClickListener
 	@Override
 	public void onItemClick(final AdapterView<?> view, final View childView, final int position, final long key)
 	{
-        if (isEvent == null)
-        {
-            isEvent = getBindingInventory().isCommand(OnSelected_event.getPath());
-        }
-        if (isEvent)
-        {
-            SelectedArgument arg = new SelectedArgument(OnSelected_event.getPropertyName(), position);
-            OnSelected_event.execute(arg);
-        }
-        else
-        {
-            OnSelected_property.sendUpdate(position);
-        }
+        SelectedIndex.sendUpdate(position);
+        OnSelected.execute(null);
 	}
 
 }

@@ -160,6 +160,4 @@ implements IProxyViewModel, IProxyObservableObject
         super.onDetach();
         helper.unregisterFragmentFromActivity(this, getActivity());
     }
-
-
 }

@@ -15,16 +15,10 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.R;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.observables.SelectedArgument;
-import amvvm.implementations.ui.UIEvent;
-import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
-import amvvm.interfaces.IProxyObservableObject;
-import amvvm.interfaces.IViewBinding;
 
 import android.view.LayoutInflater;
 import android.view.View;

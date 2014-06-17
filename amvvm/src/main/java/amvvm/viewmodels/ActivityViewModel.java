@@ -30,6 +30,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 /**
  * Base class for view model activities. In AMVVM, the activity is used to manage the different view model (fragments), but can act as
  * a view-model for very simple cases. It's not necessary to use this class as your base for activities, but you must use an activity that
@@ -106,6 +108,11 @@ implements IViewModel, IObservableObject
 	{
 		return helper.onCreateOptionsMenu(menu);
 	}
+
+    public JSONObject getMetaData()
+    {
+        return helper.getMetaData();
+    }
 
 	/*
 	 * All code from this point down are not neccessary, however it's being provided here as a convenience

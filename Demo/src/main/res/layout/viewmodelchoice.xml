@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-    mvvm:IsRoot="true"
-    
+    android:tag="{@IsRoot:true}"
    	android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:useDefaultMargins="true"
@@ -17,12 +15,13 @@
 	  	android:layout_gravity="left"  
 		android:layout_height="25dip"
 		android:textStyle="bold"
-		mvvm:Text="Name" />
+        android:tag="{Text:Name}"
+		/>
     
      <TextView 
         android:layout_row="1" android:layout_column="0"
        	android:layout_gravity="left"
   		android:layout_height="wrap_content"
-  		mvvm:Text="Description"
+         android:tag="{Text:Description}"
   		 />       
 </GridLayout>

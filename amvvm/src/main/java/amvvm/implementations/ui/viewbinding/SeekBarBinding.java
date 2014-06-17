@@ -15,13 +15,15 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIEvent;
 
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.ICommand;
 
 /**
@@ -38,23 +40,18 @@ extends ProgressBarBinding
 implements OnSeekBarChangeListener
 {	
 	
-	public final UIEvent<ICommand.CommandArgument> OnDragStart = new UIEvent<ICommand.CommandArgument>(this, R.styleable.SeekBar_OnDragStart);
-	public final UIEvent<ICommand.CommandArgument> OnDragEnd = new UIEvent<ICommand.CommandArgument>(this, R.styleable.SeekBar_OnDragEnd);
+	public final UIEvent<ICommand.CommandArgument> OnDragStart = new UIEvent<ICommand.CommandArgument>(this, "OnDragStart");
+	public final UIEvent<ICommand.CommandArgument> OnDragEnd = new UIEvent<ICommand.CommandArgument>(this, "OnDragEnd");
 
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		if (getWidget() != null && getWidget() instanceof SeekBar)
 		{
 			((SeekBar)getWidget()).setOnSeekBarChangeListener(this);
 		}
-
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.SeekBar);
-		OnDragStart.initialize(ta);
-		OnDragEnd.initialize(ta);
-		ta.recycle();
 	}
 
 	@Override

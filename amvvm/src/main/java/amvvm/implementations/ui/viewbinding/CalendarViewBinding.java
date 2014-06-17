@@ -17,12 +17,14 @@ package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ViewFactory;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.text.format.Time;
 import android.widget.CalendarView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
 
 /**
@@ -38,9 +40,9 @@ import amvvm.R;
 public class CalendarViewBinding 
 extends GenericViewBinding<CalendarView>
 {
-	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, R.styleable.CalendarView_SelectedDate);
-	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, R.styleable.CalendarView_MinDate);
-	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, R.styleable.CalendarView_MaxDate);
+	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, "SelectedDate");
+	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, "MinDate");
+	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, "MaxDate");
 
     private static final CalendarView.OnDateChangeListener dateChangeListener = new CalendarView.OnDateChangeListener()
     {
@@ -98,21 +100,10 @@ extends GenericViewBinding<CalendarView>
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		getWidget().setOnDateChangeListener(dateChangeListener);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.CalendarView);
-		SelectedDate.initialize(ta);
-		MinDate.initialize(ta);
-		MaxDate.initialize(ta);
-		
-		//AutoCenter.setHandler(getHandler());
-		//AnimateScroll.setHandler(getHandler());
-		//LateBind.To(AutoCenter, ta.getString(R.styleable.CalendarView_AutoCenter), tracker);
-		//LateBind.To(AnimateScroll, ta.getString(R.styleable.CalendarView_AnimateScroll), tracker);
-		
-		ta.recycle();
 	}
 
 	@Override

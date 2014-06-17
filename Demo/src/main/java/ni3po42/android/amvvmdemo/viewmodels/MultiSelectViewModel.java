@@ -19,36 +19,44 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import amvvm.implementations.observables.MultiSelectionList;
-import amvvm.implementations.observables.SimpleCommand;
-import amvvm.interfaces.ICommand;
-import amvvm.interfaces.IMultiSelection;
-import ni3po42.android.amvvmdemo.R;
-import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
-import amvvm.interfaces.IObjectListener;
+import amvvm.implementations.observables.SimpleCommand;
+import ni3po42.android.amvvmdemo.R;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.SelectableItem;
 
 public class MultiSelectViewModel extends ViewModel
 {
 	
-	public final MultiSelectionList<SelectableItem> Items =
-			new MultiSelectionList<SelectableItem>(new ArrayList<SelectableItem>());
+	public final ObservableList<SelectableItem> Items =
+			new ObservableList<SelectableItem>(new ArrayList<SelectableItem>());
 
 	public MultiSelectViewModel()
 	{
 		Items.clear();
         for(int i=0;i<12;i++)
             Items.add(new SelectableItem());
-
-		Items.setSelectionHandler(new IMultiSelection.ISelection<IMultiSelection.SelectionKey>() {
-            @Override
-            public void onSelection(IMultiSelection.SelectionKey arg, boolean selected) {
-                Items.get(arg.getPosition()).setSelected(selected);
-            }
-        });
 	}
+
+    private int selectedCount;
+    public int getSelectedCount()
+    {
+        return selectedCount;
+    }
+
+    public int getSelectedIndex(){return -1;}
+    public void setSelectedIndex(int index)
+    {
+        if (Items.getCount() <= index)
+            return;
+        if (!Items.get(index).isSelected())
+            selectedCount++;
+        else
+            selectedCount--;
+        Items.get(index).setSelected(!Items.get(index).isSelected());
+        notifyListener("SelectedCount");
+    }
+
 
 	public final SimpleCommand CountSelected = new SimpleCommand()
 	{
@@ -56,7 +64,7 @@ public class MultiSelectViewModel extends ViewModel
         protected void onExecuted(CommandArgument commandArgument)
         {
             String txt = myString == null ? "" : myString;
-            Toast.makeText(getActivity(), "There are "+ Items.getSelectionCount()+" item(s) selected. "+txt, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "There are "+ selectedCount+" item(s) selected. "+txt, Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -15,21 +15,17 @@
 
 package amvvm.implementations.ui.menubinding;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 
-import amvvm.implementations.observables.ResourceArgument;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.ui.UIProperty;
 import amvvm.implementations.ui.viewbinding.ViewBindingHelper;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
+import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
@@ -45,14 +41,21 @@ public class MenuBinding
 implements MenuItem.OnMenuItemClickListener, IProxyViewBinding
 {
     public final UIProperty<Boolean> IsVisible;
-    public final UIEvent<ResourceArgument> OnClick;
+    public final UIEvent<ICommand.CommandArgument> OnClick;
     private final MenuItem menuItem;
+    private JSONObject tagProperties;
     private final ViewBindingHelper<View> helper;
-    private int commandValueResourceId = -1;
 
-    public MenuBinding(MenuItem item)
+    public MenuBinding(MenuItem item, String tag)
     {
         this.menuItem = item;
+        try
+        {
+            this.tagProperties = new JSONObject(tag);
+        }
+        catch (JSONException ex)
+        {
+        }
         helper = new ViewBindingHelper<View>()
         {
             @Override
@@ -68,10 +71,19 @@ implements MenuItem.OnMenuItemClickListener, IProxyViewBinding
             }
 
             @Override
-            public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
+            public void initialise(View notUsed, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
             {
-                super.initialise(v, attributeBridge, uiHandler, inventory, bindingFlags);
-                initialize(attributeBridge);
+                super.initialise(notUsed, uiHandler, inventory, bindingFlags);
+
+                try {
+                    initialize();
+                }
+                catch (Exception exception){}
+            }
+
+            public JSONObject getTagProperties()
+            {
+                return MenuBinding.this.tagProperties;
             }
 
             @Override
@@ -79,19 +91,10 @@ implements MenuItem.OnMenuItemClickListener, IProxyViewBinding
                 return menuItem;
             }
 
-            @Override
-            protected int[] getDeclaredStyleAttributeGroup() {
-                return R.styleable.Menu;
-            }
-
-            @Override
-            protected int getGenericBindingsAttribute() {
-                return R.styleable.Menu_GenericBindings;
-            }
         };
 
-        IsVisible = new UIProperty<Boolean>(this, R.styleable.Menu_IsVisible);
-        OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Menu_OnClick);
+        IsVisible = new UIProperty<Boolean>(this,"IsVisible");
+        OnClick = new UIEvent<ICommand.CommandArgument>(this, "OnClick");
 
         menuItem.setOnMenuItemClickListener(this);
 
@@ -107,23 +110,16 @@ implements MenuItem.OnMenuItemClickListener, IProxyViewBinding
         });
     }
 
-    protected void initialize(IAttributeBridge attrs)
+    protected void initialize() throws Exception
     {
-        IAttributeGroup ag = attrs.getAttributes(R.styleable.Menu);
-        OnClick.initialize(ag);
-        IsVisible.initialize(ag);
-        commandValueResourceId = ag.getResourceId(R.styleable.Button_CommandValue, -1);
-        ag.recycle();
+        OnClick.initialize();
+        IsVisible.initialize();
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem arg0)
     {
-        ResourceArgument arg = null;
-        if (commandValueResourceId > 0)
-            arg = new ResourceArgument(OnClick.getPropertyName(), commandValueResourceId);
-
-        return OnClick.execute(arg);
+        return OnClick.execute(null);
     }
 
     private void detachBindings()

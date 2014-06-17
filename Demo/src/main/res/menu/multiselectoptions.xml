@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"      
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     
     <item android:id="@+id/menu.multiselection" 
         android:titleCondensed="Get Count" android:showAsAction="ifRoom" 
         android:title="Get Count"
-        mvvm:OnClick="CountSelected"      
+        android:tag="{OnClick:['CountSelected']}"
         >   
     </item>
 
-    <item android:actionLayout="@layout/exampleactionview"
-        android:id="@+id/menu.actionview"
-        android:showAsAction="always"></item>
+    <item android:actionLayout="@layout/exampleactionview" android:title="" android:showAsAction="always"></item>
 
 </menu>

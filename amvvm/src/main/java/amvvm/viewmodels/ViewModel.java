@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import amvvm.interfaces.IObservableObject;
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewFactory;
@@ -99,6 +101,12 @@ implements IViewModel, IObservableObject
     public Toast createBindableToast(int layoutId)
     {
         return helper.createBindableToast(layoutId);
+    }
+
+    @Override
+    public JSONObject getMetaData()
+    {
+        return helper.getMetaData();
     }
 
     @Override

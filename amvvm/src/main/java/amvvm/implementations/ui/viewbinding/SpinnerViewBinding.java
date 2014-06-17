@@ -15,20 +15,15 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.R;
-import amvvm.implementations.observables.SelectedArgument;
 import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
-import amvvm.interfaces.IProxyObservableObject;
+import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IUIElement;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+
 
 /**
  * Extends the AdapterViewBinding to handle binding to a Spinner.
@@ -40,10 +35,8 @@ public class SpinnerViewBinding<T>
 extends AdapterViewBinding<T>
 implements OnItemSelectedListener
 {
-    public final UIEvent<SelectedArgument> SelectedChoice_event = new UIEvent<SelectedArgument>(this, R.styleable.Spinner_SelectedChoice);
-    public final UIProperty<Integer> SelectedChoice_prop = new  UIProperty<Integer>(this, R.styleable.Spinner_SelectedChoice);
-
-    private Boolean isEvent = null;
+    public final UIEvent<ICommand.CommandArgument> SelectedChoice = new UIEvent<ICommand.CommandArgument>(this, "SelectedChoice");
+    public final UIProperty<Integer> SelectedChoiceIndex = new  UIProperty<Integer>(this, "SelectedChoiceIndex");
 
     private OnItemSelectedListener nullListener = new OnItemSelectedListener()
     {
@@ -66,23 +59,19 @@ implements OnItemSelectedListener
 
     public SpinnerViewBinding()
     {
-        SelectedChoice_prop.setUIUpdateListener(new IUIElement.IUIUpdateListener<Integer>() {
+        SelectedChoiceIndex.setUIUpdateListener(new IUIElement.IUIUpdateListener<Integer>() {
             @Override
             public void onUpdate(Integer value) {
-                SelectedChoice_prop.setTempValue(value);
+                SelectedChoiceIndex.setTempValue(value);
                 onAdapterChanged();
             }
         });
     }
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
-        IAttributeGroup ag = attributeBridge.getAttributes(R.styleable.Spinner);
-        SelectedChoice_event.initialize(ag);
-        SelectedChoice_prop.initialize(ag);
-        ag.recycle();
+        super.initialise();
         if (getWidget() != null)
             getWidget().setOnItemSelectedListener(nullListener);
 
@@ -95,7 +84,7 @@ implements OnItemSelectedListener
             return;
 
         getWidget().setOnItemSelectedListener(nullListener);
-        getWidget().setSelection(SelectedChoice_prop.getTempValue());
+        getWidget().setSelection(SelectedChoiceIndex.getTempValue());
     }
 
     @Override
@@ -110,35 +99,14 @@ implements OnItemSelectedListener
 	@Override
 	public void onItemSelected(AdapterView<?> view, View arg1, int position, long arg3)
 	{
-        if (isEvent == null)
-        {
-            isEvent = getBindingInventory().isCommand(SelectedChoice_event.getPath());
-        }
-        if (isEvent)
-        {
-            SelectedArgument arg = new SelectedArgument(SelectedChoice_event.getPropertyName(), position);
-            SelectedChoice_event.execute(arg);
-        }
-        else
-        {
-            SelectedChoice_prop.sendUpdate(position);
-        }
+        SelectedChoiceIndex.sendUpdate(position);
+        SelectedChoice.execute(null);
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0)
 	{
-        if (isEvent == null)
-        {
-            isEvent = getBindingInventory().isCommand(SelectedChoice_event.getPath());
-        }
-        if (isEvent)
-        {
-            SelectedChoice_event.execute(null);
-        }
-        else
-        {
-            SelectedChoice_prop.sendUpdate(-1);
-        }
+        SelectedChoiceIndex.sendUpdate(-1);
+        SelectedChoice.execute(null);
 	}
 }

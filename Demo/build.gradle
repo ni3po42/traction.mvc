@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 apply plugin: 'android'
@@ -18,12 +18,12 @@ dependencies {
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    buildToolsVersion "19.1"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 17
-        testPackageName "ni3po42.android.amvvmdemo.test"
+        testApplicationId "ni3po42.android.amvvmdemo.test"
     }
 }
 

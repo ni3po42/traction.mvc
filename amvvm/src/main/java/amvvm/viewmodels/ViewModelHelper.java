@@ -39,6 +39,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Implements all logic for a view model to function. Activities and Fragments can wrap this logic to become the base object to handle
  * the AMVVM framework. See {@code ActivityViewModel}, {@code ViewModel} and {@code DialogViewModel} for examples on how to implement them
@@ -215,6 +218,32 @@ implements IViewModel
         menuLayoutId = id;
         invalidateMenu();
     }
+
+
+    public JSONObject getMetaData()
+    {
+        try
+        {
+            if (getActivity() != null)
+            {
+                View v = getActivity().findViewById(android.R.id.content);
+                if (v != null)
+                {
+                    IViewBinding vb = ViewFactory.getViewBinding(v);
+                    if (vb.getTagProperties() != null && vb.getTagProperties().has("@meta"))
+                    {
+                        return vb.getTagProperties().getJSONObject("@meta");
+                    }
+                }
+            }
+        }
+        catch (JSONException ex)
+        {
+
+        }
+        return null;
+    }
+
 
     /**
      * Gets menu layout

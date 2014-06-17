@@ -20,10 +20,7 @@ import java.util.ArrayList;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableList;
-import amvvm.implementations.observables.SelectedArgument;
-import amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvmdemo.R;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
@@ -39,14 +36,15 @@ public class MainViewModel extends ViewModel
     {
     }
 
-    public final Command<SelectedArgument> Choice = new Command<SelectedArgument>()
+    private int index = -1;
+    public int getChoice()
     {
-        @Override
-        protected void onExecuted(SelectedArgument selectedArgument) {
-            showNewChoice(selectedArgument.getPosition());
-        }
-    };
-
+        return index;
+    }
+    public void setChoice(int index)
+    {
+        showNewChoice(index);
+    }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)

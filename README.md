@@ -1,4 +1,6 @@
-<h1>amvvm, v BETA 0.7.0</h1>
+<h1>amvvm, v BETA 0.8.0</h1>
+
+<strong>0.8.0 Update is a major change. Stay tuned for updated docs.</strong>
 
 <ul>
 <li><a href="https://github.com/ni3po42/amvvm/wiki/How-does-it-work%3F">How's it work</a></li>

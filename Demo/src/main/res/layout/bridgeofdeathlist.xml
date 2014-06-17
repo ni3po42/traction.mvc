@@ -4,10 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-              mvvm:IsRoot="true"
-              mvvm:Items="Answers"
-              mvvm:ItemTemplate="@layout/answer"
+              android:tag="{@IsRoot:true,Items:'Answers',ItemTemplate:'@layout/answer'}"
         >
 
 </ListView>

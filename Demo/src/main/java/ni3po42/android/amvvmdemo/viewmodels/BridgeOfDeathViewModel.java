@@ -22,12 +22,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import amvvm.implementations.observables.ObservableCursor;
-import amvvm.interfaces.ICursorExtension;
 import amvvm.interfaces.IObservableCursor;
-import amvvm.interfaces.IProxyObservableObject;
 import amvvm.viewmodels.ViewModel;
 import ni3po42.android.amvvmdemo.R;
-import ni3po42.android.amvvmdemo.models.AnswersExtension;
 import ni3po42.android.amvvmdemo.providers.DemoProvider;
 
 /**
@@ -46,16 +43,13 @@ public class BridgeOfDeathViewModel
                         return new CursorLoader(getActivity(), DemoProvider.CONTENT_URI, null, null, null, null);
                     }
                 });
-        Answers.setCursorExtension(new AnswersExtension());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.bridgeofdeathlist);
-
         getLoaderManager().initLoader(0, null, Answers);
     }
 
@@ -63,9 +57,7 @@ public class BridgeOfDeathViewModel
     public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
-
         setContentView(R.layout.bridgeofdeathlist);
-
         getLoaderManager().restartLoader(0,null, Answers);
     }
 }

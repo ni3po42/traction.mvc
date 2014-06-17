@@ -3,44 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-  	mvvm:IsRoot="true" 
+    android:tag="{@IsRoot:true}"
     >
-    
+    <!--xmlns:mvvm="http://schemas.android.com/apk/res-auto"-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="First Name"
-         mvvm:Text="CurrentUserInfo.FirstName"
+        android:tag="{Text:'CurrentUserInfo.FirstName'}"
         />
     
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Last Name"
-         mvvm:Text="CurrentUserInfo.LastName"
+        android:tag="{Text:'CurrentUserInfo.LastName'}"
         />
     
     <Spinner
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        mvvm:Items="Genders"
-        mvvm:SelectedChoice="GenderIndex"
-        mvvm:ItemTemplate="@layout/gender"
+        android:tag="{Items:'Genders', SelectedChoiceIndex:'GenderIndex', ItemTemplate:'@layout/gender'}"
         />
     
     <DatePicker
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        mvvm:SelectedDate="CurrentUserInfo.DateOfBirth"
+        android:tag="{SelectedDate:'CurrentUserInfo.DateOfBirth'}"
  	       />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
-        mvvm:OnClick="Save" 
+        android:tag="{OnClick:['Save']}"
         />
     
 </LinearLayout>

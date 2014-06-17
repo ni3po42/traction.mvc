@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ni3po42.android.amvvmdemo.views.SwipeEntryView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-        mvvm:IsRoot="true"
-        mvvm:Active="Active"
+        android:tag="{@IsRoot:true, Active:'Active'}"
         android:layout_width="match_parent"
         android:layout_height="50dip"
         >
@@ -11,13 +9,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        mvvm:Text="Content"
+        android:tag="{Text:'Content'}"
         />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        mvvm:Text="Id"
+        android:tag="{Text:'Id'}"
         />
 
    </ni3po42.android.amvvmdemo.views.SwipeEntryView>

@@ -62,14 +62,22 @@ public class ColorView
             drawable.draw(canvas);
     }
 
-    public int getColor()
+    public Integer getColor()
     {
         return drawable.getPaint().getColor();
     }
 
-    public void setColor(int color)
+    public void setColor(Integer color)
     {
-        drawable.getPaint().setColor(color);
+        if (color == null)
+        {
+            setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            setVisibility(View.VISIBLE);
+            drawable.getPaint().setColor(color);
+        }
         invalidate();
     }
 }

@@ -23,7 +23,6 @@ import android.test.InstrumentationTestCase;
 import android.util.Property;
 
 import amvvm.implementations.observables.ObservableCursor;
-import amvvm.interfaces.ICursorExtension;
 import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IObservableCursor;
 
@@ -92,28 +91,6 @@ public class TestObservableCursor extends InstrumentationTestCase
         assertEquals(654, value);
     }
 
-    public void testCanGetExtendedProperty()
-    {
-        //arrange
-        final CursorLoader cl = mock(CursorLoader.class);
-        final Cursor c = mock(Cursor.class);
-        //final Loader<Cursor> cl = mock(Loader.class);
-        ObservableCursor oc =createObservableCursor(cl);
-        oc.setCursorExtension(new cursorExtension());
-
-        when(c.getColumnIndex("MyInt")).thenReturn(-1);
-        when(c.getInt(17)).thenReturn(3140);
-
-        //act
-        //indirect, you will never have to do this; this is what the framework runs to get a property
-        oc.onLoadFinished(cl, c);
-        Property<Object, Object> prop = oc.getProperty("MyInt");
-        int value = (Integer) prop.get(c);
-
-        //assert
-        assertEquals(3141, value);
-
-    }
 
     private ObservableCursor createObservableCursor(final CursorLoader loader)
     {
@@ -125,28 +102,5 @@ public class TestObservableCursor extends InstrumentationTestCase
         });
     }
 
-    class cursorExtension
-        implements ICursorExtension
-    {
-        @Override
-        public Object getCursorExtendedProperty(Cursor c, String propertyName) {
-            if (!"MyInt".equals(propertyName))
-                throw new IllegalArgumentException();
-            return getMyInt(c);
-        }
-
-        @Override
-        public void setCursorExtendedProperty(Cursor c, String propertyName, Object value) {
-
-        }
-
-        public int getMyInt(Cursor c) {
-            return c.getInt(17)+1;
-        }
-
-        public void setMyInt(Cursor c, int myInt) {
-
-        }
-    }
 
 }

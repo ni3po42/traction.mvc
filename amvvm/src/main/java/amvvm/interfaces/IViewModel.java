@@ -17,6 +17,8 @@ package amvvm.interfaces;
 
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 /**
  * Defines basic interface of a view model
  * @author Tim Stratton
@@ -52,4 +54,6 @@ extends IProxyObservableObject, IProxyViewModel
 	<T extends IViewModel> void setViewModel(String memberName, T viewModel);
 
     Toast createBindableToast(int layoutId);
+
+    JSONObject getMetaData();
 }

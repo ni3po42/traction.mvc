@@ -16,26 +16,18 @@
 package amvvm.implementations.ui.viewbinding;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
 
-import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.UIHandler;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
-import amvvm.implementations.observables.GenericArgument;
+import amvvm.util.Log;
 
-import android.util.Property;
 import android.view.View;
-import amvvm.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * The base implementation for all default view bindings in AMVVM. This handles all base ui elements for all views bounded
@@ -50,10 +42,6 @@ import amvvm.R;
 public class GenericViewBinding<V extends View>
 implements IViewBinding
 {
-	public final UIProperty<Object> IsVisible = new UIProperty<Object>(this, R.styleable.View_IsVisible);
-
-	private WeakReference<V> widget;
-
     private final ViewBindingHelper<V> helper = new ViewBindingHelper<V>()
     {
         @Override
@@ -61,6 +49,10 @@ implements IViewBinding
             return GenericViewBinding.this.getWidget();
         }
     };
+    private WeakReference<V> widget;
+
+	public final UIProperty<Object> IsVisible = new UIProperty<Object>(this, "IsVisible");
+
 
     @Override
     public BindingInventory getBindingInventory()
@@ -73,6 +65,9 @@ implements IViewBinding
     {
         return helper.getUIHandler();
     }
+
+    @Override
+    public JSONObject getTagProperties() {return helper.getTagProperties();}
 
     @Override
     public int getBindingFlags() {
@@ -136,8 +131,10 @@ implements IViewBinding
                 else if (value instanceof Integer || int.class.equals(value.getClass()))
                 {
                     Integer i = (Integer)value;
-                    if (i == View.VISIBLE || i == View.INVISIBLE)
-                        getWidget().setVisibility(i);
+                    if (i == View.VISIBLE)
+                        getWidget().setVisibility(View.VISIBLE);
+                    else if (i == View.INVISIBLE)
+                        getWidget().setVisibility(View.INVISIBLE);
                     else
                         getWidget().setVisibility(View.GONE);
                 }
@@ -150,28 +147,35 @@ implements IViewBinding
 	}
 	
 
-	protected void initialise(IAttributeBridge attributeBridge)
-	{
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
-        if (ta == null)
-            return;
-
-		IsVisible.initialize(ta);
-
-		ta.recycle();
-	}
+	protected void initialise() throws Exception
+	{		}
 
     @Override
-    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int flags)
+    public void initialise(View v, UIHandler uiHandler, BindingInventory inventory, int flags)
     {
         widget = new WeakReference<V>((V)v);
-        if (attributeBridge == null)
+
+        if (v == null)
             return;
-        helper.initialise(v, attributeBridge, uiHandler, inventory, flags);
-        initialise(attributeBridge);
+
+        try
+        {
+            helper.initialise(v, uiHandler, inventory, flags);
+            initialise();
+        }
+        catch (Exception ex)
+        {
+            Log.e("", ex);
+        }
     }
 
-	/**
+    @Override
+    public void registerUIElement(IUIElement<?> element)
+    {
+        helper.registerUIElement(element);
+    }
+
+    /**
 	 * does general cleanup
 	 */
 	@Override

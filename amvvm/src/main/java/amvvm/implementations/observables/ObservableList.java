@@ -19,11 +19,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ui.viewbinding.ListAdapter;
 import amvvm.implementations.ui.viewbinding.ProxyAdapter;
-import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IObservableList;
 import amvvm.interfaces.IPropertyStore;
 
@@ -38,7 +38,7 @@ import android.widget.BaseAdapter;
  */
 public class ObservableList<T>
 extends ProxyAdapter<T>
-implements IObservableList<T>,IIndexable<T>
+implements IObservableList<T>
 {
 	//internal list to store
 	protected List<T> internalImp;	
@@ -54,13 +54,8 @@ implements IObservableList<T>,IIndexable<T>
 	{
 		return size();
 	}
-		
-	protected ObservableList()
-	{
-		
-	}
-	
-	/**
+
+    /**
 	 * Constructor. Requires a backing list instance to be passed in
 	 * @param collection : backing list this class wraps, must be not null!
 	 */
@@ -300,7 +295,7 @@ implements IObservableList<T>,IIndexable<T>
 	{
 		if (getInternalCollection() != null)
 			return getInternalCollection().subList(start, end);
-		return null;
+		return new Vector<T>();
 	}
 
 	@Override

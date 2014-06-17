@@ -4,8 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rowCount="5" android:columnCount="5"
-            xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-            mvvm:IsRoot="true"
+            android:tag="{@IsRoot:true}"
         >
 
     <TextView
@@ -14,14 +13,14 @@
             android:layout_columnSpan="5"
             android:layout_row="0" android:layout_column="0"
             android:gravity="right"
-            mvvm:Text="Display"
+            android:tag="{Text:'Display'}"
             />
 
 
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="1"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/one"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:1}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -31,7 +30,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="2"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/two"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:2}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -41,7 +40,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="3"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/three"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:3}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -51,7 +50,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="4"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/four"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:4}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -61,7 +60,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="5"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/five"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:5}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -71,7 +70,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="6"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/six"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:6}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -81,7 +80,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="7"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/seven"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:7}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -91,7 +90,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="8"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/eight"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:8}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -101,7 +100,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="9"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/nine"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:9}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -111,7 +110,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="."
-            mvvm:OnClick="SwitchToDecimal"
+            android:tag="{OnClick:['SwitchToDecimal']}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -121,7 +120,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="0"
-            mvvm:OnClick="NumberUpdate" mvvm:CommandValue="@integer/zero"
+            android:tag="{OnClick:['NumberUpdate'], CommandValue:0}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -132,7 +131,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="+"
-            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.add"
+            android:tag="{OnClick:['Operation'], CommandValue:'+'}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -142,7 +141,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="X"
-            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.multiply"
+            android:tag="{OnClick:['Operation'], CommandValue:'X'}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -152,7 +151,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="-"
-            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.subtract"
+            android:tag="{OnClick:['Operation'], CommandValue:'-'}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -162,7 +161,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="/"
-            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.divide"
+            android:tag="{OnClick:['Operation'], CommandValue:'/'}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -172,7 +171,7 @@
     <Button
             android:layout_rowSpan="1" android:layout_columnSpan="1"
             android:text="clr"
-            mvvm:OnClick="ClearDisplay"
+            android:tag="{OnClick:['ClearDisplay']}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -180,9 +179,19 @@
             />
 
     <Button
+        android:layout_rowSpan="1" android:layout_columnSpan="1"
+        android:text="+/-"
+        android:tag="{OnClick:['Operation'], CommandValue:'+/-'}"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill"
+        android:layout_row="4" android:layout_column="2"
+        />
+
+    <Button
             android:layout_rowSpan="2" android:layout_columnSpan="1"
             android:text="="
-            mvvm:OnClick="Operation" mvvm:CommandValue="@id/calc.equals"
+            android:tag="{OnClick:['Operation'], CommandValue:'='}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"

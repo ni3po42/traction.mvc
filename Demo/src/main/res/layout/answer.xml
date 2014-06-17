@@ -4,33 +4,31 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-              mvvm:IsRoot="true"
+              android:tag="{@IsRoot:true}"
         >
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            mvvm:Text="name"
+            android:tag="{Text:name}"
             />
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            mvvm:Text="quest"
+            android:tag="{Text:quest}"
             />
 
     <ni3po42.android.amvvmdemo.views.ColorView
             android:layout_width="match_parent"
             android:layout_height="50dip"
-            mvvm:GenericBindings="Color=favoritecolor"
-            mvvm:IsVisible="ShowColor"
+            android:tag="{@Properties:{Color:favoritecolor}}"
             />
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            mvvm:Text="otheranswer"
+            android:tag="{Text:otheranswer}"
             />
 
 </LinearLayout>

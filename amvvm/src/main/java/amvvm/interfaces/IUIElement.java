@@ -15,9 +15,6 @@
 
 package amvvm.interfaces;
 
-import android.content.res.TypedArray;
-
-import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.BindingInventory;
 
 /**
@@ -28,36 +25,6 @@ import amvvm.implementations.BindingInventory;
  */
 public interface IUIElement<T>
 {
-	/**
-	 * property path to model/view-model data
-	 * @return
-	 */
-	public String getPath();
-
-    /**
-     * Cache a temporary value that can be used later.
-     * @return
-     */
-    public T getTempValue();
-
-    /**
-     * Cache a temporary value that can be used later.
-     * @param value
-     */
-    public void setTempValue(T value);
-
-    /**
-     * returns the last chain of the property path to model/view-model data
-     * @return
-     */
-    public String getPropertyName();
-
-    /**
-     * set path to model/view-model data
-     * @param path
-     */
-    public void setPath(String path);
-
 	/**
 	 * sets a handler for when the ui recieves data from the model/view-model
 	 * @param listener
@@ -76,27 +43,11 @@ public interface IUIElement<T>
 	 */
 	public void sendUpdate(T value);
 
-    /**
-     * trys to lookup current value
-     * @return
-     */
-    public T dereferenceValue();
-
 	/**
 	 * Initializes data for ui element during inflation
 	 */
-	public void initialize(IAttributeGroup attributeGroup);
-	
-	/**
-	 * turns off ability to receive updates from model/view-model
-	 */
-	public void disableReceiveUpdates();
-	
-	/**
-	 * turns on ability to receive updates from model/view-model
-	 */
-	public void enableReceiveUpdates();
-	
+	public void initialize() throws Exception;
+
 	/**
 	 * gets the binding inventory the ui element is associated to
 	 * @return
@@ -113,4 +64,8 @@ public interface IUIElement<T>
 	{
 		public void onUpdate(S value);
 	}
+
+    public boolean isDefined();
+
+    public void track(BindingInventory differentBindingInventory);
 }

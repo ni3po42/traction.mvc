@@ -2,8 +2,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-    mvvm:IsRoot="true"
+    android:tag="{@IsRoot:true}"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:useDefaultMargins="true" >
@@ -18,54 +17,56 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_row="0" android:layout_column="0"
-             mvvm:IsChecked="MainFlagOn" />
+             android:tag="{IsChecked:MainFlagOn}"
+             />
 	 	   
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="1" android:layout_column="0"
-            mvvm:IsChecked="MainFlagOn" />
+            android:tag="{IsChecked:MainFlagOn}"
+             />
 	 	   
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="2" android:layout_column="0"
-            mvvm:IsChecked="MainFlagOn" />
+            android:tag="{IsChecked:MainFlagOn}"
+            />
 	 	   
         <ImageView
             android:layout_width="100dip"
             android:layout_height="100dip"
             android:layout_row="3" android:layout_column="0"
-            mvvm:Image="Image" />
+            android:tag="{Image:Image}"
+             />
 	 	      
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0" android:layout_column="1" android:layout_rowSpan="4"
-            mvvm:MinValue="Smallest"
-            mvvm:MaxValue="Largest"
-            mvvm:Value="UpperBound" />
+            android:tag="{MinValue:Smallest, MaxValue:Largest, Value:UpperBound}"
+             />
 	 	      
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0" android:layout_column="2" android:layout_rowSpan="4"
-            mvvm:MinValue="Smallest"
-            mvvm:MaxValue="UpperBound"
-            mvvm:Value="CurrentInteger" />
+            android:tag="{MinValue:Smallest, MaxValue:UpperBound, Value:CurrentInteger}"
+            />
 	 	        
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_row="4" android:layout_column="0" android:layout_columnSpan="3"
-            mvvm:MaxValue="UpperBound"
-            mvvm:Value="CurrentInteger" />
+            android:tag="{MaxValue:UpperBound, Value:CurrentInteger}"
+            />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
-            mvvm:Text="MyInt"
+            android:tag="{Text:MyInt}"
             android:layout_row="6" android:layout_column="0"
             />
 
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"
             android:text="Execute"
             android:layout_row="5" android:layout_column="0"
-            mvvm:OnClick="MyEvent" />
+            android:tag="{OnClick:[MyEvent]}"
+             />
     </GridLayout>
 </ScrollView>

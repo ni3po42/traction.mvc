@@ -20,6 +20,8 @@ import amvvm.implementations.BindingInventory;
 
 import android.view.View;
 
+import org.json.JSONObject;
+
 
 /**
  * Defines a View Binding object. This is an object that lives beside a View object, extending it in a way to 
@@ -35,11 +37,12 @@ public interface IViewBinding
 	/**
 	 * Initialise the ViewBinding. It is here you will read properties defined in the layout files
 	 * @param v : the view to init against
-     * @param attributeBridge : access to inflated attributes
 	 * @param uiHandler : a handler for accessing the ui thread
 	 * @param inventory : inventory to register ui elements and paths
 	 */
-	void initialise(View v,IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags);
+	void initialise(View v, UIHandler uiHandler, BindingInventory inventory, int bindingFlags);
+
+    void registerUIElement(IUIElement<?> element);
 
     public static class Flags
     {
@@ -66,6 +69,8 @@ public interface IViewBinding
      * @return
      */
     BindingInventory getBindingInventory();
+
+    JSONObject getTagProperties();
 
     /**
      * Gets a handler to run tasks on the UI thread; whatever was passed to initialise method

@@ -15,9 +15,8 @@
 
 package amvvm.implementations.ui;
 
-import android.content.res.TypedArray;
+import org.json.JSONObject;
 
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IViewBinding;
 import amvvm.implementations.BindingInventory;
@@ -42,21 +41,23 @@ implements IUIElement<T>
 	
 	private boolean _isUpdating;
 	
-	private int pathAttribute = -1;
-	private final IViewBinding parentViewBinding;
+	protected String pathAttribute = null;
+	protected final IViewBinding parentViewBinding;
 
     @SuppressWarnings("unused")
     private UIProperty(){parentViewBinding = null;}
 
-	public UIProperty(IProxyViewBinding viewBinding, int pathAttribute)
+	public UIProperty(IProxyViewBinding viewBinding, String pathAttribute)
 	{
         this.parentViewBinding = viewBinding.getProxyViewBinding();
 		this.pathAttribute = pathAttribute;
+        this.parentViewBinding.registerUIElement(this);
 	}
 	
 	public UIProperty(IProxyViewBinding viewBinding)
 	{
         this.parentViewBinding = viewBinding.getProxyViewBinding();
+        this.parentViewBinding.registerUIElement(this);
 	}
 	
 	/**
@@ -76,53 +77,34 @@ implements IUIElement<T>
 			return;
 		
 		disableReceiveUpdates();
-        getBindingInventory().sendUpdateFromUIElement(this, value);
+        getBindingInventory().sendUpdate(path, value);
 		enableReceiveUpdates();
 	}
 
-    @Override
     public T dereferenceValue()
     {
-        return (T) getBindingInventory().dereferenceValue(getPath());
+        return (T) getBindingInventory().dereferenceValue(path);
     }
 
-    /**
-	 * Gets the full path the ui element is bounded to
-	 */
-	@Override
-	public String getPath()
-	{
-		return path;
-	}
-
-    @Override
     public T getTempValue()
     {
         return tempValue;
     }
 
-    @Override
     public void setTempValue(T value)
     {
         this.tempValue = value;
     }
 
-    @Override
-    public String getPropertyName()
+    protected String getPropertyName()
     {
-        if (getPath() == null)
+        if (path == null)
             return null;
-        if (getPath().equals("."))
+        if (path.equals("."))
             return null;
 
-        int index = getPath().lastIndexOf(".");
-        return getPath().substring(index+1);
-    }
-
-    @Override
-    public void setPath(String path)
-    {
-        this.path = path;
+        int index = path.lastIndexOf(".");
+        return path.substring(index+1);
     }
 
     @Override
@@ -166,23 +148,26 @@ implements IUIElement<T>
     }
 
 	@Override
-	public void initialize(IAttributeGroup attributeGroup)
+	public void initialize() throws Exception
 	{
-		if (pathAttribute >= 0 && attributeGroup != null)
+        JSONObject tagProperties =parentViewBinding.getTagProperties();
+        if (tagProperties != null)
         {
-			String tempPath = attributeGroup.getString(pathAttribute);
-            if (parentViewBinding != null && parentViewBinding.getPathPrefix() == null)
-                path = tempPath;
-            else if (parentViewBinding != null && tempPath != null)
-                path = parentViewBinding.getPathPrefix() + "." + tempPath;
-            else
-                path = tempPath;
+            String tempPath = tagProperties.has(pathAttribute) ? tagProperties.getString(pathAttribute) : null;
+
+            if (pathAttribute != null) {
+                if (parentViewBinding.getPathPrefix() == null)
+                    path = tempPath;
+                else if (tempPath != null)
+                    path = parentViewBinding.getPathPrefix() + "." + tempPath;
+                else
+                    path = null;
+            }
         }
-        getBindingInventory().track(this);
+        getBindingInventory().track(this, path);
 	}
 
-    @Override
-    public void disableReceiveUpdates()
+    protected void disableReceiveUpdates()
     {
         synchronized(this)
         {
@@ -190,8 +175,7 @@ implements IUIElement<T>
         }
     }
 
-    @Override
-    public void enableReceiveUpdates()
+    protected void enableReceiveUpdates()
     {
         synchronized(this)
         {
@@ -204,6 +188,25 @@ implements IUIElement<T>
 	{
 		return parentViewBinding.getBindingInventory();
 	}
+
+    public Class<?> getDereferencedPathType()
+    {
+        return parentViewBinding.getBindingInventory().dereferencePropertyType(this.path);
+    }
+
+    @Override
+    public boolean isDefined()
+    {
+        return path != null;
+    }
+
+    @Override
+    public void track(BindingInventory differentBindingInventory)
+    {
+        if (this.path == null)
+            return;
+        differentBindingInventory.track(this, this.path);
+    }
 
     protected UIHandler getUIHandler()
     {

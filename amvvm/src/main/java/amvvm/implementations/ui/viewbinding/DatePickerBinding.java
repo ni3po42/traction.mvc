@@ -16,13 +16,15 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ViewFactory;
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.text.format.Time;
 import android.widget.DatePicker;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
 
 /**
@@ -38,9 +40,9 @@ import amvvm.R;
 public class DatePickerBinding 
 extends GenericViewBinding<DatePicker>
 {
-	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, R.styleable.DatePicker_SelectedDate);
-	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, R.styleable.DatePicker_MinDate);
-	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, R.styleable.DatePicker_MaxDate);
+	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, "SelectedDate");
+	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, "MinDate");
+	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, "MaxDate");
 
     private static final DatePicker.OnDateChangedListener dateChangeListener = new DatePicker.OnDateChangedListener()
     {
@@ -103,15 +105,10 @@ extends GenericViewBinding<DatePicker>
 
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.DatePicker);
+        super.initialise();
 		getWidget().init(1970, 0, 1, dateChangeListener);
-		SelectedDate.initialize(ta);
-		MinDate.initialize(ta);
-		MaxDate.initialize(ta);
-		ta.recycle();
 	}
 	
 

@@ -15,8 +15,13 @@
 
 package amvvm.implementations.ui;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import amvvm.implementations.BindingInventory;
 import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IProxyViewBinding;
+import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 
 /**
@@ -24,28 +29,191 @@ import amvvm.interfaces.IViewBinding;
  * element is listening to
  * @author Tim Stratton
  *
- * @param <TArg> : type of argument the ui event can pass a command
+ * @param <T> : type of argument the ui event can pass a command
  */
-public class UIEvent<TArg extends ICommand.CommandArgument>
-extends UIProperty<TArg>
-{	
-	public UIEvent(IProxyViewBinding viewBinding, int pathAttribute)
-	{
-		super(viewBinding, pathAttribute);
-	}
+public class UIEvent<T extends ICommand.CommandArgument>
+implements IUIElement<T>
+{
+    protected String[] paths;
+
+    private IUIElement.IUIUpdateListener<T> updateListener;
+
+    private boolean _isUpdating;
+
+    protected String pathAttribute = null;
+    protected final IViewBinding parentViewBinding;
+
+    @SuppressWarnings("unused")
+    private UIEvent(){parentViewBinding = null;}
+
+    public UIEvent(IProxyViewBinding viewBinding, String pathAttribute)
+    {
+        this.parentViewBinding = viewBinding.getProxyViewBinding();
+        this.pathAttribute = pathAttribute;
+        this.parentViewBinding.registerUIElement(this);
+    }
+
+    /**
+     * @return : true when element is currently sending an update back to the model or view-model
+     */
+    public boolean isUpdating()
+    {
+        return _isUpdating;
+    }
+
+    /**
+     * Initiates the BindingInventory to send data to the model/view-model
+     */
+    public void sendUpdate(T value)
+    {
+        if (paths == null)
+            return;
+
+        disableReceiveUpdates();
+        for(int i=0;i< paths.length; i++)
+            getBindingInventory().sendUpdate(paths[i], value);
+        enableReceiveUpdates();
+    }
+
+    @Override
+    public void setUIUpdateListener(IUIElement.IUIUpdateListener<T> listener)
+    {
+        this.updateListener = listener;
+    }
+
+    @Override
+    public void receiveUpdate(final Object value)
+    {
+        if (updateListener == null)
+            return;
+
+        synchronized(this)
+        {
+            //is true is 'disableReceiveUpdates' has been called before 'enablRecieveUpdates'
+            //This is also the case if UIProperty has called the 'sendUpdate' method
+            if (isUpdating())
+                return;
+
+            //if no handler, then just run on current thread
+            if (getUIHandler() == null)
+            {
+                updateListener.onUpdate((T)value);
+            }
+            else
+            {
+                //call the update listener on the UI thread. Needs to be on the UI thread because it is most
+                //certainly updating something on the UI
+                getUIHandler().tryPostImmediatelyToUIThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        updateListener.onUpdate((T) value);
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void initialize() throws Exception
+    {
+        if (pathAttribute == null)
+            return;
+
+        JSONObject tagProperties =parentViewBinding.getTagProperties();
+        JSONArray tempPaths =  tagProperties.has(pathAttribute) ? tagProperties.getJSONArray(pathAttribute) : null;
+
+        if (tempPaths == null)
+            return;
+
+        this.paths = new String[tempPaths.length()];
+        for(int i=0;i<paths.length;i++)
+        {
+            if (parentViewBinding.getPathPrefix() != null)
+                this.paths[i] = parentViewBinding.getPathPrefix() + "." + tempPaths.getString(i);
+            else
+                this.paths[i] = tempPaths.getString(i);
+            getBindingInventory().track(this, this.paths[i]);
+        }
+    }
+
+    protected void disableReceiveUpdates()
+    {
+        synchronized(this)
+        {
+            _isUpdating = true;
+        }
+    }
+
+    protected void enableReceiveUpdates()
+    {
+        synchronized(this)
+        {
+            _isUpdating = false;
+        }
+    }
+
+    protected String getPropertyName(int index)
+    {
+        if (paths == null || paths.length <= index)
+            return null;
+        if (".".equals(paths[index]))
+            return null;
+
+        int dotIndex = paths[index].lastIndexOf(".");
+        return paths[index].substring(dotIndex+1);
+    }
+
+    @Override
+    public BindingInventory getBindingInventory()
+    {
+        return parentViewBinding.getBindingInventory();
+    }
+
+    @Override
+    public boolean isDefined()
+    {
+        return paths != null;
+    }
+
+    @Override
+    public void track(BindingInventory differentBindingInventory)
+    {
+        if (paths == null || paths.length ==0)
+            return;
+        for(int i=0;i<paths.length;i++)
+        {
+            differentBindingInventory.track(this, this.paths[i]);
+        }
+    }
+
+    protected UIHandler getUIHandler()
+    {
+        return parentViewBinding.getUIHandler();
+    }
 
 	/**
 	 * Lets a UIEvent signal a bounded command
 	 * @param arg
 	 */
-	public boolean execute(TArg arg)
+	public boolean execute(T arg)
 	{
-        ICommand.CommandArgument baseArg = arg;
-        if (baseArg == null)
-            baseArg = new ICommand.CommandArgument(getPropertyName());
+        if (paths == null || paths.length == 0)
+            return true;
 
-		getBindingInventory().fireCommand(getPath(), baseArg);
+        for(int i=0;i<paths.length;i++)
+        {
+            ICommand.CommandArgument baseArg = arg;
+            if (baseArg == null && parentViewBinding != null)
+                baseArg = new ICommand.CommandArgument(getPropertyName(i), parentViewBinding.getTagProperties());
+            else if (parentViewBinding == null)
+                baseArg = new ICommand.CommandArgument(getPropertyName(i));
 
-        return !baseArg.isEventCancelled();
+            getBindingInventory().fireCommand(paths[i], baseArg);
+            if (baseArg.isEventCancelled())
+                return false;
+        }
+        return true;
 	}			
 }

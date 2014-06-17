@@ -20,8 +20,6 @@ import android.widget.BaseAdapter;
 
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.ObservableObject;
-import amvvm.interfaces.IIndexable;
-import amvvm.interfaces.IViewBinding;
 
 /**
  *

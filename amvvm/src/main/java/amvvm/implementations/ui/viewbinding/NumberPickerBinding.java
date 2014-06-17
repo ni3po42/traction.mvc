@@ -16,13 +16,14 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement.IUIUpdateListener;
 
 import android.widget.NumberPicker;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
-import amvvm.util.Log;
 
 /**
  * Defines ui elements for binding to a number picker.
@@ -39,9 +40,9 @@ extends GenericViewBinding<NumberPicker>
 implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.OnValueChangeListener
 {		
 	//expose the min, max and current value
-	public final UIProperty<Integer> MinValue = new UIProperty<Integer>(this,R.styleable.NumberPicker_MinValue);
-	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, R.styleable.NumberPicker_MaxValue);
-	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, R.styleable.NumberPicker_Value);
+	public final UIProperty<Integer> MinValue = new UIProperty<Integer>(this,"MinValue");
+	public final UIProperty<Integer> MaxValue = new UIProperty<Integer>(this, "MaxValue");
+	public final UIProperty<Integer> Value = new UIProperty<Integer>(this, "Value");
 
 	public NumberPickerBinding()
 	{
@@ -157,16 +158,10 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 	}
 
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		getWidget().setOnValueChangedListener(this);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.NumberPicker);
-		MinValue.initialize(ta);
-		MaxValue.initialize(ta);
-		Value.initialize(ta);
-
-		ta.recycle();
 	}
 	
 	@Override

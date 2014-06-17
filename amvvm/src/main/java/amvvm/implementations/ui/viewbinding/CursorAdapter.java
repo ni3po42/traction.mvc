@@ -20,16 +20,11 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ResourceCursorAdapter;
 
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IIndexable;
 import amvvm.interfaces.IPropertyStore;
-import amvvm.interfaces.IProxyObservableObject;
-import amvvm.interfaces.IViewBinding;
 
 public class CursorAdapter
     extends android.widget.CursorAdapter

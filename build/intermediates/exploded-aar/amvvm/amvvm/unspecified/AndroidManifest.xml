@@ -1,4 +1,6 @@
-/* Copyright 2013 Tim Stratton
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2013 Tim Stratton
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -11,17 +13,16 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
- */
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="amvvm"
+    android:versionCode="8"
+    android:versionName="BETA 0.8.0" >
 
-package amvvm.interfaces;
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="17" />
 
-/**
- * can get an item by position
- */
-public interface IIndexable<T>
-    extends IObservableObject
-{
-    T get(int position);
-    int size();
-    int indexOf(Object obj);
-}
+    <application android:label="AMVVM" />
+
+</manifest>

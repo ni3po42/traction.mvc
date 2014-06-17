@@ -17,14 +17,18 @@ package amvvm.tests;
 
 import android.test.InstrumentationTestCase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
 import amvvm.implementations.BindingInventory;
 import amvvm.implementations.observables.Command;
 import amvvm.implementations.observables.ObservableObject;
 import amvvm.implementations.observables.PropertyStore;
-import amvvm.implementations.observables.ResourceArgument;
+import amvvm.interfaces.ICommand;
 import amvvm.interfaces.IUIElement;
 
-import junit.framework.TestCase;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -63,10 +67,8 @@ public class TestBindingInventory extends InstrumentationTestCase
         BindingInventory inv = new BindingInventory();
         IUIElement uiprop = mock(IUIElement.class);
 
-        when(uiprop.getPath()).thenReturn(".");
-
         //act
-        inv.track(uiprop);
+        inv.track(uiprop, ".");
         inv.setContextObject(obj);
 
         obj.notifyListener();
@@ -84,12 +86,10 @@ public class TestBindingInventory extends InstrumentationTestCase
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop1 = mock(IUIElement.class);
 		IUIElement uiprop2 = mock(IUIElement.class);
-		when(uiprop1.getPath()).thenReturn("I");
-		when(uiprop2.getPath()).thenReturn("Obj.I");
-				
+
 		//act
-		inv.track(uiprop1);
-		inv.track(uiprop2);
+		inv.track(uiprop1, "I");
+		inv.track(uiprop2, "Obj.I");
 		inv.setContextObject(obj);
 		obj.setI(42);
 		obj.addReaction("I", "Obj.I");
@@ -110,12 +110,10 @@ public class TestBindingInventory extends InstrumentationTestCase
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop1 = mock(IUIElement.class);
 		IUIElement uiprop2 = mock(IUIElement.class);
-		when(uiprop1.getPath()).thenReturn("I");
-		when(uiprop2.getPath()).thenReturn("Obj.Obj.I");
-				
+
 		//act
-		inv.track(uiprop1);
-		inv.track(uiprop2);
+		inv.track(uiprop1, "I");
+		inv.track(uiprop2, "Obj.Obj.I");
 		inv.setContextObject(obj);
 		obj.setI(42);
 		obj.addReaction("I", "Obj.Obj.I");
@@ -126,7 +124,7 @@ public class TestBindingInventory extends InstrumentationTestCase
 		verify(uiprop2).receiveUpdate(eq(3141));
 	}
 	
-	public void testCanFireCommand()
+	public void testCanFireCommand() throws JSONException
 	{
 		//arrange
 		String path = "myCommand";
@@ -135,19 +133,18 @@ public class TestBindingInventory extends InstrumentationTestCase
 		
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn("I");
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, "I");
 		inv.setContextObject(context);
-		ResourceArgument arg = new ResourceArgument(path, 3141);
-		inv.fireCommand(path, arg);
-		
-		//assert
-		verify(uiprop).receiveUpdate(eq(3141));
+
+		inv.fireCommand(path, new ICommand.CommandArgument(path, new JSONObject("{field:3141}")));
+
+                //assert
+        verify(uiprop).receiveUpdate(eq(3141));
 	}
 	
-	public void testCanNotFireCommand()
+	public void testCanNotFireCommand() throws JSONException
 	{
 		//arrange
 		String path = "myCommand";
@@ -156,52 +153,17 @@ public class TestBindingInventory extends InstrumentationTestCase
 		
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn("I");
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, "I");
 		inv.setContextObject(context);
-        ResourceArgument arg = new ResourceArgument(path, 3141);
-		inv.fireCommand(path, arg);
+
+        inv.fireCommand(path, new ICommand.CommandArgument(path, new JSONObject("{field:3141}")));
 		
 		//assert
 		verify(uiprop, never()).receiveUpdate(eq(3141));
 	}
-	
-//	public void testCanSendUpdateThroughUIElement()
-//	{
-//		//arrange
-//		String simplePath = "I";
-//		UIProperty<Integer> uiprop1 = new UIProperty<Integer>();
-//		UIProperty<Integer> uiprop2 = new UIProperty<Integer>();
-//		uiprop1.setPath(simplePath);
-//		uiprop2.setPath(simplePath);
-//		
-//		IUIUpdateListener listener1 = mock(IUIUpdateListener.class);
-//		IUIUpdateListener listener2 = mock(IUIUpdateListener.class);
-//		
-//		uiprop1.setUIUpdateListener(listener1);
-//		uiprop2.setUIUpdateListener(listener2);
-//				
-//		biObj context = spy(new biObj());
-//		
-//		BindingInventory inv = new BindingInventory();	
-//		
-//		//act	
-//		inv.track(uiprop1);
-//		inv.track(uiprop2);
-//		inv.setContextObject(context);
-//		
-//		uiprop1.sendUpdate(3141);
-//		
-//		//assert
-//		
-//		verify(context).setI(eq(3141));
-//		verify(listener1, never()).onUpdate(anyInt());
-//		verify(listener2).onUpdate(3141);		
-//		
-//	}
-	
+
 	public void testCanBindSimpleObjectTrackerElements()
 	{
 		//arrange
@@ -209,10 +171,9 @@ public class TestBindingInventory extends InstrumentationTestCase
 		biObj context = new biObj();
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn(simplePath);
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, simplePath);
 		inv.setContextObject(context);
 		context.setI(3141);
 		
@@ -227,10 +188,9 @@ public class TestBindingInventory extends InstrumentationTestCase
 		biObj context = new biObj();	//no sub object to start	
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn(simplePath);
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, simplePath);
 		inv.setContextObject(context);//set context obj with null sub object
 		
 		biObj newBiObj = new biObj();
@@ -251,10 +211,9 @@ public class TestBindingInventory extends InstrumentationTestCase
 		context.setObj(new biObj());
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn(simplePath);
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, simplePath);
 		inv.setContextObject(context);
 		
 		context.getObj().setI(3141);
@@ -272,10 +231,9 @@ public class TestBindingInventory extends InstrumentationTestCase
 		context.getObj().setObj(new biObj());
 		BindingInventory inv = new BindingInventory();	
 		IUIElement uiprop = mock(IUIElement.class);
-		when(uiprop.getPath()).thenReturn(simplePath);
-		
+
 		//act
-		inv.track(uiprop);
+		inv.track(uiprop, simplePath);
 		inv.setContextObject(context);
 		
 		context.getObj().getObj().setI(3141);
@@ -298,15 +256,11 @@ public class TestBindingInventory extends InstrumentationTestCase
 		IUIElement uiprop1 = mock(IUIElement.class);
 		IUIElement uiprop2 = mock(IUIElement.class);
 		IUIElement uiprop3 = mock(IUIElement.class);
-		
-		when(uiprop1.getPath()).thenReturn(simplePath1);
-		when(uiprop2.getPath()).thenReturn(simplePath2);
-		when(uiprop3.getPath()).thenReturn(simplePath3);
-		
+
 		//act
-		inv.track(uiprop1);
-		inv.track(uiprop2);
-		inv.track(uiprop3);
+		inv.track(uiprop1,simplePath1);
+		inv.track(uiprop2,simplePath2);
+		inv.track(uiprop3,simplePath3);
 		
 		inv.setContextObject(context);
 		
@@ -323,29 +277,43 @@ public class TestBindingInventory extends InstrumentationTestCase
     public void testCanMergeBindingInventories()
     {
         //arrange
-        String simplePath1 = "I";
-        String simplePath2 = "Obj.I";
-        String simplePath3 = "Obj.Obj.I";
+        final String simplePath1 = "I";
+        final String simplePath2 = "Obj.I";
+        final String simplePath3 = "Obj.Obj.I";
         biObj context = new biObj();
         context.setObj(new biObj());
         context.getObj().setObj(new biObj());
 
-        BindingInventory inv = new BindingInventory();
+        final BindingInventory inv = new BindingInventory();
         BindingInventory invToMerge = new BindingInventory();
 
         IUIElement uiprop1 = mock(IUIElement.class);
 
-        IUIElement uiprop2 = mock(IUIElement.class);
-        IUIElement uiprop3 = mock(IUIElement.class);
+        final IUIElement uiprop2 = mock(IUIElement.class);
+        final IUIElement uiprop3 = mock(IUIElement.class);
 
-        when(uiprop1.getPath()).thenReturn(simplePath1);
-        when(uiprop2.getPath()).thenReturn(simplePath2);
-        when(uiprop3.getPath()).thenReturn(simplePath3);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                inv.track(uiprop2, simplePath2);
+                return null;
+            }
+        }).when(uiprop2).track(eq(inv));
+
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                inv.track(uiprop3, simplePath3);
+                return null;
+            }
+        }).when(uiprop3).track(eq(inv));
+
+
 
         //act
-        inv.track(uiprop1);
-        invToMerge.track(uiprop2);
-        invToMerge.track(uiprop3);
+        inv.track(uiprop1, simplePath1);
+        invToMerge.track(uiprop2,simplePath2);
+        invToMerge.track(uiprop3,simplePath3);
 
         inv.merge(invToMerge);
 
@@ -395,13 +363,15 @@ public class TestBindingInventory extends InstrumentationTestCase
 			notifyListener("Obj", obj, obj = o);			
 		}
 		
-		public final Command<ResourceArgument> myCommand = new Command<ResourceArgument>()
+		public final Command<ICommand.CommandArgument> myCommand = new Command<ICommand.CommandArgument>()
 		{
 			@Override
-			protected void onExecuted(ResourceArgument arg)
+			protected void onExecuted(ICommand.CommandArgument arg)
 			{
 				if (arg != null)
-					setI(arg.getResourceId());
+                    try {
+                        setI(arg.getEventData().getInt("field"));
+                    }catch (JSONException ex){}
 			}
 		};
 	}

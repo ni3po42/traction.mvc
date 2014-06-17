@@ -15,9 +15,7 @@
 
 package amvvm.implementations.ui.viewbinding;
 
-import amvvm.interfaces.IAttributeBridge;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 
@@ -25,6 +23,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import amvvm.R;
 
 /**
@@ -41,7 +43,7 @@ extends GenericViewBinding<ImageView>
 implements IViewBinding
 {
 	//To handle different types of image data, the ui element is holding a generic Object.
-	public final UIProperty<Object> Image = new UIProperty<Object>(this, R.styleable.ImageView_Image);
+	public final UIProperty<Object> Image = new UIProperty<Object>(this, "Image");
 		
 	public ImageViewBinding()
 	{
@@ -81,14 +83,4 @@ implements IViewBinding
 			}
 		});
 	}
-
-    @Override
-    protected void initialise(IAttributeBridge attributeBridge)
-    {
-        super.initialise(attributeBridge);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.ImageView);
-		Image.initialize(ta);
-		ta.recycle();
-	}
-
 }

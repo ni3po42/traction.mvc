@@ -25,7 +25,6 @@ import amvvm.interfaces.IObjectListener;
 import amvvm.interfaces.IObservableObject;
 import amvvm.interfaces.IPropertyStore;
 import amvvm.interfaces.IProxyObservableObject;
-import amvvm.util.ObjectPool;
 
 import android.util.Property;
 

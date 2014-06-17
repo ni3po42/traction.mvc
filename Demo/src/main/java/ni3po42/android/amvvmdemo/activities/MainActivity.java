@@ -18,17 +18,10 @@ package ni3po42.android.amvvmdemo.activities;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import amvvm.implementations.observables.Command;
-import amvvm.implementations.observables.SelectedArgument;
-import amvvm.implementations.observables.SimpleCommand;
-import amvvm.interfaces.IObjectListener;
 import ni3po42.android.amvvmdemo.R;
 import ni3po42.android.amvvmdemo.viewmodels.MainViewModel;
 import amvvm.viewmodels.ActivityViewModel;
-import amvvm.interfaces.IViewModel;
 import amvvm.viewmodels.ViewModel;
-import ni3po42.android.amvvmdemo.models.DemoViewModelChoice;
-
 
 public class MainActivity extends ActivityViewModel
 {

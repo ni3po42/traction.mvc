@@ -16,25 +16,22 @@
 package amvvm.implementations;
 
 import java.lang.reflect.Constructor;
-import java.util.Hashtable;
-import java.util.Map;
 
 import amvvm.implementations.ui.UIHandler;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyViewBinding;
-import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
 import amvvm.util.Log;
 import amvvm.interfaces.IProxyObservableObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.LayoutInflater.Factory2;
 import android.view.View;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import amvvm.R;
 /**
@@ -66,13 +63,6 @@ implements Factory2
     {
         return this.viewBindingFactory;
     }
-
-    public IAttributeBridge createAttributeBridge(Context context, AttributeSet attrs)
-    {
-        return new InflatedAttributes(context, attrs);
-    }
-
-
 
     public View inflateViewByClassName(String className, AttributeSet attrs)
     {
@@ -136,10 +126,22 @@ implements Factory2
         //should we go on?
         IProxyViewBinding parentViewBinding = parent == null ? null : getViewBinding(parent);
 
-        IAttributeBridge attributeBridge = createAttributeBridge(context, attrs);
-        //pull base attributes
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.View);
-        boolean isRoot = ta.getBoolean(R.styleable.View_IsRoot, false);
+        boolean isRoot = false;
+        boolean ignoreChildren = false;
+        String relativeContext = null;
+        String bindingType = null;
+        try
+        {
+            JSONObject tagProperties = new JSONObject(view.getTag() == null ? "{}" : view.getTag().toString());
+            isRoot = tagProperties.has("@IsRoot") && tagProperties.getBoolean("@IsRoot");
+            ignoreChildren = tagProperties.has("@IgnoreChildren") && tagProperties.getBoolean("@IgnoreChildren");
+            relativeContext = tagProperties.has("@RelativeContext") ? tagProperties.getString("@RelativeContext") : null;
+            bindingType = tagProperties.has("@BindingType") ? tagProperties.getString("@BindingType") : null;
+        }
+        catch (JSONException jsonException)
+        {
+
+        }
 
         //if either there is no View Binding for a non null parent or that parent's View Binding says to ignore children..
         boolean noParentViewBindingAndNotRoot = parent != null && parentViewBinding == null && !isRoot;
@@ -149,33 +151,24 @@ implements Factory2
         if (noParentViewBindingAndNotRoot || hasParentViewBindingButIgnoreChildrenFlag)
         {
             //then stop here and return the view, no binding steps needed now.
-            ta.recycle();
             return view;
         }
 
-         UIHandler handler = new UIHandler();
-
-        boolean ignoreChildren = ta.getBoolean(R.styleable.View_IgnoreChildren, false);
-        boolean hasRelativeContext = ta.hasValue(R.styleable.View_RelativeContext);
+        UIHandler handler = new UIHandler();
 
         int flags = IViewBinding.Flags.NO_FLAGS;
         flags |= ignoreChildren ? IViewBinding.Flags.IGNORE_CHILDREN : IViewBinding.Flags.NO_FLAGS;
         flags |= isRoot ? IViewBinding.Flags.IS_ROOT : IViewBinding.Flags.NO_FLAGS;
-        flags |= hasRelativeContext ? (IViewBinding.Flags.HAS_RELATIVE_CONTEXT): IViewBinding.Flags.NO_FLAGS;
-
-        //grab custom binding type, if available
-         String bindingType = ta.getString(R.styleable.View_BindingType);
+        flags |= relativeContext != null ? (IViewBinding.Flags.HAS_RELATIVE_CONTEXT): IViewBinding.Flags.NO_FLAGS;
 
         String prefix = (parentViewBinding == null || parentViewBinding.getProxyViewBinding() == null ? null : parentViewBinding.getProxyViewBinding().getPathPrefix());
-        if (hasRelativeContext)
+        if (relativeContext != null)
         {
             if (prefix == null)
-                prefix = ta.getString(R.styleable.View_RelativeContext);
+                prefix = relativeContext;
             else
-                prefix = prefix + "." + ta.getString(R.styleable.View_RelativeContext);
+                prefix = prefix + "." + relativeContext;
         }
-
-        ta.recycle();
 
         IProxyViewBinding newViewBinding = null;
          //if view implements IViewBinding and no custom type is given...
@@ -207,7 +200,7 @@ implements Factory2
 
                 view.addOnAttachStateChangeListener(detachListener);
 
-                newViewBinding.getProxyViewBinding().initialise(view, attributeBridge, handler, inv, flags);
+                newViewBinding.getProxyViewBinding().initialise(view, handler, inv, flags);
             }
          }
          

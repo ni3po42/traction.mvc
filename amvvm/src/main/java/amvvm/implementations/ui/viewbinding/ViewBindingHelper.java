@@ -18,22 +18,24 @@ package amvvm.implementations.ui.viewbinding;
 import android.util.Property;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import amvvm.R;
 import amvvm.implementations.BindingInventory;
-import amvvm.implementations.ViewBindingFactory;
 import amvvm.implementations.observables.GenericArgument;
 import amvvm.implementations.observables.PropertyStore;
 import amvvm.implementations.ui.UIEvent;
 import amvvm.implementations.ui.UIHandler;
 import amvvm.implementations.ui.UIProperty;
-import amvvm.interfaces.IAttributeBridge;
-import amvvm.interfaces.IAttributeGroup;
 import amvvm.interfaces.IProxyViewBinding;
 import amvvm.interfaces.IUIElement;
 import amvvm.interfaces.IViewBinding;
@@ -46,8 +48,10 @@ public abstract class ViewBindingHelper<V>
 {
     protected ArrayList<GenericUIBindedEvent> genericBindedEvents = new ArrayList<GenericUIBindedEvent>();
 
+    private ArrayList<IUIElement<?>> registeredUIElements = new ArrayList<IUIElement<?>>();
     private BindingInventory bindingInventory;
     private UIHandler uiHandler;
+    private JSONObject tagProperties;
 
     private String prefix;
 
@@ -55,6 +59,26 @@ public abstract class ViewBindingHelper<V>
 
     private boolean synthetic;
 
+    public JSONObject getMetaData()
+    {
+        try
+        {
+            if (tagProperties != null && tagProperties.has("@meta"))
+            {
+                return tagProperties.getJSONObject("@meta");
+            }
+        }
+        catch(JSONException ex)
+        {
+
+        }
+        return null;
+    }
+
+    public void registerUIElement(IUIElement<?> element)
+    {
+        registeredUIElements.add(element);
+    }
 
     protected Object getGenericBindingSource()
     {
@@ -71,31 +95,13 @@ public abstract class ViewBindingHelper<V>
     public class GenericUIBindedProperty
             extends UIProperty<Object>
     {
-        private final Pattern split = Pattern.compile("=");
-        private String connection;
-
         //the property on the view to set and get values from
         private Property<Object, Object> viewProperty;
 
-        /**
-         * Not really used, only defined because it's base requires it
-         * @param viewBinding
-         * @param pathAttribute
-         */
-        public GenericUIBindedProperty(IViewBinding viewBinding, int pathAttribute)
+        public GenericUIBindedProperty(IViewBinding viewBinding, String pathAttribute, String path)
         {
             super(viewBinding, pathAttribute);
-        }
-
-        /**
-         * @param viewBinding
-         * @param connection : a single connection point following this pattern:
-         * xxx = aaa.bbb.ccc, where xxx setter method (does not include the prefix and aaa.bbb.ccc is a path to the model/view-model
-         */
-        public GenericUIBindedProperty(IViewBinding viewBinding, String connection)
-        {
-            super(viewBinding, 0);
-            this.connection = connection;
+            this.path = path;
             setUIUpdateListener(new IUIElement.IUIUpdateListener<Object>()
             {
                 @Override
@@ -111,17 +117,13 @@ public abstract class ViewBindingHelper<V>
             });
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        public void initialize(IAttributeGroup notUsed)
+        public void initialize()
         {
-            String[] pairs = split.split(connection);
-
             //let the property store find the property for me...
-            viewProperty = (Property<Object, Object>) PropertyStore.find(getGenericBindingSource().getClass(), pairs[0].trim());
+            viewProperty = (Property<Object, Object>) PropertyStore.find(getGenericBindingSource().getClass(), this.pathAttribute.trim());
 
-            this.path = pairs[1].trim();
-            getBindingInventory().track(this);
+            getBindingInventory().track(this, this.path);
         }
 
     }
@@ -133,50 +135,37 @@ public abstract class ViewBindingHelper<V>
      *
      */
     class GenericUIBindedEvent
-            extends UIEvent<GenericArgument>
+    extends UIEvent<GenericArgument>
     {
-        private final Pattern split = Pattern.compile("\\+=");
-        private String connection;
         private static final int prefixWidth = 3;
         private Method setMethod;
 
-        public GenericUIBindedEvent(IViewBinding viewBinding, int pathAttribute)
-        {
+        public GenericUIBindedEvent(IProxyViewBinding viewBinding, String pathAttribute) {
             super(viewBinding, pathAttribute);
         }
 
-        /**
-         *
-         * @param viewBinding
-         * @param connection : a single connection point following this pattern:
-         * xxx += aaa.bbb.ccc, where xxx setter method (does not include the prefix and aaa.bbb.ccc is a path to the model/view-model
-         */
-        public GenericUIBindedEvent(IViewBinding viewBinding, String connection)
-        {
-            super(viewBinding, 0);
-            this.connection = connection;
-        }
-
         @Override
-        public void initialize(IAttributeGroup notUsed)
+        public void initialize() throws Exception
         {
-            String[] pairs = split.split(connection);
-            String setName = pairs[0].trim();
+            if (this.pathAttribute == null)
+                return;
 
-            this.path = pairs[1].trim();
+            JSONObject tagProperties =parentViewBinding.getTagProperties();
+            JSONArray tempPaths =  tagProperties.has(pathAttribute) ? tagProperties.getJSONArray(pathAttribute) : null;
 
-
+            this.paths = new String[tempPaths.length()];
+            /////
             Class<?> sourceClass = getGenericBindingSource().getClass();
             Method[] methods = sourceClass.getMethods();
 
             //try to find the set method for the listener. It assumes the prefix is 3 characters, like 'set' or 'add'
             try
             {
-                for(int i = 0; i< methods.length;i++)
+                for(int j = 0; j< methods.length;j++)
                 {
-                    if (methods[i].getName().indexOf(setName) != prefixWidth)
+                    if (methods[j].getName().indexOf(this.pathAttribute) != prefixWidth)
                         continue;
-                    setMethod = methods[i];
+                    setMethod = methods[j];
                     break;
                 }
                 if (setMethod == null || setMethod.getParameterTypes().length != 1)
@@ -186,37 +175,48 @@ public abstract class ViewBindingHelper<V>
             {
                 throw new RuntimeException("No set/add method for listener");
             }
+            ////
 
-            //get the first and only parameter of the method, get the type
-            Class<?> listenerType = setMethod.getParameterTypes()[0];
-
-            try
+            for(int i=0;i<paths.length;i++)
             {
-                //try to proxy the interface, if it the interface, using a invocation handler
-                Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{listenerType}, new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args)
-                            throws Throwable {
-                        //create generic argument with name of method call and arguments
-                        GenericArgument arg = new GenericArgument(GenericUIBindedEvent.this.getPropertyName(), method.getName(), args);
+                if (parentViewBinding.getPathPrefix() != null)
+                    this.paths[i] = parentViewBinding.getPathPrefix() + "." + tempPaths.getString(i);
+                else
+                    this.paths[i] = tempPaths.getString(i);
 
-                        GenericUIBindedEvent.this.execute(arg);
+                //get the first and only parameter of the method, get the type
+                Class<?> listenerType = setMethod.getParameterTypes()[0];
 
-                        if (method.getReturnType().equals(Void.class))
-                            return null;
+                try
+                {
+                    final int pathIndex = i;
+                    //try to proxy the interface, if it the interface, using a invocation handler
+                    Object proxy = Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{listenerType}, new InvocationHandler() {
+                        @Override
+                        public Object invoke(Object proxy, Method method, Object[] args)
+                                throws Throwable {
+                            //create generic argument with name of method call and arguments
+                            GenericArgument arg = new GenericArgument(GenericUIBindedEvent.this.getPropertyName(pathIndex), method.getName(), args);
 
-                        return arg.getReturnObj();
-                    }
-                });
+                            GenericUIBindedEvent.this.execute(arg);
 
-                //add proxy listener to the method
-                setMethod.invoke(getGenericBindingSource(), proxy);
+                            if (method.getReturnType().equals(Void.class))
+                                return null;
+
+                            return arg.getReturnObj();
+                        }
+                    });
+
+                    //add proxy listener to the method
+                    setMethod.invoke(getGenericBindingSource(), proxy);
+                }
+                catch (Exception e)
+                {
+                    //Log.
+                }
+                //////
+                getBindingInventory().track(this, this.paths[i]);
             }
-            catch (Exception e)
-            {
-                //Log.
-            }
-            getBindingInventory().track(this);
         }
 
         /**
@@ -237,47 +237,63 @@ public abstract class ViewBindingHelper<V>
 
     }
 
-    protected int[] getDeclaredStyleAttributeGroup()
-    {
-        return R.styleable.View;
-    }
-    protected int getGenericBindingsAttribute()
-    {
-        return R.styleable.View_GenericBindings;
-    }
-
     @Override
-    public void initialise(View v, IAttributeBridge attributeBridge, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
+    public void initialise(View v, UIHandler uiHandler, BindingInventory inventory, int bindingFlags)
     {
         setBindingFlags(bindingFlags);
         setBindingInventory(inventory);
         setUiHandler(uiHandler);
 
-        IAttributeGroup ta = attributeBridge.getAttributes(getDeclaredStyleAttributeGroup());
-        if (ta == null)
-            return;
-
-        //get semi-colon delimited properties
-        String bindings = ta.getString(getGenericBindingsAttribute());
-        ta.recycle();
-
-        if (bindings == null)
-            return;
-
-        String[] bindingList = bindings.split(";");
-        //for each connection
-        for(int i=0;i<bindingList.length;i++)
+        try
         {
-            if (!bindingList[i].contains("+="))//events
+
+            if (v != null && v.getTag() != null)
             {
-                GenericUIBindedProperty prop = new GenericUIBindedProperty(this, bindingList[i].trim());
-                prop.initialize(null);
+                JSONObject tagProperties = new JSONObject(v.getTag().toString());
+                setTagProperties(tagProperties);
             }
-            else//properties
+
+            for (int i = 0;i<registeredUIElements.size();i++)
             {
-                GenericUIBindedEvent evnt = new GenericUIBindedEvent(this, bindingList[i].trim());
-                evnt.initialize(null);
+                registeredUIElements.get(i).initialize();
             }
+
+            if (tagProperties != null && tagProperties.has("@Events"))
+            {
+                JSONObject events = tagProperties.getJSONObject("@Events");
+                Iterator keys = events.keys();
+
+                while (keys.hasNext())
+                {
+                    String key = (String)keys.next();
+                    JSONArray values = events.getJSONArray(key);
+                    for(int i=0;i<values.length();i++)
+                    {
+                        GenericUIBindedEvent evnt = new GenericUIBindedEvent(this, values.getString(i).trim());
+                        evnt.initialize();
+                    }
+                }
+            }
+
+            if (tagProperties != null && tagProperties.has("@Properties"))
+            {
+                JSONObject props = tagProperties.getJSONObject("@Properties");
+                Iterator keys = props.keys();
+
+                while (keys.hasNext())
+                {
+                    String key = (String)keys.next();
+                    String value = props.getString(key);
+                    GenericUIBindedProperty prop = new GenericUIBindedProperty(this, key, value.trim());
+                    prop.initialize();
+                }
+            }
+
+
+        }
+        catch (Exception exception)
+        {
+
         }
     }
 
@@ -300,6 +316,11 @@ public abstract class ViewBindingHelper<V>
     }
 
     public abstract V getWidget();
+
+    public JSONObject getTagProperties()
+    {
+        return this.tagProperties;
+    }
 
     @Override
     public BindingInventory getBindingInventory()
@@ -332,6 +353,8 @@ public abstract class ViewBindingHelper<V>
     {
         this.uiHandler = uiHandler;
     }
+
+    public void setTagProperties(JSONObject tagProperties){ this.tagProperties = tagProperties;}
 
     public void setBindingInventory(BindingInventory bindingInventory)
     {

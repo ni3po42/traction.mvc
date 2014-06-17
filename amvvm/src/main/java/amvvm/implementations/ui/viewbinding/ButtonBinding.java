@@ -16,16 +16,17 @@
 package amvvm.implementations.ui.viewbinding;
 
 import amvvm.implementations.ViewFactory;
-import amvvm.implementations.observables.ResourceArgument;
 import amvvm.implementations.ui.UIEvent;
-import amvvm.interfaces.IAttributeBridge;
 
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
-import amvvm.R;
-import amvvm.interfaces.IAttributeGroup;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import amvvm.interfaces.ICommand;
 
 /**
  * Handles binding elements to buttons
@@ -40,8 +41,8 @@ import amvvm.interfaces.IAttributeGroup;
 public class ButtonBinding<V extends Button> 
 extends GenericViewBinding<V>
 {
-	public UIEvent<ResourceArgument> OnClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnClick);
-	public UIEvent<ResourceArgument> OnLongClick = new UIEvent<ResourceArgument>(this, R.styleable.Button_OnLongClick);
+	public UIEvent<ICommand.CommandArgument> OnClick = new UIEvent<ICommand.CommandArgument>(this, "OnClick");
+	public UIEvent<ICommand.CommandArgument> OnLongClick = new UIEvent<ICommand.CommandArgument>(this, "OnLongClick");
 
     static class eventHandler
     implements OnClickListener, OnLongClickListener
@@ -52,10 +53,9 @@ extends GenericViewBinding<V>
             ButtonBinding<?> bb = getButtonBinding(arg0);
             if (bb == null)
                 return;
-            ResourceArgument arg = null;
-            if (bb.getCommandValueResourceId() > 0)
-                arg = new ResourceArgument(bb.OnClick.getPropertyName(), bb.getCommandValueResourceId());
-            bb.OnClick.execute(arg);
+
+
+            bb.OnClick.execute(null);
         }
 
         @Override
@@ -65,10 +65,7 @@ extends GenericViewBinding<V>
             if (bb == null)
                 return false;
 
-            ResourceArgument arg = null;
-            if (bb.getCommandValueResourceId() > 0)
-                arg = new ResourceArgument(bb.OnLongClick.getPropertyName(), bb.getCommandValueResourceId());
-            return bb.OnLongClick.execute(arg);
+            return bb.OnLongClick.execute(null);
         }
         private static ButtonBinding getButtonBinding(View v)
         {
@@ -78,23 +75,12 @@ extends GenericViewBinding<V>
 
     private static final eventHandler clickHandler = new eventHandler();
 
-    private int commandValueResourceId = -1;
-    public int getCommandValueResourceId()
-    {
-        return commandValueResourceId;
-    }
-
     @Override
-    protected void initialise(IAttributeBridge attributeBridge)
+    protected void initialise() throws Exception
     {
-        super.initialise(attributeBridge);
+        super.initialise();
 		getWidget().setOnClickListener(clickHandler);
 		getWidget().setOnLongClickListener(clickHandler);
-        IAttributeGroup ta = attributeBridge.getAttributes(R.styleable.Button);
-		OnClick.initialize(ta);
-		OnLongClick.initialize(ta);
-        commandValueResourceId = ta.getResourceId(R.styleable.Button_CommandValue, -1);
-		ta.recycle();
 	}
 	
 

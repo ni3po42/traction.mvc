@@ -2,9 +2,7 @@
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    xmlns:mvvm="http://schemas.android.com/apk/res-auto"
-    mvvm:IsRoot="true"
-    mvvm:Text="MyString"
+    android:tag="{@IsRoot:true, Text='MyString'}"
     >
 
 </TextView>
