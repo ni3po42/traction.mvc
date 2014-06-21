@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ni3po42.android.amvvmdemo.views.SwipableListView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+<ni3po42.android.tractiondemo.views.SwipableListView
+          xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-
           android:choiceMode="singleChoice"
 
-        android:tag="{@IsRoot:true, Items:'Entries', ItemTemplate:'@layout/swipeentry', SelectionEnabled:false}"
+          android:tag="{
+          @IsRoot:true,
+          @model:'ni3po42.android.tractiondemo.models.IEntryModel',
+          Items:'Entries',
+          ItemTemplate:'@layout/swipeentry',
+          SelectionEnabled:false}"
 
         >
 
-</ni3po42.android.amvvmdemo.views.SwipableListView>
+</ni3po42.android.tractiondemo.views.SwipableListView>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/tstratto/Documents/GitHub/amvvm/traction/src/main/res/values/viewholder.xml -->
+    <eat-comment />
+
+    <item name="viewholder" type="id"/>
+
+</resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ni3po42.android.amvvmdemo.views.SwipeEntryView
+<ni3po42.android.tractiondemo.views.SwipeEntryView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:tag="{@IsRoot:true, Active:'Active'}"
         android:layout_width="match_parent"
@@ -18,5 +18,5 @@
         android:tag="{Text:'Id'}"
         />
 
-   </ni3po42.android.amvvmdemo.views.SwipeEntryView>
+   </ni3po42.android.tractiondemo.views.SwipeEntryView>
 

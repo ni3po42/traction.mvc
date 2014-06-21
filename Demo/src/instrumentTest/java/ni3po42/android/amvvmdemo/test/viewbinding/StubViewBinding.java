@@ -1,9 +1,8 @@
-package ni3po42.android.amvvmdemo.test.viewbinding;
+package ni3po42.android.tractiondemo.test.viewbinding;
 
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import amvvm.implementations.ui.viewbinding.GenericViewBinding;
+import traction.mvc.implementations.ui.viewbinding.GenericViewBinding;
 
 public class StubViewBinding
     extends GenericViewBinding<LinearLayout>

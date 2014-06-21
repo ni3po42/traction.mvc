@@ -2,28 +2,10 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\build\intermediates\pre-dexed\debug\classes-5f6126a39d1a217c2cf3d732524b367b180774ce.jar"
-        jar="C:\Users\tstratto\Documents\GitHub\amvvm\build\intermediates\exploded-aar\amvvm\amvvm\unspecified\classes.jar"
+        dex="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\build\intermediates\pre-dexed\debug\classes-8d2bb3bb838f4f2bbc5d54c0f2342fd4f2bf6906.jar"
+        jar="C:\Users\tstratto\Documents\GitHub\amvvm\build\intermediates\exploded-aar\amvvm\traction\unspecified\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="f27c7b0c0af809599bb648051de6a887f916455f"/>
-    <item
-        dex="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\build\intermediates\pre-dexed\test\debug\classes-f97b486ccee80a58c088ea1e7a759bad4023de3a.jar"
-        jar="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\build\intermediates\bundles\debug\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="da9495da21cba0b761588eaa65d223a7b6bcdbd9"/>
-    <item
-        dex="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\build\intermediates\pre-dexed\test\debug\dexmaker20120514-5ab584d6753459b7832148d8fa460e15a4578ca3.jar"
-        jar="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\libs\dexmaker20120514.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="3877c30765c527322f97f498bc59a5b0f43809e8"/>
-    <item
-        dex="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\build\intermediates\pre-dexed\test\debug\mockito-all-1.9.1-SNAPSHOT-04a2ff5003c8d6133d6dcfa05e4260fd12c71f6f.jar"
-        jar="C:\Users\tstratto\Documents\GitHub\amvvm\amvvm\libs\mockito-all-1.9.1-SNAPSHOT.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="40651fa96115e8f7c12bafe178bd0379b0e8a635"/>
+        sha1="5cf409598658aa707e0c5993f4e71a77431fb30f"/>
 
 </pre-dex-items>

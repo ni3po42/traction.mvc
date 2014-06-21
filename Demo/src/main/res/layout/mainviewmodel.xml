@@ -11,7 +11,14 @@
     android:stretchMode="columnWidth"
     android:gravity="center"
 
-    android:tag="{@IsRoot:true,Items:'ViewModelChoices', SelectedIndex:'Choice', ItemTemplate:'@layout/viewmodelchoice'}"
+    android:tag=
+        "{
+        @IsRoot:true,
+        @model:'ni3po42.android.tractiondemo.models.IDemoSelectionModel',
+        Items:ViewModelChoices,
+        SelectedItem:Choice,
+        ItemTemplate:'@layout/viewmodelchoice'
+        }"
 
     >
 </ListView>

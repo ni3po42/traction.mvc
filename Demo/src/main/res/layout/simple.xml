@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:tag="{@IsRoot:true, @BindingType:'ni3po42.android.amvvmdemo.test.viewbinding.StubViewBinding'}"
+    android:tag="{@IsRoot:true, @BindingType:'ni3po42.android.tractiondemo.test.viewbinding.StubViewBinding'}"
 
     >
 

@@ -19,7 +19,7 @@
             android:tag="{Text:quest}"
             />
 
-    <ni3po42.android.amvvmdemo.views.ColorView
+    <ni3po42.android.tractiondemo.views.ColorView
             android:layout_width="match_parent"
             android:layout_height="50dip"
             android:tag="{@Properties:{Color:favoritecolor}}"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:tag="{@IsRoot:true}"
+    android:tag="{@IsRoot:true, @model='ni3po42.android.tractiondemo.models.IMultiSelectionModel'}"
     >
 <GridView
     android:layout_width="match_parent"
@@ -17,7 +17,7 @@
     android:horizontalSpacing="10dp"
     android:stretchMode="columnWidth"
     android:gravity="center"
-    android:tag="{Items:'Items', SelectedIndex:'SelectedIndex', ItemTemplate:'@layout/selectable'}"
+    android:tag="{Items:'Items', SelectedItem:'Selected', ItemTemplate:'@layout/selectable'}"
 
     >
 </GridView>

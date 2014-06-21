@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="{@IsRoot:true}"
+    android:tag="{@IsRoot:true, @model='ni3po42.android.tractiondemo.models.IHomeModel'}"
      >
 
-    <fragmentstub
+    <FrameLayout
         android:id="@+id/main.view.id"
          android:layout_width="match_parent"
         android:layout_height="match_parent"

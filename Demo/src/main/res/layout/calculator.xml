@@ -4,7 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rowCount="5" android:columnCount="5"
-            android:tag="{@IsRoot:true}"
+            android:tag="{@IsRoot:true, @model:'ni3po42.android.tractiondemo.models.ICalculatorModel'}"
         >
 
     <TextView

@@ -8,11 +8,11 @@
 
     
     <fragment 
-        android:name="ni3po42.android.amvvmdemo.viewmodels.MainViewModel"
+        android:name="ni3po42.android.tractiondemo.controllers.MainController"
         android:layout_weight="1"
         android:layout_width="0dp"
   		android:layout_height="match_parent" 
-  		android:tag="MainViewModel?" />
+  		android:tag="{@fragment:MainViewModel}" />
 
     <!--<fragmentstub-->
     <FrameLayout

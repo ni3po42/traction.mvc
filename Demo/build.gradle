@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':amvvm')
+    compile project(':traction')
 }
 
 android {
@@ -23,7 +23,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 17
-        testApplicationId "ni3po42.android.amvvmdemo.test"
+        testApplicationId "ni3po42.android.tractiondemo.test"
     }
 }
 

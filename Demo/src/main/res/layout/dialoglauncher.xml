@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:tag="{@IsRoot:true}"
+    android:tag="{@IsRoot:true, @model:'ni3po42.android.tractiondemo.models.DialogModel'}"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"     
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open Dialog"
-        android:tag="{OnClick:['OpenDialog']}"
+        android:tag="{OnClick:['Open']}"
          />
 
 </LinearLayout>

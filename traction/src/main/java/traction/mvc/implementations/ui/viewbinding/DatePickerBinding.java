@@ -1,0 +1,116 @@
+/* Copyright 2013 Tim Stratton
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ */
+
+package traction.mvc.implementations.ui.viewbinding;
+
+import traction.mvc.implementations.ViewFactory;
+import traction.mvc.implementations.ui.UIProperty;
+import traction.mvc.interfaces.IUIElement.IUIUpdateListener;
+
+import android.text.format.Time;
+import android.widget.DatePicker;
+
+/**
+ * Defines binding for a date picker. Similar to the calendar binding, but because they don't share any common sub class or interface,
+ * they coudn't share the same view binding.
+ * @author Tim Stratton
+ *
+ * Exposes the following properties:
+ * SelectedDate - current date in view
+ * MinDate - lowest date
+ * MaxDate - highest date
+ */
+public class DatePickerBinding 
+extends GenericViewBinding<DatePicker>
+{
+	public final UIProperty<Time> SelectedDate = new UIProperty<Time>(this, "SelectedDate");
+	public final UIProperty<Time> MinDate = new UIProperty<Time>(this, "MinDate");
+	public final UIProperty<Time> MaxDate = new UIProperty<Time>(this, "MaxDate");
+
+    private static final DatePicker.OnDateChangedListener dateChangeListener = new DatePicker.OnDateChangedListener()
+    {
+        @Override
+        public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+        {
+            //wanted to keep the time consistant with the date, just cause we are changing the date,
+            //doesn't mean the view-model isn't also keeping track of the current time elsewhere.
+            //so, we get the current Time from the model and get the second, minute and hour (milli seconds support not ready yet)
+            DatePickerBinding datePickerBinding = (DatePickerBinding) ViewFactory.getViewBinding(view);
+            Time t = datePickerBinding.SelectedDate.dereferenceValue();
+            t = (t == null) ? new Time() : new Time(t);
+            t.set(t.second, t.minute, t.hour, dayOfMonth, monthOfYear, year);
+            datePickerBinding.SelectedDate.sendUpdate(t);
+        }
+    };
+
+	public DatePickerBinding()
+	{
+		SelectedDate.setUIUpdateListener(new IUIUpdateListener<Time>()
+		{
+			@Override
+			public void onUpdate(Time value)
+			{
+				if (getWidget() == null)
+					return;
+				if (value == null)
+				{
+					getWidget().init(1970, 0, 1, dateChangeListener);
+					return;
+				}				
+				getWidget().init(value.year, value.month, value.monthDay, dateChangeListener);
+			}
+		});
+		
+		MinDate.setUIUpdateListener(new IUIUpdateListener<Time>()
+		{			
+			@Override
+			public void onUpdate(Time value)
+			{
+				if (getWidget() == null)
+					return;
+				long d = (value == null) ? 0 : value.gmtoff;						
+				getWidget().setMinDate(d);
+			}
+		});
+		
+		MaxDate.setUIUpdateListener(new IUIUpdateListener<Time>()
+		{			
+			@Override
+			public void onUpdate(Time value)
+			{
+				if (getWidget() == null)
+					return;
+				long d = (value == null) ? 0 : value.gmtoff;						
+				getWidget().setMaxDate(d);
+			}
+		});		
+	}
+
+
+    @Override
+    protected void initialise() throws Exception
+    {
+        super.initialise();
+		getWidget().init(1970, 0, 1, dateChangeListener);
+	}
+	
+
+	@Override
+	public void detachBindings()
+	{
+		getWidget().init(1970, 0, 1, null);
+		super.detachBindings();
+	}
+}

@@ -4,7 +4,11 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:tag="{@IsRoot:true,Items:'Answers',ItemTemplate:'@layout/answer'}"
+              android:tag="{
+              @IsRoot:true,
+              @model:'ni3po42.android.tractiondemo.models.IBridgeOfDeathModel',
+              Items:'Answers',
+              ItemTemplate:'@layout/answer'}"
         >
 
 </ListView>

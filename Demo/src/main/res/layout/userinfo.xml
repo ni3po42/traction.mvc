@@ -3,33 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:tag="{@IsRoot:true}"
+    android:tag="{@IsRoot:true, @model:'ni3po42.android.tractiondemo.models.IUserInfo'}"
     >
-    <!--xmlns:mvvm="http://schemas.android.com/apk/res-auto"-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="First Name"
-        android:tag="{Text:'CurrentUserInfo.FirstName'}"
+        android:tag="{Text:'FirstName'}"
         />
     
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Last Name"
-        android:tag="{Text:'CurrentUserInfo.LastName'}"
+        android:tag="{Text:'LastName'}"
         />
     
     <Spinner
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tag="{Items:'Genders', SelectedChoiceIndex:'GenderIndex', ItemTemplate:'@layout/gender'}"
+        android:tag="{Items:Genders, SelectedChoice:UserGender, ItemTemplate:'@layout/gender'}"
         />
     
     <DatePicker
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:tag="{SelectedDate:'CurrentUserInfo.DateOfBirth'}"
+        android:tag="{SelectedDate:'DateOfBirth'}"
  	       />
 
     <Button

@@ -21,7 +21,7 @@
     <ImageView 
         android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:tag="{Image:'Image'}"
+        android:src="@drawable/ic_launcher"
 
         />
 
