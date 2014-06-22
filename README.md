@@ -2,12 +2,12 @@
 
 <strong>0.9.0 Update is coming. Framework is now known as 'Traction MVC'. Stay tuned for updated docs.</strong>
 
-<!--ul>
-<li><a href="https://github.com/ni3po42/amvvm/wiki/How-does-it-work%3F">How's it work</a></li>
-<li><a href="https://github.com/ni3po42/amvvm/wiki/Getting-Started">Getting started</a></li>
-<li><a href="https://github.com/ni3po42/amvvm/wiki/How-to-Contribute">How to contribute</a></li>
-<li><a href="https://github.com/ni3po42/amvvm/wiki/Upcoming-features">Future Features</a></li>
-</ul-->
+<ul>
+<li><a href="https://github.com/ni3po42/traction.mvc/wiki/How-does-it-work%3F">How's it work</a></li>
+<li><a href="https://github.com/ni3po42/traction.mvc/wiki/Getting-Started">Getting started</a></li>
+<li><a href="https://github.com/ni3po42/traction.mvc/wiki/How-to-Contribute">How to contribute</a></li>
+<li><a href="https://github.com/ni3po42/traction.mvc/wiki/Upcoming-features">Future Features</a></li>
+</ul>
 
 <h2>
 INTRODUCTION
@@ -27,7 +27,7 @@ In designing this library, I intended it to solve a couple of issues with genera
 No referencing android.view or android.widget (almost)
 </h2>
 
-There is (almost) no need to reference any view objects in the activity or fragment (here on referred to as the 'view-model'). In the near future, a wiki will be set up to better explain current features and future features. But that aside, nothing would make me happier then to never have to use the 'findViewById' method ever again (including the 'findFragmentById' method as well).
+There is (almost) no need to reference any view objects in the activity or fragment. In the near future, a wiki will be set up to better explain current features and future features. But that aside, nothing would make me happier then to never have to use the 'findViewById' method ever again (including the 'findFragmentById' method as well).
 
 <h2>
 No need to replace existing views in layouts!
