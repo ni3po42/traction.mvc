@@ -1,7 +1,7 @@
 <h1>Traction MVC, v BETA 0.9.0 (soon)</h1>
 
-<strong>0.9.0 Update is coming. Framework is now known as 'Traction MVC'. Stay tuned for updated docs.</strong>
-
+<strong>0.9.0 Update is coming. Framework is now known as 'Traction MVC'. Stay tuned for updated docs.</strong><br />
+<strong>Please, if you are interested in using the older versions, please download or fork only source with tag versions. The current code is still a work in progress.</strong>
 <ul>
 <li><a href="https://github.com/ni3po42/traction.mvc/wiki/How-does-it-work%3F">How's it work</a></li>
 <li><a href="https://github.com/ni3po42/traction.mvc/wiki/Getting-Started">Getting started</a></li>
