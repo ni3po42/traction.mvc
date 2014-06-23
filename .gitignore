@@ -34,5 +34,5 @@ local.properties
 
 Demo/build
 Demo/*.iml
-amvvm/build
-amvvm/*.iml
+traction/build
+traction/*.iml

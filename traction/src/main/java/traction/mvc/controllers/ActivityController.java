@@ -21,9 +21,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 /**
- * Base class for view model activities. In AMVVM, the activity is used to manage the different view model (fragments), but can act as
- * a view-model for very simple cases. It's not necessary to use this class as your base for activities, but you can wrap it around the
- * ViewModelHelper instead of rewriting all the logic again. Use this as your base
+ * Base class for controller activities. In Traction MVC, the activity is used to manage the different 'sub-controller' (fragments),
+ * but can act as a controller for very simple cases. It's not necessary to use this class as your base for activities,
+ * but you can wrap it around the ControllerHelper instead of rewriting all the logic again. Use this as your base
  * class or use it as an example for altering your current base activity.  
  * @author Tim Stratton
  *

@@ -7,8 +7,8 @@ import traction.mvc.interfaces.IProxyObservableObject;
 public interface IDemoSelectionModel
     extends IProxyObservableObject
 {
-    List<DemoViewModelChoice> getViewModelChoices();
+    List<DemoFragmentChoice> getChoices();
 
-    DemoViewModelChoice getChoice();
-    void setChoice(DemoViewModelChoice choice);
+    DemoFragmentChoice getChoice();
+    void setChoice(DemoFragmentChoice choice);
 }

@@ -72,7 +72,7 @@ public class CursorAdapter
     @Override
     public void bindView(View view, Context context, Cursor cursor)
     {
-        ViewFactory.RegisterContext(view, cursor);
+        ViewFactory.updateScope(view, cursor);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class EntryController
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        View.setContentView(R.layout.entryviewmodel);
+        View.setContentView(R.layout.entry);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class EntryController
 
         IEntryModel model = View.getScope();
 
+        model.getEntries().clear();
         model.getEntries().add(new EntryItem(1,"Something", true));
         model.getEntries().add(new EntryItem(2,"Another Thing", true));
         model.getEntries().add(new EntryItem(3,"Not the first", true));

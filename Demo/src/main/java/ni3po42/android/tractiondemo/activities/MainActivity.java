@@ -39,7 +39,7 @@ public class MainActivity extends ActivityController
 
         IHomeModel model = View.getScope();
 
-        boolean multiViewModelSupport =  model.getCurrentModelView() != null;
+        boolean multiViewModelSupport =  model.getCurrentFragment() != null;
 
         if (multiViewModelSupport)
             return;
@@ -49,12 +49,12 @@ public class MainActivity extends ActivityController
         args.putBoolean(MainController.NoMultiViewModelSupport, true);
         mvm.setArguments(args);
 
-        model.setCurrentModelView(mvm);
+        model.setCurrentFragment(mvm);
 
         getFragmentManager()
                 .beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.main_view_id, model.getCurrentModelView())
+                .replace(R.id.main_view_id, model.getCurrentFragment())
                 .commit();
 
     }

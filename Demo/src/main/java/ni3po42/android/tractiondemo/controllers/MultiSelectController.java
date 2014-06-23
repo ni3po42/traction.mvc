@@ -42,6 +42,7 @@ public class MultiSelectController extends FragmentController
         super.onStart();
         final IMultiSelectionModel model = View.getScope();
 
+        model.getItems().clear();
         for(int i=0;i<12;i++)
             model.getItems().add(new SelectableItem());
 

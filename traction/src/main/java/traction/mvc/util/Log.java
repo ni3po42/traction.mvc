@@ -23,7 +23,7 @@ package traction.mvc.util;
  */
 public class Log
 {
-	private static final String tag = "AMVVM";
+	private static final String tag = "traction.mvc";
 	
 	private Log(){}
 	

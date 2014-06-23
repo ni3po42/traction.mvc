@@ -28,9 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Base class for view model dialog fragments. In AMVVM, the fragment represents a view-model; it will assign with layout to use and pass
- * model data to the view and access data/command back from the view. It's not necessary to use this class as your base for view-model
- * dialog fragments, but you must use a dialog fragment that implements IViewModel, and you can wrap it around the ViewModelHelper 
+ * Base class for controller dialog fragments. In Traction MVC, the fragment represents a controller; it will assign witch
+ * layout to use and pass model data to the view and access data/command back from the view.
+ * It's not necessary to use this class as your base controller
+ * dialog fragments, but you can wrap it around the ControllerlHelper
  * instead of rewriting all the logic again. Use this as your base class or use it as an example for altering 
  * your current base dialog fragment.  
  * @author Tim Stratton

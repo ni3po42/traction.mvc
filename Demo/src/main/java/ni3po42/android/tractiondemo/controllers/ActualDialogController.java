@@ -29,7 +29,7 @@ public class ActualDialogController extends DialogController
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-        View.setContentView(R.layout.dialogviewmodel);
+        View.setContentView(R.layout.dialog);
         View.setMenuLayout(R.menu.dialog_menu);
 	};
 

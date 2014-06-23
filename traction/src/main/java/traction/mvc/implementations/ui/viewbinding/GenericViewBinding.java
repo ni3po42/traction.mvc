@@ -29,7 +29,7 @@ import android.view.View;
 import org.json.JSONObject;
 
 /**
- * The base implementation for all default view bindings in AMVVM. This handles all base ui elements for all views bounded
+ * The base implementation for all default view bindings in Traction. This handles all base ui elements for all views bounded
  * @author Tim Stratton
  * 
  * Exposes the following properties:

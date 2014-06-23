@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\src\main\assets" />
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\src\main\assets" />
     </dataSet>
     <dataSet config="release" >
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\src\release\assets" />
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\src\release\assets" />
     </dataSet>
 
 </merger>

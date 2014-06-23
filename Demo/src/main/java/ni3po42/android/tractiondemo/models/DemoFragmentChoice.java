@@ -17,15 +17,15 @@ package ni3po42.android.tractiondemo.models;
 
 import android.app.Fragment;
 
-public class DemoViewModelChoice
+public class DemoFragmentChoice
 {
 	private Class<? extends Fragment> fragmentType;
 	private String name;
 	private String description;
 	
-	public DemoViewModelChoice(Class<? extends Fragment> viewModelType, String name, String description)
+	public DemoFragmentChoice(Class<? extends Fragment> fragmentType, String name, String description)
 	{
-		this.fragmentType = viewModelType;
+		this.fragmentType = fragmentType;
 		this.name = name;
 		this.description = description;
 	}

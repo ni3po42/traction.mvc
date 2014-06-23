@@ -272,28 +272,24 @@ implements Factory2
 	 * So, it is not necessary to have all object populated, 
 	 * they will be caught with the objects update.
 	 * @param view : view to Register (bind) to
-	 * @param context : root object to bind against
+	 * @param scope : root object to bind against
 	 */
-	public static void RegisterContext(final View view,Object context)
+	public static void updateScope(final View view,Object scope)
 	{
-		if (context == null || view == null)
+		if (scope == null || view == null)
 			return;
 
         IViewBinding vb = getViewBinding(view);
 		if (vb == null)
 			return;
 
-        //ignore setting context if a scope is already present
-        if ((vb.getBindingFlags() & IViewBinding.Flags.SCOPE_PRESENT) == IViewBinding.Flags.SCOPE_PRESENT)
-            return;
-
 		BindingInventory inventory = vb.getBindingInventory();
 		if (inventory != null)
 		{
-			inventory.setContextObject(context);
+			inventory.setContextObject(scope);
 
-            if (context instanceof IProxyObservableObject && ((IProxyObservableObject)context).getProxyObservableObject() != null)
-                ((IProxyObservableObject)context).getProxyObservableObject().notifyListener();
+            if (scope instanceof IProxyObservableObject && ((IProxyObservableObject)scope).getProxyObservableObject() != null)
+                ((IProxyObservableObject)scope).getProxyObservableObject().notifyListener();
             else
                 inventory.onContextSignaled(null);
 		}		

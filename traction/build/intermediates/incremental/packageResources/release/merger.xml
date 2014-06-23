@@ -2,20 +2,20 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\src\main\res" >
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\src\main\res" >
             <file
-                path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\src\main\res\values\viewholder.xml"
+                path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\src\main\res\values\viewholder.xml"
                 qualifiers="" >
                 <item
                     name="viewholder"
                     type="id"/>
             </file>
         </source>
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\build\generated\res\rs\release" />
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\build\generated\res\generated\release" />
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\build\generated\res\rs\release" />
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\build\generated\res\generated\release" />
     </dataSet>
     <dataSet config="release" >
-        <source path="C:\Users\tstratto\Documents\GitHub\amvvm\traction\src\release\res" />
+        <source path="C:\Users\tstratto\Documents\GitHub\traction.mvc\traction\src\release\res" />
     </dataSet>
 
 </merger>

@@ -36,9 +36,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Implements all logic for a view model to function. Activities and Fragments can wrap this logic to become the base object to handle
- * the AMVVM framework. See {@code ActivityViewModel}, {@code ViewModel} and {@code DialogViewModel} for examples on how to implement them
- * in your own base, or just use these classes as your base yourself.
+ * Implements all logic for a Controller to function. Activities and Fragments can wrap this logic to become the base object to handle
+ * the Traction MVC framework. See {@code ActivityController}, {@code FragmentController} and {@code DialogController}
+ * for examples on how to implement them in your own base, or just use these classes as your base yourself.
  * @author Tim Stratton
  *
  */
@@ -171,6 +171,11 @@ public class ControllerHelper
 		//    ViewFactory.RegisterContext(v, this);
 		return v;
 	}
+
+    public void setScope(Object object)
+    {
+
+    }
 
     public <T> T getScope()
     {
@@ -371,7 +376,7 @@ public class ControllerHelper
         {
             toastRootIds.put(layoutId, layout.getId());
         }
-        ViewFactory.RegisterContext(layout, getScope());
+        ViewFactory.updateScope(layout, getScope());
 
         t.setView(layout);
 

@@ -86,7 +86,7 @@ extends BaseAdapter
             throw new IllegalStateException("Possible child view not marked 'IsRoot'. Templates of AdapterViews must be marked 'IsRoot' = true.");
         }
 
-		ViewFactory.RegisterContext(convertView, getList().get(position));
+		ViewFactory.updateScope(convertView, getList().get(position));
 
         //now to clean up. If a synthetic viewholder was created, detach the list from the 'root'
         if (ViewFactory.getViewBinding(parent).isSynthetic())

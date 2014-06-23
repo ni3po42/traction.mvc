@@ -4,7 +4,7 @@ import android.app.Fragment;
 
 public interface IHomeModel
 {
-    Fragment getCurrentModelView();
-    void setCurrentModelView(Fragment modelView);
+    Fragment getCurrentFragment();
+    void setCurrentFragment(Fragment modelView);
 
 }

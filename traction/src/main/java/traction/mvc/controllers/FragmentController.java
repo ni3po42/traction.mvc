@@ -28,9 +28,9 @@ import traction.mvc.implementations.ViewFactory;
 import traction.mvc.interfaces.IViewBinding;
 
 /**
- * Base class for view model fragments. In AMVVM, the fragment represents a view-model; it will assign with layout to use and pass
- * model data to the view and access data/command back from the view. It's not necessary to use this class as your base for view-model
- * fragments, but you can wrap it around the ViewModelHelper instead of
+ * Base class for controller fragments. In Traction MVC, the fragment represents a controller; it will assign witch layout to use and pass
+ * model data to the view and access data/command back from the view. It's not necessary to use this class as your base for
+ * fragments, but you can wrap it around the ControllerHelper instead of
  * rewriting all the logic again. Use this as your base class or use it as an example for altering your current base fragment.  
  * @author Tim Stratton
  *
@@ -39,7 +39,7 @@ public class FragmentController
 extends Fragment
 {
 	/**
-	 * Helper to implement view model logic.
+	 * Helper to implement Controller logic.
 	 */
 	protected final ControllerHelper View = new ControllerHelper(this);
 

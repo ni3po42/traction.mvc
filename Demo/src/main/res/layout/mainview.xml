@@ -15,9 +15,9 @@
         "{
         @IsRoot:true,
         @model:'ni3po42.android.tractiondemo.models.IDemoSelectionModel',
-        Items:ViewModelChoices,
+        Items:Choices,
         SelectedItem:Choice,
-        ItemTemplate:'@layout/viewmodelchoice'
+        ItemTemplate:'@layout/fragmentchoice'
         }"
 
     >

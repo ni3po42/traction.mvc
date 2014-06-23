@@ -43,7 +43,7 @@ public class TestViewFactory extends InstrumentationTestCase
     public void testCanIgnoreChildren()
     {
         //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
+        String viewClass = "ni3po42.android.traction.mvc.views.realview";
         View parentLayout = mock(View.class);
         View childLayout = mock(View.class);
 
@@ -65,7 +65,7 @@ public class TestViewFactory extends InstrumentationTestCase
     public void testChildrenIgnoredWhenParentHasNoViewHolderAndRootFalse()
     {
         //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
+        String viewClass = "ni3po42.android.traction.mvc.views.realview";
         View parentLayout = mock(View.class);
         View childLayout = mock(View.class);
 
@@ -149,7 +149,7 @@ public class TestViewFactory extends InstrumentationTestCase
     public void testNestedRootViewHasBindingInventoryPointBackToParentViewsBindingInventory()
     {
         //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
+        String viewClass = "ni3po42.android.traction.mvc.views.realview";
         View parentLayout = mock(View.class);
         View childView = mock(View.class);
 
@@ -217,8 +217,8 @@ public class TestViewFactory extends InstrumentationTestCase
     public void testCanInitializeCustomViewBinding()
     {
         //arrange
-        String viewClass = "ni3po42.android.amvvm.views.realview";
-        String viewbindingClass = "ni3po42.android.amvvm.viewbindings.realviewbinding";
+        String viewClass = "ni3po42.android.traction.mvc.views.realview";
+        String viewbindingClass = "ni3po42.android.traction.mvc.viewbindings.realviewbinding";
         View childView = mock(View.class);
         IViewBinding viewBinding = mock(IViewBinding.class);
 

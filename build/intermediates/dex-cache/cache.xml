@@ -2,10 +2,10 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\tstratto\Documents\GitHub\amvvm\Demo\build\intermediates\pre-dexed\debug\classes-8d2bb3bb838f4f2bbc5d54c0f2342fd4f2bf6906.jar"
-        jar="C:\Users\tstratto\Documents\GitHub\amvvm\build\intermediates\exploded-aar\amvvm\traction\unspecified\classes.jar"
+        dex="C:\Users\tstratto\Documents\GitHub\traction.mvc\Demo\build\intermediates\pre-dexed\debug\classes-a0f9f76c3957673c304f6b90af23a2506938cec0.jar"
+        jar="C:\Users\tstratto\Documents\GitHub\traction.mvc\build\intermediates\exploded-aar\traction.mvc\traction\unspecified\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="5cf409598658aa707e0c5993f4e71a77431fb30f"/>
+        sha1="07eb47bb91f33ff4204194e30da99b9cc89d8150"/>
 
 </pre-dex-items>

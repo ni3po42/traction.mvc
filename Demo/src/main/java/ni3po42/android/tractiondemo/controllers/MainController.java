@@ -20,10 +20,10 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import ni3po42.android.tractiondemo.models.DemoFragmentChoice;
 import traction.mvc.controllers.FragmentController;
 import traction.mvc.interfaces.IObjectListener;
 import ni3po42.android.tractiondemo.R;
-import ni3po42.android.tractiondemo.models.DemoViewModelChoice;
 import ni3po42.android.tractiondemo.models.IDemoSelectionModel;
 
 public class MainController extends FragmentController
@@ -36,7 +36,7 @@ public class MainController extends FragmentController
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null)
 			return;
-        View.setContentView(R.layout.mainviewmodel);
+        View.setContentView(R.layout.mainview);
 	}
 
     @Override
@@ -46,15 +46,16 @@ public class MainController extends FragmentController
 
         IDemoSelectionModel model = View.getScope();
 
-        model.getViewModelChoices().add(new DemoViewModelChoice(SimpleFormController.class, "Simple Form", "Explore the ease of filling out a user information form"));
-        model.getViewModelChoices().add(new DemoViewModelChoice(UIWiringController.class, "UI Wiring", "Demonstrates how elements can react to other elements changing without referencing other UI elements!"));
-        model.getViewModelChoices().add(new DemoViewModelChoice(DemoADialogController.class, "Dialog view model", "Shows a view model hooking to a dialog."));
-        model.getViewModelChoices().add(new DemoViewModelChoice(MultiSelectController.class, "Multi-selection", "Gives an example on how multi-selection could work in Traction MVC."));
-        model.getViewModelChoices().add(new DemoViewModelChoice(EntryController.class, "Swipe List", "A custom view is built that binds data and provides a catchy (ok, at least not boring) UX. Swipe items to the left to activate/de-active."));
-        model.getViewModelChoices().add(new DemoViewModelChoice(CalculatorController.class, "Calculator", "A simple calculator. Lots of buttons; simple view model."));
-        model.getViewModelChoices().add(new DemoViewModelChoice(BridgeOfDeathController.class, "The Bridge of Death", "STOP! Who would cross the Bridge of Death must answer me these questions three; Ere the other side he see. Cursors and Generic Bindings!"));
-        model.getViewModelChoices().add(new DemoViewModelChoice(RelativeContextFragmentController.class, "Relative Context", "Shows how relative context works."));
-        model.getViewModelChoices().add(new DemoViewModelChoice(ScopeExampleController.class, "Scopes", "Example of using generated scopes."));
+        model.getChoices().clear();
+        model.getChoices().add(new DemoFragmentChoice(SimpleFormController.class, "Simple Form", "Explore the ease of filling out a user information form"));
+        model.getChoices().add(new DemoFragmentChoice(UIWiringController.class, "UI Wiring", "Demonstrates how elements can react to other elements changing without referencing other UI elements!"));
+        model.getChoices().add(new DemoFragmentChoice(DemoADialogController.class, "Dialog view model", "Shows a view model hooking to a dialog."));
+        model.getChoices().add(new DemoFragmentChoice(MultiSelectController.class, "Multi-selection", "Gives an example on how multi-selection could work in Traction MVC."));
+        model.getChoices().add(new DemoFragmentChoice(EntryController.class, "Swipe List", "A custom view is built that binds data and provides a catchy (ok, at least not boring) UX. Swipe items to the left to activate/de-active."));
+        model.getChoices().add(new DemoFragmentChoice(CalculatorController.class, "Calculator", "A simple calculator. Lots of buttons; simple view model."));
+        model.getChoices().add(new DemoFragmentChoice(BridgeOfDeathController.class, "The Bridge of Death", "STOP! Who would cross the Bridge of Death must answer me these questions three; Ere the other side he see. Cursors and Generic Bindings!"));
+        model.getChoices().add(new DemoFragmentChoice(RelativeContextFragmentController.class, "Relative Context", "Shows how relative context works."));
+        model.getChoices().add(new DemoFragmentChoice(ScopeExampleController.class, "Scopes", "Example of using generated scopes."));
 
         model.getProxyObservableObject().registerListener("", new IObjectListener() {
             @Override
@@ -70,7 +71,7 @@ public class MainController extends FragmentController
     private void showNewChoice()
     {
         IDemoSelectionModel model = View.getScope();
-        DemoViewModelChoice choice = model.getChoice();
+        DemoFragmentChoice choice = model.getChoice();
 
         if (choice == null)
             return;
