@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import traction.mvc.interfaces.IObservableList;
-import traction.mvc.interfaces.IObservableObject;
 import traction.mvc.interfaces.IPropertyStore;
 
 import android.util.Property;
@@ -104,10 +103,11 @@ implements IObservableList<T>
 	@Override
 	public boolean add(T arg0)
 	{
+        int s = getInternalCollection().size();
 		if(getInternalCollection().add(arg0))
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, s+1);
 			return true;
 		}
 		return false;
@@ -116,11 +116,12 @@ implements IObservableList<T>
 	@Override
 	public boolean addAll(Collection<? extends T> arg0)
 	{
+        int s = getInternalCollection().size();
 		boolean returnValue = getInternalCollection().addAll(arg0);
 		if (returnValue)
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, getInternalCollection().size());
 		}
 		return returnValue;
 	}
@@ -133,7 +134,7 @@ implements IObservableList<T>
 		if (size != size())
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", size, 0);
 		}
 	}
 
@@ -164,11 +165,12 @@ implements IObservableList<T>
 	@Override
 	public boolean remove(Object arg0)
 	{
+        int s = getInternalCollection().size();
 		boolean returnValue = getInternalCollection().remove(arg0);
 		if (returnValue)
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, s-1);
 		}
 		return returnValue;
 	}
@@ -176,11 +178,12 @@ implements IObservableList<T>
 	@Override
 	public boolean removeAll(Collection<?> arg0)
 	{
+        int s = getInternalCollection().size();
 		boolean returnValue =  getInternalCollection().removeAll(arg0);
 		if (returnValue)
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, getInternalCollection().size());
 		}
 		return returnValue;
 	}
@@ -188,11 +191,12 @@ implements IObservableList<T>
 	@Override
 	public boolean retainAll(Collection<?> arg0)
 	{
+        int s = getInternalCollection().size();
 		boolean returnValue = getInternalCollection().retainAll(arg0);
 		if (returnValue)
 		{
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, getInternalCollection().size());
 		}
 		return returnValue;
 	}
@@ -209,28 +213,28 @@ implements IObservableList<T>
 		return getInternalCollection().toArray();
 	}
 
-	@SuppressWarnings("hiding")
-	@Override
-	public <T> T[] toArray(T[] arg0)
-	{
-		return getInternalCollection().toArray(arg0);
-	}
-		
-	@Override
+    @Override
+    public <T1> T1[] toArray(T1[] arg0) {
+        return getInternalCollection().toArray(arg0);
+    }
+
+    @Override
 	public void add(int location, T object)
 	{
+        int size = getInternalCollection().size();
         getInternalCollection().add(location, object);
         notifyAdapterOfChange();
-        proxy.notifyListener("Count");
+        proxy.notifyListener("Count", size, getInternalCollection().size());
 	}
 
 	@Override
 	public boolean addAll(int arg0, Collection<? extends T> arg1)
 	{
+        int size = getInternalCollection().size();
         boolean b = getInternalCollection().addAll(arg0, arg1);
         if (b) {
             notifyAdapterOfChange();
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", size, getInternalCollection().size());
         }
         return b;
 	}
@@ -268,9 +272,10 @@ implements IObservableList<T>
 	@Override
 	public T remove(int location)
 	{
+        int s = getInternalCollection().size();
         T b = getInternalCollection().remove(location);
         notifyAdapterOfChange();
-        proxy.notifyListener("Count");
+        proxy.notifyListener("Count", s, getInternalCollection().size());
         return b;
 	}
 
@@ -281,7 +286,7 @@ implements IObservableList<T>
         T b = getInternalCollection().set(location, object);
         notifyAdapterOfChange();
         if (s != getInternalCollection().size())
-            proxy.notifyListener("Count");
+            proxy.notifyListener("Count", s, getInternalCollection().size());
         return b;
 	}
 
@@ -297,7 +302,7 @@ implements IObservableList<T>
     }
 
     @Override
-    public IObservableObject getProxyObservableObject() {
+    public ObservableObject getProxyObservableObject() {
         return proxy;
     }
 }

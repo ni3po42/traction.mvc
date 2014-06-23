@@ -15,7 +15,6 @@
 
 package traction.mvc.observables;
 
-import traction.mvc.implementations.BindingInventory;
 import traction.mvc.implementations.ViewBindingFactory;
 import traction.mvc.implementations.ViewFactory;
 import traction.mvc.interfaces.ITemplateAdapter;

@@ -38,7 +38,23 @@ public class DemoFragmentChoice
 	{
 		this.fragmentType = viewModelType;
 	}
-	
+
+    public Fragment getFragment()
+    {
+        Fragment fragment = null;
+        try
+        {
+            fragment = getFragmentType().newInstance();
+        }
+        catch (Throwable e)
+        {
+        }
+        if (fragment == null)
+            throw new RuntimeException("Cannot find View Model : " + getFragmentType().getName());
+        return fragment;
+    }
+
+
 	public String getName()
 	{
 		return name;

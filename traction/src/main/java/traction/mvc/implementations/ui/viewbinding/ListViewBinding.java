@@ -27,17 +27,17 @@ import android.widget.AdapterView.OnItemClickListener;
  * if it is marked selected or not. It didn't need an actual ui element because the path is not dynamic.
  * @author Tim Stratton
  *
- * @param <T>
  * 
  * Exposes the following properties:
- * Selected - Path to the child items's boolean property to hold it's selection state
+ * SelectedItem - Path to the child item that is selected
+ * SelectedItemIndex - Path to child item's index that was selected
  */
-public class ListViewBinding<T>
-extends AdapterViewBinding<T>
+public class ListViewBinding
+extends AdapterViewBinding
 implements OnItemClickListener
 {
     public final UIProperty<Integer> SelectedItemIndex = new UIProperty<Integer>(this, "SelectedItemIndex");
-    public final UIProperty<T> SelectedItem = new UIProperty<T>(this, "SelectedItem");
+    public final UIProperty<Object> SelectedItem = new UIProperty<Object>(this, "SelectedItem");
 
     @Override
     protected void initialise() throws Exception
@@ -59,7 +59,7 @@ implements OnItemClickListener
 	public void onItemClick(final AdapterView<?> view, final View childView, final int position, final long key)
 	{
         SelectedItemIndex.sendUpdate(position);
-        SelectedItem.sendUpdate((T)view.getItemAtPosition(position));
+        SelectedItem.sendUpdate(view.getItemAtPosition(position));
 	}
 
 }

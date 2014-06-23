@@ -3,7 +3,7 @@ package traction.mvc.interfaces;
 import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 
 public interface ITemplateAdapter
     extends ListAdapter, SpinnerAdapter

@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.mockito.ArgumentCaptor;
 
 import traction.mvc.implementations.ViewBindingFactory;
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ViewFactory;
 import traction.mvc.implementations.ui.UIHandler;
 import traction.mvc.interfaces.IUIElement;

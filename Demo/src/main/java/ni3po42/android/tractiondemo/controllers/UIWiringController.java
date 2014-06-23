@@ -20,10 +20,10 @@ import android.widget.Toast;
 
 import traction.mvc.controllers.FragmentController;
 import traction.mvc.implementations.CommandArgument;
-import traction.mvc.interfaces.IObjectListener;
 import traction.mvc.interfaces.IOnExecuteListener;
 import ni3po42.android.tractiondemo.R;
 import ni3po42.android.tractiondemo.models.IUIWireModel;
+import traction.mvc.observables.OnPropertyChangedEvent;
 
 public class UIWiringController extends FragmentController
 {
@@ -52,11 +52,10 @@ public class UIWiringController extends FragmentController
             }
         });
 
-        model.getProxyObservableObject().registerListener("", new IObjectListener() {
+        model.getProxyObservableObject().addOnChange(new OnPropertyChangedEvent() {
             @Override
-            public void onEvent(String propagationId) {
-                if ("MainFlagOn".equals(propagationId))
-                {
+            protected void onChange(String propertyName, Object oldValue, Object newValue) {
+                if ("MainFlagOn".equals(propertyName)) {
                     model.setMyString("MainFlag is " + (model.isMainFlagOn() ? "on" : "off"));
                     model.setImage(model.isMainFlagOn() ? R.drawable.ic_launcher : 0);
                 }

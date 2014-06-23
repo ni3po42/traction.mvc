@@ -15,7 +15,7 @@
 
 package traction.mvc.interfaces;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ui.UIHandler;
 
 import android.view.View;

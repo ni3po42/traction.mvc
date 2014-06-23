@@ -65,7 +65,7 @@ public class TestObservableList extends TestCase
 
         void setI(int i) {
             this.i = i;
-            notifyListener("I");
+            notifyListener("I", this.i, this.i=i);
         }
     }
 }

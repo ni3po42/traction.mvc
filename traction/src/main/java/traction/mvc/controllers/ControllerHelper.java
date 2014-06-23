@@ -15,7 +15,7 @@
 
 package traction.mvc.controllers;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ViewBindingFactory;
 import traction.mvc.implementations.ViewFactory;
 import traction.mvc.implementations.ui.menubinding.MenuInflater;

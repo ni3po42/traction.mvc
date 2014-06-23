@@ -134,7 +134,6 @@ implements NumberPicker.Formatter, NumberPicker.OnScrollListener, NumberPicker.O
 	{				
 		if (oldVal == newVal)
 			return;
-        //Log.i("value changed to "+newVal);
         Value.sendUpdate(newVal);
 	}
 	@Override

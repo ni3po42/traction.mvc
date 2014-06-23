@@ -17,7 +17,7 @@ package traction.mvc.implementations.ui;
 
 import org.json.JSONObject;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.interfaces.IProxyViewBinding;
 import traction.mvc.interfaces.IViewBinding;
 import traction.mvc.interfaces.IUIElement;

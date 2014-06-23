@@ -20,6 +20,7 @@ import android.test.InstrumentationTestCase;
 import org.mockito.ArgumentCaptor;
 
 import traction.mvc.observables.ObservableObject;
+import traction.mvc.observables.OnPropertyChangedEvent;
 import traction.mvc.observables.PropertyStore;
 import traction.mvc.interfaces.IObjectListener;
 
@@ -50,12 +51,12 @@ public class TestObservableObject extends InstrumentationTestCase
 	public void testPropertyChangeSignalsListeners()
 	{
 		//arrange
-		ObservableObject obj = createObj();				
-		IObjectListener listen = mock(IObjectListener.class);
-		obj.registerListener("testSource",listen);
+		ObservableObject obj = createObj();
+        OnPropertyChangedEvent listen = mock(OnPropertyChangedEvent.class);
+		obj.addOnChange(listen);
 		
 		//act
-		obj.notifyListener("prop");
+		obj.notifyListener("prop", "Old", "New");
 		
 		//assert
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
@@ -63,7 +64,7 @@ public class TestObservableObject extends InstrumentationTestCase
 
         String arg = argument.getValue();
 
-        assertEquals("testSource.prop", arg);
+        assertEquals("prop", arg);
 	}
 	private ObservableObject createObj()
 	{

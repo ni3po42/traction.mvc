@@ -22,6 +22,7 @@ import android.util.Property;
 
 import traction.mvc.observables.ObservableCursor;
 import traction.mvc.interfaces.IObjectListener;
+import traction.mvc.observables.OnPropertyChangedEvent;
 
 import static org.mockito.Mockito.*;
 
@@ -54,16 +55,16 @@ public class TestObservableCursor extends InstrumentationTestCase
         //final Loader<Cursor> cl = mock(Loader.class);
         ObservableCursor oc =createObservableCursor(cl);
 
-        IObjectListener listener = mock(IObjectListener.class);
+        OnPropertyChangedEvent listener = mock(OnPropertyChangedEvent.class);
 
-        oc.registerListener("oclisten", listener);
+        oc.addOnChange(listener);
 
         //act
             //indirect
         oc.onLoadFinished(cl, c);
 
         //assert
-        verify(listener).onEvent(eq("oclisten"));
+        verify(listener).onEvent(null);
     }
 
     public void testCanGetProperty()

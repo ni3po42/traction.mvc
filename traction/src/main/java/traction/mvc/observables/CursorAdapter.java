@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import traction.mvc.implementations.BindingInventory;
 import traction.mvc.implementations.ViewBindingFactory;
 import traction.mvc.implementations.ViewFactory;
 import traction.mvc.interfaces.IPOJO;

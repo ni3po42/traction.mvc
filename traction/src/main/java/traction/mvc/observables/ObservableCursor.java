@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import traction.mvc.implementations.BindingInventory;
 import traction.mvc.interfaces.IObservableCursor;
 import traction.mvc.interfaces.IPOJO;
 import traction.mvc.interfaces.IPropertyStore;

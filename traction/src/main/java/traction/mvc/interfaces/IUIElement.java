@@ -16,7 +16,7 @@
 package traction.mvc.interfaces;
 
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 
 /**
  * Defines interface for a ui element link. It defines the object path to a specific linked piece of data

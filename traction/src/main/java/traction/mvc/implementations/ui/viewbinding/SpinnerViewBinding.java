@@ -27,16 +27,15 @@ import android.widget.Spinner;
 
 /**
  * Extends the AdapterViewBinding to handle binding to a Spinner.
- * @author Tim Stratton 
+ * @author Tim Stratton
  *
- * @param <T> : type of item in the spinner
  */
-public class SpinnerViewBinding<T>
-extends AdapterViewBinding<T>
+public class SpinnerViewBinding
+extends AdapterViewBinding
 implements OnItemSelectedListener
 {
 
-    public final UIProperty<T> SelectedChoice = new UIProperty<T>(this, "SelectedChoice");
+    public final UIProperty<Object> SelectedChoice = new UIProperty<Object>(this, "SelectedChoice");
     public final UIProperty<Integer> SelectedChoiceIndex = new  UIProperty<Integer>(this, "SelectedChoiceIndex");
 
     private static final OnItemSelectedListener nullListener = new OnItemSelectedListener()
@@ -74,9 +73,9 @@ implements OnItemSelectedListener
                 changeType = 0;
             }
         });
-        SelectedChoice.setUIUpdateListener(new IUIElement.IUIUpdateListener<T>() {
+        SelectedChoice.setUIUpdateListener(new IUIElement.IUIUpdateListener<Object>() {
             @Override
-            public void onUpdate(T value) {
+            public void onUpdate(Object value) {
                 SelectedChoice.setTempValue(value);
                 changeType = ITEM_CHANGED;
                 onAdapterChanged();
@@ -105,7 +104,7 @@ implements OnItemSelectedListener
             getWidget().setSelection(SelectedChoiceIndex.getTempValue());
         else if (changeType == ITEM_CHANGED)
         {
-            int pos = Items.dereferenceValue().indexOf((T)SelectedChoice.getTempValue());
+            int pos = Items.dereferenceValue().indexOf(SelectedChoice.getTempValue());
             getWidget().setSelection(pos);
         }
 
@@ -124,7 +123,7 @@ implements OnItemSelectedListener
 	public void onItemSelected(AdapterView<?> view, View arg1, int position, long arg3)
 	{
         SelectedChoiceIndex.sendUpdate(position);
-        SelectedChoice.sendUpdate((T)view.getItemAtPosition(position));
+        SelectedChoice.sendUpdate(view.getItemAtPosition(position));
 	}
 
 	@Override

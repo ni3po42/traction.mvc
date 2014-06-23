@@ -21,8 +21,9 @@ import traction.mvc.R;
 import traction.mvc.implementations.ui.UIHandler;
 import traction.mvc.interfaces.IProxyViewBinding;
 import traction.mvc.interfaces.IViewBinding;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.util.Log;
-import traction.mvc.interfaces.IProxyObservableObject;
+import traction.mvc.observables.IProxyObservableObject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -85,7 +86,7 @@ implements Factory2
                 Class<? extends View> viewClass = inflater.getContext().getClassLoader().loadClass(className).asSubclass(View.class);
                 Constructor<? extends View> constructor = viewClass.getConstructor(signature);
 
-                return constructor.newInstance(new Object[]{inflater.getContext(), attrs});
+                return constructor.newInstance(inflater.getContext(), attrs);
 
             }catch (Exception e2)
             {

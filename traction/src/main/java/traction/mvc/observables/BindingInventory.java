@@ -13,7 +13,7 @@
    limitations under the License.
  */
 
-package traction.mvc.implementations;
+package traction.mvc.observables;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -25,12 +25,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.util.Property;
 
-import traction.mvc.observables.PropertyStore;
+import traction.mvc.implementations.CommandArgument;
+import traction.mvc.implementations.PathBinding;
+import traction.mvc.interfaces.IPropertyStore;
 import traction.mvc.interfaces.IObservableCommand;
 import traction.mvc.interfaces.IPOJO;
-import traction.mvc.interfaces.IProxyObservableObject;
 import traction.mvc.interfaces.IUIElement;
-import traction.mvc.interfaces.IObjectListener;
 
 /**
  * Tracks all ui element and the property paths to the model's data, also delegates to and from the view and the model/view-model.
@@ -39,6 +39,7 @@ import traction.mvc.interfaces.IObjectListener;
  *
  */
 public class BindingInventory
+    extends ObservableObject
 {
 	/**
 	 * patterns for parsing property chains
@@ -59,18 +60,15 @@ public class BindingInventory
 
 	private final TreeMap<String, PathBinding> map = new TreeMap<String, PathBinding>();
 
-	private IObjectListener contextListener = new IObjectListener()
-	{
-        @Override
-        public void onEvent(String propagationId)
-        {
-            onContextSignaled(propagationId);
-        }
-	};
+    @Override
+    public void onEvent(String propagationId)
+    {
+        onContextSignaled(propagationId);
+    }
 
-	private String[] tempStringArray = new String[0];
+    private String[] tempStringArray = new String[0];
 
-	protected void onContextSignaled(String path)
+	public void onContextSignaled(String path)
 	{
 		Object value = null;
 
@@ -191,15 +189,15 @@ public class BindingInventory
 	
 	public void setContextObject(Object object)
 	{
-		if (context != null && context.getProxyObservableObject() != null)
-			context.getProxyObservableObject().unregisterListener("", contextListener);
+		if (context != null)
+			context.getProxyObservableObject().getObservable().unregisterListener("", this);
         if (object instanceof IProxyObservableObject)
 		    context = (IProxyObservableObject)object;
         else
             nonObservableContext = object;
 
-		if (context != null && context.getProxyObservableObject() != null)
-			context.getProxyObservableObject().registerListener("", contextListener);
+		if (context != null)
+			context.getProxyObservableObject().getObservable().registerListener("", this);
 	}
 
     public Object getContextObject()
@@ -208,11 +206,6 @@ public class BindingInventory
             return nonObservableContext;
         else
             return context;
-    }
-
-    public boolean contextObjectPresent()
-    {
-        return context != null || nonObservableContext != null;
     }
 
     private Object extractSource()
@@ -412,5 +405,11 @@ public class BindingInventory
     public void clearAll()
     {
         map.clear();
+    }
+
+    //will not support property store!
+    @Override
+    protected IPropertyStore getPropertyStore() {
+        return null;
     }
 }

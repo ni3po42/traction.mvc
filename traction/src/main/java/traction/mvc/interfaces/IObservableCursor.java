@@ -19,6 +19,8 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 
+import traction.mvc.observables.IProxyObservableObject;
+
 /**
  * Defines methods for an observable cursor
  */

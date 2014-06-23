@@ -34,8 +34,7 @@ public class SelectableItem extends ObservableObject
 	{
 		if (b != selected)
 		{
-			selected = b;
-			notifyListener("Selected");
+			notifyListener("Selected", selected, selected = b);
 		}
 	}
 	

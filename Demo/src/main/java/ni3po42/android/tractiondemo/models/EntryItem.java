@@ -48,8 +48,7 @@ public class EntryItem
 
     public void setId(int id)
     {
-        this.id = id;
-        notifyListener("Id");
+        notifyListener("Id", this.id, this.id = id);
     }
 
     public String getContent()
@@ -59,8 +58,7 @@ public class EntryItem
 
     public void setContent(String content)
     {
-        this.content = content;
-        notifyListener("Content");
+        notifyListener("Content", this.content, this.content = content);
     }
 
     public boolean isActive()
@@ -70,7 +68,6 @@ public class EntryItem
 
     public void setActive(boolean active)
     {
-        this.active = active;
-        notifyListener("Active");
+        notifyListener("Active", this.active, this.active = active);
     }
 }

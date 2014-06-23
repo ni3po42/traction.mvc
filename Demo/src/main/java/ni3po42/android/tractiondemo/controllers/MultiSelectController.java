@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import traction.mvc.controllers.FragmentController;
 import traction.mvc.implementations.CommandArgument;
-import traction.mvc.interfaces.IObjectListener;
 import traction.mvc.interfaces.IOnExecuteListener;
 import ni3po42.android.tractiondemo.R;
 import ni3po42.android.tractiondemo.models.IMultiSelectionModel;
 import ni3po42.android.tractiondemo.models.SelectableItem;
+import traction.mvc.observables.OnPropertyChangedEvent;
 
 public class MultiSelectController extends FragmentController
 {
@@ -54,17 +54,17 @@ public class MultiSelectController extends FragmentController
                 Toast.makeText(getActivity(), "There are " + model.getSelectedCount() + " item(s) selected. " + txt, Toast.LENGTH_SHORT).show();
             }
         });
-        model.getProxyObservableObject().registerListener("", new IObjectListener() {
+        model.getProxyObservableObject().addOnChange(new OnPropertyChangedEvent() {
             @Override
-            public void onEvent(String propagationId) {
-               if ("Selected".equals(propagationId))
-               {
-                   model.getSelected().setSelected(!model.getSelected().isSelected());
-                   if (model.getSelected().isSelected())
-                       model.setSelectedCount(model.getSelectedCount()+1);
-                   else
-                       model.setSelectedCount(model.getSelectedCount()-1);
-               }
+            protected void onChange(String propertyName, Object oldValue, Object newValue) {
+                if ("Selected".equals(propertyName)) {
+                    model.getSelected().setSelected(!model.getSelected().isSelected());
+                    if (model.getSelected().isSelected())
+                        model.setSelectedCount(model.getSelectedCount() + 1);
+                    else
+                        model.setSelectedCount(model.getSelectedCount() - 1);
+                }
+
             }
         });
     }

@@ -25,6 +25,7 @@ import traction.mvc.controllers.FragmentController;
 import traction.mvc.interfaces.IObjectListener;
 import ni3po42.android.tractiondemo.R;
 import ni3po42.android.tractiondemo.models.IDemoSelectionModel;
+import traction.mvc.observables.OnPropertyChangedEvent;
 
 public class MainController extends FragmentController
 {
@@ -40,16 +41,15 @@ public class MainController extends FragmentController
 	}
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
-        IDemoSelectionModel model = View.getScope();
+        final IDemoSelectionModel model = View.getScope();
 
         model.getChoices().clear();
         model.getChoices().add(new DemoFragmentChoice(SimpleFormController.class, "Simple Form", "Explore the ease of filling out a user information form"));
         model.getChoices().add(new DemoFragmentChoice(UIWiringController.class, "UI Wiring", "Demonstrates how elements can react to other elements changing without referencing other UI elements!"));
-        model.getChoices().add(new DemoFragmentChoice(DemoADialogController.class, "Dialog view model", "Shows a view model hooking to a dialog."));
+        model.getChoices().add(new DemoFragmentChoice(DemoADialogController.class, "Dialog Controller", "Shows a view model hooking to a dialog."));
         model.getChoices().add(new DemoFragmentChoice(MultiSelectController.class, "Multi-selection", "Gives an example on how multi-selection could work in Traction MVC."));
         model.getChoices().add(new DemoFragmentChoice(EntryController.class, "Swipe List", "A custom view is built that binds data and provides a catchy (ok, at least not boring) UX. Swipe items to the left to activate/de-active."));
         model.getChoices().add(new DemoFragmentChoice(CalculatorController.class, "Calculator", "A simple calculator. Lots of buttons; simple view model."));
@@ -57,44 +57,32 @@ public class MainController extends FragmentController
         model.getChoices().add(new DemoFragmentChoice(RelativeContextFragmentController.class, "Relative Context", "Shows how relative context works."));
         model.getChoices().add(new DemoFragmentChoice(ScopeExampleController.class, "Scopes", "Example of using generated scopes."));
 
-        model.getProxyObservableObject().registerListener("", new IObjectListener() {
+        model.getProxyObservableObject().addOnChange(new OnPropertyChangedEvent() {
             @Override
-            public void onEvent(String propagationId) {
-                if ("Choice".equals(propagationId))
-                {
-                    showNewChoice();
-                }
+            protected void onChange(String propertyName, Object oldValue, Object newValue) {
+                if (!"Choice".equals(propertyName) || newValue == null) return;
+
+                model.setCurrentFragment(((DemoFragmentChoice)newValue).getFragment());
             }
         });
-    }
 
-    private void showNewChoice()
-    {
-        IDemoSelectionModel model = View.getScope();
-        DemoFragmentChoice choice = model.getChoice();
+        model.getProxyObservableObject().addOnChange(new OnPropertyChangedEvent() {
+            @Override
+            protected void onChange(String propertyName, Object oldValue, Object newValue) {
+                if (!"CurrentFragment".equals(propertyName) || newValue == null)
+                    return;
 
-        if (choice == null)
-            return;
+                Fragment newF = (Fragment)newValue;
 
-        Fragment fragment = null;
-        try
-        {
-            fragment = choice.getFragmentType().newInstance();
-        }
-        catch (Throwable e)
-        {
-        }
-        if (fragment == null)
-            throw new RuntimeException("Cannot find View Model : " + choice.getFragmentType().getName());
+                FragmentTransaction trans = getFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .replace(R.id.main_view_id, newF);
+                if (hasNoMultiViewModelSupport())
+                    trans.addToBackStack(null);
+                trans.commit();
+            }
+        });
 
-        model.setChoice(null);
-
-        FragmentTransaction trans = getFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.main_view_id, fragment);
-        if (hasNoMultiViewModelSupport())
-            trans.addToBackStack(null);
-        trans.commit();
     }
 
     private boolean hasNoMultiViewModelSupport()

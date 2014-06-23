@@ -17,6 +17,8 @@ package traction.mvc.interfaces;
 
 import java.util.List;
 
+import traction.mvc.observables.IProxyObservableObject;
+
 
 /**
  * Defines a list that is observable

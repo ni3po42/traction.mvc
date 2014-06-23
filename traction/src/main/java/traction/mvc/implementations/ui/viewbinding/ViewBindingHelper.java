@@ -28,7 +28,7 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.observables.GenericArgument;
 import traction.mvc.observables.PropertyStore;
 import traction.mvc.implementations.ui.UIEvent;

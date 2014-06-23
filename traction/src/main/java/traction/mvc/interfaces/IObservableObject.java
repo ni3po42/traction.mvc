@@ -16,12 +16,14 @@
 package traction.mvc.interfaces;
 
 
+import traction.mvc.observables.IProxyObservableObject;
+
 /**
  * IObservableObject - defines the methods needed to handle sending and receiving events and updates to other object.
  * @author Tim Stratton
  *
  */
-public interface IObservableObject
+interface IObservableObject
 extends IObjectListener, IProxyObservableObject,IPOJO
 {	
 
@@ -31,20 +33,13 @@ extends IObjectListener, IProxyObservableObject,IPOJO
 	 * @param parentObj
 	 * @return
 	 */
-	<T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj);
+	//<T extends IProxyObservableObject> T registerAs(String propertyName, IProxyObservableObject parentObj);
 	
 	/**
 	 * notifies any object listening that the whole object is claiming an update, not just a particular property
 	 */
 	void notifyListener();
-	
-	/**
-	 * notifies any object listening that a single property has updated. user this call for non-IObservableObjects.
-	 * If you need to update a property that is a IObservableObject, use notifyListener(String,IObservableObject, IObservable) 
-	 * @param propertyName
-	 */
-	void notifyListener(String propertyName);
-	
+
 	/**
 	 * notifies any object listening that a single property of type IObservableObject. This handles sending the signal and re-wiring
 	 * listeners.
@@ -52,20 +47,7 @@ extends IObjectListener, IProxyObservableObject,IPOJO
 	 * @param oldPropertyValue
 	 * @param newPropertyValue
 	 */
-	void notifyListener(String propertyName, IProxyObservableObject oldPropertyValue, IProxyObservableObject newPropertyValue);
-
-	/**
-	 * Registers a listener to the IObservable
-	 * @param sourceName : name of source property to track changes and bubble up to inventory
-	 * @return : 'this' typed as <T>
-	 */
-	<T extends IProxyObservableObject> T registerListener(String sourceName, IObjectListener listener);
-	
-	/**
-	 * Remove registration from IObservable. Once called, OnObservableUpdated should no longer signal the listener
-	 * @param listener : listener to unregister from IObservable
-	 */
-	void unregisterListener(String sourceName, IObjectListener listener);
+	void notifyListener(String propertyName, Object oldPropertyValue, Object newPropertyValue);
 
     /**
      * Returns source object that is being extended with the IObservableObject properties

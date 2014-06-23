@@ -13,7 +13,7 @@
    limitations under the License.
  */
 
-package traction.mvc.interfaces;
+package traction.mvc.observables;
 
 /**
  * Allows non-IObservableObject to be handled like IObservableObject by composition instead of inheritance/interface
@@ -27,6 +27,6 @@ public interface IProxyObservableObject
 	 * Allow access to the composed IObservableObject
 	 * @return
 	 */
-	IObservableObject getProxyObservableObject();
+	ObservableObject getProxyObservableObject();
 
 }

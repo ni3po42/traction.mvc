@@ -22,7 +22,7 @@ import org.json.JSONObject;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.CommandArgument;
 import traction.mvc.observables.Command;
 import traction.mvc.observables.ObservableObject;
@@ -30,7 +30,6 @@ import traction.mvc.observables.PropertyStore;
 import traction.mvc.interfaces.IUIElement;
 
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 public class TestBindingInventory extends InstrumentationTestCase
@@ -301,8 +300,7 @@ public class TestBindingInventory extends InstrumentationTestCase
 		
 		public void setI(int n)
 		{
-			i = n;
-			notifyListener("I");
+			notifyListener("I", i, i=n);
 		}
 		
 		private biObj obj;

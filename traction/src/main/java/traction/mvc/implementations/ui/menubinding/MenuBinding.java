@@ -21,7 +21,7 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ui.UIEvent;
 import traction.mvc.implementations.ui.UIHandler;
 import traction.mvc.implementations.ui.UIProperty;

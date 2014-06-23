@@ -79,8 +79,7 @@ implements IObservableCommand
 	{
 		if (canExecute == b)
 			return;
-		canExecute = b;
-		notifyListener("CanExecute");
+		notifyListener("CanExecute", canExecute, canExecute = b);
 	}
 
 	/**

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 
 import traction.mvc.interfaces.IPropertyStore;
-import traction.mvc.interfaces.IProxyObservableObject;
 
 public class ObservableMap
     extends ObservableObject
@@ -114,7 +113,7 @@ public class ObservableMap
             if (internalMap.get(current) instanceof IProxyObservableObject)
             {
                 IProxyObservableObject obj = (IProxyObservableObject)internalMap.get(current);
-                obj.getProxyObservableObject().unregisterListener(String.valueOf(current), getProxyObservableObject());
+                obj.getProxyObservableObject().getObservable().unregisterListener(String.valueOf(current), getProxyObservableObject());
             }
         }
 
@@ -163,16 +162,17 @@ public class ObservableMap
             if (internalMap.containsKey(k) && internalMap.get(k) instanceof IProxyObservableObject)
             {
                 IProxyObservableObject obj = (IProxyObservableObject)internalMap.get(k);
-                obj.getProxyObservableObject().unregisterListener(String.valueOf(k), getProxyObservableObject());
+                obj.getProxyObservableObject().getObservable().unregisterListener(String.valueOf(k), getProxyObservableObject());
             }
             IProxyObservableObject obj = (IProxyObservableObject)v;
-            obj.getProxyObservableObject().registerListener(String.valueOf(k), getProxyObservableObject());
+            obj.getProxyObservableObject().getObservable().registerListener(String.valueOf(k), getProxyObservableObject());
         }
 
-        store.removeKey(k);
+       store.removeKey(k);
         if (k != null && v != null) {
+            Object old = internalMap.containsKey(k) ? internalMap.get(k) : null;
             Object returnObj = internalMap.put(k, v);
-            notifyListener(String.valueOf(k));
+            notifyListener(String.valueOf(k), old, v);
             return returnObj;
         }
         return null;
@@ -192,10 +192,10 @@ public class ObservableMap
                 if (internalMap.containsKey(current) && internalMap.get(current) instanceof IProxyObservableObject)
                 {
                     IProxyObservableObject obj = (IProxyObservableObject)internalMap.get(current);
-                    obj.getProxyObservableObject().unregisterListener(String.valueOf(current), getProxyObservableObject());
+                    obj.getProxyObservableObject().getObservable().unregisterListener(String.valueOf(current), getProxyObservableObject());
                 }
                 IProxyObservableObject obj = (IProxyObservableObject)map.get(current);
-                obj.getProxyObservableObject().registerListener(String.valueOf(current), getProxyObservableObject());
+                obj.getProxyObservableObject().getObservable().registerListener(String.valueOf(current), getProxyObservableObject());
             }
             store.removeKey(current);
         }
@@ -208,10 +208,10 @@ public class ObservableMap
     public Object remove(Object key) {
         Object obj = internalMap.remove(key);
         store.removeKey(String.valueOf(key));
-        notifyListener(String.valueOf(key));
+        notifyListener(String.valueOf(key), obj, null);
         if (obj instanceof IProxyObservableObject)
         {
-            ((IProxyObservableObject)obj).getProxyObservableObject().unregisterListener(String.valueOf(key), getProxyObservableObject());
+            ((IProxyObservableObject)obj).getProxyObservableObject().getObservable().unregisterListener(String.valueOf(key), getProxyObservableObject());
         }
         return obj;
     }

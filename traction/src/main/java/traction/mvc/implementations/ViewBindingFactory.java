@@ -22,8 +22,10 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import traction.mvc.R;
+import traction.mvc.implementations.ui.viewbinding.GenericViewBinding;
 import traction.mvc.interfaces.IProxyViewBinding;
 import traction.mvc.interfaces.IViewBinding;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.util.Log;
 
 public class ViewBindingFactory
@@ -40,7 +42,7 @@ public class ViewBindingFactory
         try
         {
             //should move this out and allow user the option to register new ones if they so please...
-            String packageName = "traction.mvc.implementations.ui.viewbinding";
+            String packageName = GenericViewBinding.class.getPackage().getName();
             addBindingConfig("android.view.View", packageName+".GenericViewBinding");
             addBindingConfig("android.widget.AbsListView", packageName+".ListViewBinding");
             addBindingConfig("android.widget.Spinner", packageName+".SpinnerViewBinding");

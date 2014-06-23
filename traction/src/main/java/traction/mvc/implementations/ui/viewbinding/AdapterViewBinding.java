@@ -26,15 +26,11 @@ import android.widget.AdapterView;
  * Base view binding for AdapterViews.
  * 
  * Exposes the following properties:
- * Items - binds to IObservableList<T>
- * SelectedItem - sets a property of type <T> if view's choiceMode is single or none
- * Selected - path refers absolutely to property chain of the items in the Items collection if view's choiceMode is multiple or multiple modal
- * ItemTemplateId - id of layout for child view (at this time, only supports single type of view)
- * @author Tim Stratton
- *
- * @param <T> : item type
+ * Items - binds to ITemplateAdapter objects
+ * ItemTemplate - id of layout for child view (at this time, only supports single type of view)
+ * @author Tim Stratton*
  */
-public class AdapterViewBinding<T>
+public class AdapterViewBinding
 extends GenericViewBinding<AdapterView<ITemplateAdapter>>
 {
 	public final UIProperty<ITemplateAdapter> Items = new UIProperty<ITemplateAdapter>(this, "Items");
@@ -54,7 +50,7 @@ extends GenericViewBinding<AdapterView<ITemplateAdapter>>
 
                 Items.setTempValue(value);
                 value.setLayoutId(itemTemplateId);
-                value.setParentInventory(AdapterViewBinding.this.getBindingInventory());
+                value.setParentInventory(getBindingInventory());
 
                 getWidget().setAdapter(value);
                 onAdapterChanged();

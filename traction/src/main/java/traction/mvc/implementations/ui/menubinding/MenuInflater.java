@@ -28,7 +28,7 @@ import android.view.InflateException;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ViewFactory;
 import traction.mvc.interfaces.IViewBinding;
 

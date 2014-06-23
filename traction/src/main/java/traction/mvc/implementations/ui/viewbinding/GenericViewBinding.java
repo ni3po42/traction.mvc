@@ -17,7 +17,7 @@ package traction.mvc.implementations.ui.viewbinding;
 
 import java.lang.ref.WeakReference;
 
-import traction.mvc.implementations.BindingInventory;
+import traction.mvc.observables.BindingInventory;
 import traction.mvc.implementations.ui.UIProperty;
 import traction.mvc.implementations.ui.UIHandler;
 import traction.mvc.interfaces.IUIElement;
