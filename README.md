@@ -1,5 +1,9 @@
 <h1>Traction MVC, v BETA 0.9.0 (soon)</h1>
 
+<strong>A better way may be coming soon...</strong>
+<a href="https://developer.android.com/tools/data-binding/guide.html">Android Data Binding Library</a>
+
+<br />
 <strong>0.9.0 Update is coming. Framework is now known as 'Traction MVC'. Stay tuned for updated docs.</strong><br />
 <strong>Please, if you are interested in using the older versions, please download or fork only source with tag versions. The current code is still a work in progress.</strong>
 <ul>
